@@ -12,7 +12,7 @@ module.exports = merge(common, {
 	devtool: 'none',
 
 	output: {
-		publicPath: '/'
+		publicPath: './'
 	},
 
 	plugins: [

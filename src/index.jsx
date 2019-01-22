@@ -1,3 +1,4 @@
+import 'uikit';
 import 'styles/main.scss';
 
 import { h, render, Component } from 'preact';
