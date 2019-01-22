@@ -31,13 +31,18 @@ module.exports = {
 				loader: 'babel-loader',
 				options: {
 					presets: [
-						'@babel/env'
+						[
+							'@babel/env',
+							{
+								'useBuiltIns': 'entry'
+							}
+						]
 					],
 					plugins: [
 						[ '@babel/plugin-transform-react-jsx', { pragma: 'h' } ],
+						[ '@babel/plugin-proposal-decorators', { 'legacy': true } ],
 						'@babel/plugin-syntax-dynamic-import',
-						'@babel/plugin-proposal-class-properties',
-						[ '@babel/plugin-proposal-decorators', { 'legacy': true } ]
+						'@babel/plugin-proposal-class-properties'
 					]
 				}
 			},

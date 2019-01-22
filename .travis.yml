@@ -18,6 +18,7 @@ install:
 script:
   - npm run test
   - npm run deploy
+
 deploy:
   provider: pages
   skip_cleanup: true

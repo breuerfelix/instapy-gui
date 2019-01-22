@@ -1,7 +1,8 @@
 import { h, render, Component } from 'preact';
 import { connect } from 'store';
 
-class Projects extends Component {
+@connect()
+export default class Projects extends Component {
 	render(props, state) {
 		return (
 			<div>
@@ -10,5 +11,3 @@ class Projects extends Component {
 		);
 	}
 }
-
-export default connect()(Projects);
