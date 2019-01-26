@@ -5,6 +5,8 @@ import { connect } from 'store';
 import { translate, ConfigService } from 'services';
 import classNames from 'classnames';
 
+const INIT_METHOD_NAME = 'login';
+
 @connect('actions')
 export default class JobItem extends Component {
 	state = {
@@ -35,7 +37,8 @@ export default class JobItem extends Component {
 	}, { expanded, job }) {
 		const action = actions.find(action => action.functionName == job.functionName);
 		if (!action) {
-			console.error('error finding matching action!');
+			console.error('error finding matching action! ' + job.functionName);
+			return;
 		}
 
 		const cardClass = classNames(
@@ -49,7 +52,6 @@ export default class JobItem extends Component {
 			'uk-margin-left'
 		);
 
-
 		const labelClass = job.active ? 'success' : 'danger';
 		const labelText = job.active ? 'active' : 'inactive';
 
@@ -62,24 +64,40 @@ export default class JobItem extends Component {
 								{ translate(action.functionName) }
 							</h1>
 						</div>
-						<div>
-							<span
-								class={`clickable-hover uk-label uk-label-${labelClass}`}
-								onClick={ this.toggleActive }
-							>
-								{ labelText }
-							</span>
-							<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
-							<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
-							<Icon name='settings' onClick={ this.toggleCard } />
-							<Icon name='info' />
-							<Icon name='trash' onClick={ e => deleteJob(job) } />
-						</div>
+						{ job.functionName != INIT_METHOD_NAME && 
+							<div>
+								<span
+									class={`clickable-hover uk-label uk-label-${labelClass}`}
+									onClick={ this.toggleActive }
+								>
+									{ labelText }
+								</span>
+								<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
+								<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
+								<Icon name='settings' onClick={ this.toggleCard } />
+								<Icon name='info' />
+								<Icon name='trash' onClick={ e => deleteJob(job) } />
+							</div>
+						}
+						{/*init method cant be deleted, set inactive or moved */}
+						{ job.functionName == INIT_METHOD_NAME &&
+							<div>
+								<span
+									class={`uk-label uk-label-${labelClass}`}
+								>
+									{ labelText }
+								</span>
+								<Icon name='settings' onClick={ this.toggleCard } />
+								<Icon name='info' />
+							</div>
+						}
 					</div>
 				</div>
 				{ expanded &&
 					<div class="uk-card-body">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+						<p>
+							you will be able to configure the job right over here.... just wait a bit !
+						</p>
 					</div>
 				}
 			</div>
