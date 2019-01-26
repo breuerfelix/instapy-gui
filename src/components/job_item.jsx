@@ -2,13 +2,18 @@ import 'styles/job_item.scss';
 
 import { h, render, Component } from 'preact';
 import { connect } from 'store';
-import { translate } from 'services';
+import { translate, ConfigService } from 'services';
 import classNames from 'classnames';
 
-@connect('jobs')
+@connect('actions')
 export default class JobItem extends Component {
 	state = {
-		expanded: false
+		expanded: false,
+		job: null
+	}
+
+	componentWillMount() {
+		this.setState({ job: this.props.job });
 	}
 
 	toggleCard = e => {
@@ -16,20 +21,22 @@ export default class JobItem extends Component {
 	}
 
 	toggleActive = e => {
-		console.log('toggle active');
-	}
+		const job = this.state.job;
+		job.active = !job.active;
 
-	delete = e => {
-		console.log('delete me !');
+		this.setState({ job });
+		ConfigService.updateJob(job);
 	}
 
 	render({
-		job,
-		jobs,
-		toggleJobActive,
-		moveJob
-	}, { expanded }) {
-		const configJob = jobs.find(x => x.functionName == job.functionName);
+		actions,
+		moveJob,
+		deleteJob
+	}, { expanded, job }) {
+		const action = actions.find(action => action.functionName == job.functionName);
+		if (!action) {
+			console.error('error finding matching action!');
+		}
 
 		const cardClass = classNames(
 			'uk-card',
@@ -52,21 +59,21 @@ export default class JobItem extends Component {
 					<div class="uk-grid-small uk-flex-middle" uk-grid>
 						<div class="uk-width-expand">
 							<h1 class="uk-card-title uk-margin-remove-bottom">
-								{ translate(configJob.functionName) }
+								{ translate(action.functionName) }
 							</h1>
 						</div>
 						<div>
 							<span
 								class={`clickable-hover uk-label uk-label-${labelClass}`}
-								onClick={ e => toggleJobActive(job) }
+								onClick={ this.toggleActive }
 							>
 								{ labelText }
 							</span>
 							<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
-							<Icon name='arrow-down' onClick={ e=> moveJob(job, 1) } />
+							<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
 							<Icon name='settings' onClick={ this.toggleCard } />
 							<Icon name='info' />
-							<Icon name='trash' onClick={ this.delete } />
+							<Icon name='trash' onClick={ e => deleteJob(job) } />
 						</div>
 					</div>
 				</div>
