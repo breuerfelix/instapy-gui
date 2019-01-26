@@ -1,7 +1,28 @@
 import uuid from 'uuid/v1';
 
 class ConfigService {
-	async fetchJobs() {
+	async fetchNamespaces() {
+		return new Promise((resolve, reject) => {
+			resolve(
+				[
+					{
+						ident: 'starter',
+						name: 'bla blub',
+						description: 'yeah man'
+					},
+					{
+						ident: 'next one',
+						name: 'hallu',
+						description: 'yeah man'
+					}
+				]
+			);
+		});
+	}
+
+	async fetchJobs(namespace) {
+		console.log('loading jobs for namespace: ' + namespace);
+
 		return new Promise((resolve, reject) => {
 			resolve(
 				[
@@ -39,6 +60,19 @@ class ConfigService {
 								],
 							}
 						]
+					},
+					{
+						uuid: uuid(),
+						namespace: 'starter',
+						functionName: 'follow_by_username',
+						active: true,
+						params: [
+							{
+								position: 0,
+								name: 'username',
+								value: 'barack_obama'
+							}
+						]
 					}
 				]
 			);
@@ -74,6 +108,20 @@ class ConfigService {
 								optional: false,
 								type: 'list:string',
 								description: 'hashtag list'
+							}
+						]
+					},
+					{
+						functionName: 'follow_by_username',
+						description: 'follow people by a given username',
+						params: [
+							{
+								position: 0,
+								name: 'username',
+								defaultValue: null,
+								optional: false,
+								type: 'string',
+								description: 'username of account'
 							}
 						]
 					}

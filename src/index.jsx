@@ -25,7 +25,7 @@ class App extends Component {
 						default path='/dashboard'
 					/>
 					<Config
-						path='/config'
+						path='/config/:namespace?'
 					/>
 					<News
 						path='/news'
