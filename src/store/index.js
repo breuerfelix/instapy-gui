@@ -3,43 +3,7 @@ import { connect as org_connect } from 'unistore/preact';
 import actions from './actions';
 
 const initialState = {
-	changed: true,
-	selectedJobs: [
-		{
-			position: 0,
-			functionName: 'login',
-			active: true,
-			params: [
-				{
-					position: 0,
-					name: 'username',
-					value: 'felix',
-				},
-				{
-					position: 1,
-					name: 'password',
-					value: 'bla',
-				}
-			]
-		},
-		{
-			position: 1,
-			functionName: 'follow_by_hashtag',
-			active: false,
-			params: [
-				{
-					position: 0,
-					name: 'hashtag',
-					value: [
-						'bla',
-						'sports',
-						'programming'
-					],
-				}
-			]
-		}
-	],
-	jobs: [
+	actions: [
 		{
 			functionName: 'login',
 			description: 'this performs the login',
@@ -73,7 +37,7 @@ const initialState = {
 
 const store = createStore(initialState);
 
-const connect = values => org_connect('changed,' + values, actions);
+const connect = values => org_connect(values, actions);
 
 export {
 	actions,

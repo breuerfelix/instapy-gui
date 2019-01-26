@@ -24,7 +24,8 @@
 		"preact": "^8.4.2",
 		"preact-router": "^2.6.1",
 		"uikit": "^3.0.2",
-		"unistore": "^3.2.1"
+		"unistore": "^3.2.1",
+		"uuid": "^3.3.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.2.0",
