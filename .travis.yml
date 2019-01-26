@@ -17,7 +17,7 @@ install:
 
 script:
   - npm run test
-  - npm run deploy
+  - npm run build
 
 deploy:
   provider: pages

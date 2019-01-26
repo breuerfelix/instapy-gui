@@ -16,7 +16,7 @@ export default class JobItem extends Component {
 	}
 
 	toggleActive = e => {
-		console.log('toggle active')
+		console.log('toggle active');
 	}
 
 	delete = e => {
