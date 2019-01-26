@@ -4,13 +4,21 @@ import { JobItem } from 'components';
 import arrayMove from 'array-move';
 import { ConfigService } from 'services';
 
+@connect()
 export default class Config extends Component {
 	state = {
 		jobs: []
 	}
 
 	componentWillMount() {
-		ConfigService.fetchJobs().then(jobs => this.setState({ jobs }));
+		const actionsProm = ConfigService.fetchActions();
+		const jobsProm = ConfigService.fetchJobs();
+
+		// actions need to be in store otherwhise jobs are getting errors
+		Promise.all([ actionsProm, jobsProm ]).then(values => {
+			this.props.setActions(values[0]);
+			this.setState({ jobs: values[1] });
+		});
 	}
 
 	moveJob = (job, direction) => {
