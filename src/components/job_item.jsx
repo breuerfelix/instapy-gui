@@ -4,7 +4,6 @@ import { h, render, Component } from 'preact';
 import { connect } from 'store';
 import { translate, ConfigService } from 'services';
 import classNames from 'classnames';
-import { INIT_METHOD_NAME } from 'config';
 
 @connect('actions')
 export default class JobItem extends Component {
@@ -63,33 +62,19 @@ export default class JobItem extends Component {
 								{ translate(action.functionName) }
 							</h1>
 						</div>
-						{ job.functionName != INIT_METHOD_NAME && 
-							<div>
-								<span
-									class={`clickable-hover uk-label uk-label-${labelClass}`}
-									onClick={ this.toggleActive }
-								>
-									{ labelText }
-								</span>
-								<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
-								<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
-								<Icon name='settings' onClick={ this.toggleCard } />
-								<Icon name='info' />
-								<Icon name='trash' onClick={ e => deleteJob(job) } />
-							</div>
-						}
-						{/*init method cant be deleted, set inactive or moved */}
-						{ job.functionName == INIT_METHOD_NAME &&
-							<div>
-								<span
-									class={`uk-label uk-label-${labelClass}`}
-								>
-									{ labelText }
-								</span>
-								<Icon name='settings' onClick={ this.toggleCard } />
-								<Icon name='info' />
-							</div>
-						}
+						<div>
+							<span
+								class={`clickable-hover uk-label uk-label-${labelClass}`}
+								onClick={ this.toggleActive }
+							>
+								{ labelText }
+							</span>
+							<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
+							<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
+							<Icon name='settings' onClick={ this.toggleCard } />
+							<Icon name='info' />
+							<Icon name='trash' onClick={ e => deleteJob(job) } />
+						</div>
 					</div>
 				</div>
 				{ expanded &&
