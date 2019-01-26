@@ -4,8 +4,7 @@ import { h, render, Component } from 'preact';
 import { connect } from 'store';
 import { translate, ConfigService } from 'services';
 import classNames from 'classnames';
-
-const INIT_METHOD_NAME = 'login';
+import { INIT_METHOD_NAME } from 'config';
 
 @connect('actions')
 export default class JobItem extends Component {
