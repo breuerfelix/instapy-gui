@@ -3,6 +3,7 @@ import { connect as org_connect } from 'unistore/preact';
 import actions from './actions';
 
 const initialState = {
+	changed: true,
 	selectedJobs: [
 		{
 			position: 0,
@@ -72,7 +73,7 @@ const initialState = {
 
 const store = createStore(initialState);
 
-const connect = (values) => org_connect(values, actions);
+const connect = values => org_connect('changed,' + values, actions);
 
 export {
 	actions,
