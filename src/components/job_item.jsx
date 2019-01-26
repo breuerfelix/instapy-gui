@@ -23,7 +23,12 @@ export default class JobItem extends Component {
 		console.log('delete me !');
 	}
 
-	render({ job, jobs }, { expanded }) {
+	render({
+		job,
+		jobs,
+		toggleJobActive,
+		moveJob
+	}, { expanded }) {
 		const configJob = jobs.find(x => x.functionName == job.functionName);
 
 		const cardClass = classNames(
@@ -53,12 +58,12 @@ export default class JobItem extends Component {
 						<div>
 							<span
 								class={`clickable-hover uk-label uk-label-${labelClass}`}
-								onClick={ this.toggleActive }
+								onClick={ e => toggleJobActive(job) }
 							>
 								{ labelText }
 							</span>
-							<Icon name='arrow-up' />
-							<Icon name='arrow-down' />
+							<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
+							<Icon name='arrow-down' onClick={ e=> moveJob(job, 1) } />
 							<Icon name='settings' onClick={ this.toggleCard } />
 							<Icon name='info' />
 							<Icon name='trash' onClick={ this.delete } />
