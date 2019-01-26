@@ -22,10 +22,12 @@ export default class Config extends Component {
 		const namespaces = ConfigService.fetchNamespaces()
 			.then(namespaces => {
 				this.setState({ namespaces });
-				const namespace = namespaces[0].ident;
+				if (namespace) return;
+
+				const newNamespace = namespaces[0].ident;
 				// load the first namespace
-				route(`/config/${namespace}`);
-				this.loadJobs(namespace);
+				route(`/config/${newNamespace}`);
+				this.loadJobs(newNamespace);
 			});
 
 		if (namespace) this.loadJobs(namespace);
@@ -43,11 +45,12 @@ export default class Config extends Component {
 		const jobs = this.state.jobs;
 		const idx = jobs.indexOf(job);
 
-		if (idx != -1) {
-			arrayMove.mut(jobs, idx, idx + direction);
-		} else {
+		if (idx == -1) {
 			console.error('could not locate job: ' + job);
+			return;
 		}
+		
+		arrayMove.mut(jobs, idx, idx + direction);
 
 		this.setState({ jobs });
 		// update all jobs since positioning changed
@@ -81,7 +84,14 @@ export default class Config extends Component {
 
 		return (
 			<div>
-				{ jobsPreview }
+				<ul class="uk-subnav uk-subnav-divider" uk-margin>
+					<li><a href="#">Active</a></li>
+					<li><a href="#">Item</a></li>
+					<li><a href="#">Item</a></li>
+				</ul>
+				<div>
+					{ jobsPreview }
+				</div>
 			</div>
 		);
 	}
