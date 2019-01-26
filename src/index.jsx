@@ -1,31 +1,37 @@
-import 'uikit';
+import 'uikit/dist/css/uikit.min.css';
 import 'styles/main.scss';
+
+import uikit from 'uikit';
+import icons from 'uikit/dist/js/uikit-icons'; 
+uikit.use(icons);
+//uikit.notification('hello world');
 
 import { h, render, Component } from 'preact';
 import Router from 'preact-router';
 import { Provider } from 'unistore/preact';
 
 import store from 'store';
-import { NavBar } from 'core';
-import { Home, About, Projects } from 'sites';
+import { NavBar, SideBar, Footer } from 'components';
+import { Dashboard, Config, News } from 'sites';
 
 class App extends Component {
 	render() {
 		return (
 			<div>
 				<NavBar />
+				<SideBar />
 				<Router>
-					<Home default path='/' />
-					<About
-						path='/about'
+					<Dashboard
+						default path='/dashboard'
 					/>
-					<Projects
-						path='/projects'
+					<Config
+						path='/config'
+					/>
+					<News
+						path='/news'
 					/>
 				</Router>
-				<div>
-					footer
-				</div>
+				<Footer />
 			</div>
 		);
 	}

@@ -11,6 +11,7 @@ function createWindow () {
 
 	// and load the index.html of the app.
 	if (isDev) {
+		console.log('loading localhost server');
 		win.loadURL('http://localhost:8080/');
 	} else {
 		win.loadURL(`file://${__dirname}/dist/index.html`);

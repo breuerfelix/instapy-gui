@@ -1,9 +1,9 @@
-import Home from './home';
-import Projects from './projects';
-import About from './about';
+import Dashboard from './dashboard';
+import Config from './config';
+import News from './news';
 
 export {
-	Home,
-	Projects,
-	About
+	Dashboard,
+	Config,
+	News
 };
