@@ -6,12 +6,12 @@ class ConfigService {
 			resolve(
 				[
 					{
-						ident: 'starter',
+						ident: 'startbla',
 						name: 'bla blub',
 						description: 'yeah man'
 					},
 					{
-						ident: 'next one',
+						ident: 'starter',
 						name: 'hallu',
 						description: 'yeah man'
 					}
