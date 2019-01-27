@@ -24,7 +24,7 @@ export default class NavBar extends Component {
 							/>
 							<NavBarItem
 								text='CONFIG'
-								link='/config'
+								link='/configuration'
 							/>
 						</ul>
 					</div>

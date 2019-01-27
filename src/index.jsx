@@ -4,7 +4,6 @@ import 'styles/main.scss';
 import uikit from 'uikit';
 import icons from 'uikit/dist/js/uikit-icons'; 
 uikit.use(icons);
-//uikit.notification('hello world');
 
 import { h, render, Component } from 'preact';
 import Router from 'preact-router';
@@ -12,7 +11,7 @@ import { Provider } from 'unistore/preact';
 
 import store from 'store';
 import { NavBar, SideBar, Footer } from 'components';
-import { Dashboard, Config, News } from 'sites';
+import { Dashboard, Configuration, News } from 'sites';
 
 class App extends Component {
 	render() {
@@ -20,17 +19,19 @@ class App extends Component {
 			<div>
 				<NavBar />
 				<SideBar />
-				<Router>
-					<Dashboard
-						default path='/dashboard'
-					/>
-					<Config
-						path='/config/:namespace?'
-					/>
-					<News
-						path='/news'
-					/>
-				</Router>
+				<div class='uk-container uk-container-small'>
+					<Router>
+						<Dashboard
+							default path='/dashboard'
+						/>
+						<Configuration
+							path='/configuration/:namespace?'
+						/>
+						<News
+							path='/news'
+						/>
+					</Router>
+				</div>
 				<Footer />
 			</div>
 		);
