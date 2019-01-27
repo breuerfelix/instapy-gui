@@ -1,6 +1,6 @@
 import { h, render, Component } from 'preact';
 import { connect } from 'store';
-import { JobItem } from 'components';
+import { JobItem, NamespaceSelection } from 'components';
 import arrayMove from 'array-move';
 import { ConfigService } from 'services';
 import { route } from 'preact-router';
@@ -26,7 +26,7 @@ export default class Config extends Component {
 
 				const newNamespace = namespaces[0].ident;
 				// load the first namespace
-				route(`/config/${newNamespace}`);
+				route(`/configuration/${newNamespace}`);
 				this.loadJobs(newNamespace);
 			});
 
@@ -72,7 +72,7 @@ export default class Config extends Component {
 		ConfigService.deleteJob(job);
 	}
 
-	render(props, { jobs }) {
+	render(props, { jobs, namespaces }) {
 		const jobsPreview = jobs.map(job =>
 			<JobItem
 				key={ job.uuid }
@@ -84,11 +84,7 @@ export default class Config extends Component {
 
 		return (
 			<div>
-				<ul class="uk-subnav uk-subnav-divider" uk-margin>
-					<li><a href="#">Active</a></li>
-					<li><a href="#">Item</a></li>
-					<li><a href="#">Item</a></li>
-				</ul>
+				<NamespaceSelection namespaces={ namespaces } />
 				<div>
 					{ jobsPreview }
 				</div>

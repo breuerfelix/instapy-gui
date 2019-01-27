@@ -1,9 +1,9 @@
 import Dashboard from './dashboard';
-import Config from './config';
+import Configuration from './configuration';
 import News from './news';
 
 export {
 	Dashboard,
-	Config,
+	Configuration,
 	News
 };
