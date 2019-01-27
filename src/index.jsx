@@ -19,7 +19,7 @@ class App extends Component {
 			<div>
 				<NavBar />
 				<SideBar />
-				<div class='uk-container uk-container-small'>
+				<div class='uk-container'>
 					<Router>
 						<Dashboard
 							default path='/dashboard'

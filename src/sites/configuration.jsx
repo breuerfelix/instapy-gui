@@ -10,31 +10,32 @@ export default class Config extends Component {
 	state = {
 		jobs: [],
 		namespaces: [],
-		namespace: {}
+		activeNamespace: ''
 	}
 
-	componentWillMount(props) {
-		const { namespace } = this.props;
-
+	componentWillMount() {
 		const actionsProm = ConfigService.fetchActions()
 			.then(actions => this.props.setActions(actions));
 
 		const namespaces = ConfigService.fetchNamespaces()
 			.then(namespaces => {
 				this.setState({ namespaces });
-				if (namespace) return;
-
-				const newNamespace = namespaces[0].ident;
-				// load the first namespace
-				route(`/configuration/${newNamespace}`);
-				this.loadJobs(newNamespace);
 			});
-
-		if (namespace) this.loadJobs(namespace);
 	}
 
 	loadJobs = namespace => {
-		this.setState({ namespace });
+		if (this.state.activeNamespace == namespace) return;
+
+		// loading jobs for current selection if there is one
+		if (!namespace) {
+			this.setState({
+				jobs: [],
+				activeNamespace: namespace
+			});
+			return;
+		}
+
+		this.setState({ activeNamespace: namespace });
 
 		// only fetch jobs if namespace is given
 		const jobsProm = ConfigService.fetchJobs(namespace)
@@ -72,7 +73,9 @@ export default class Config extends Component {
 		ConfigService.deleteJob(job);
 	}
 
-	render(props, { jobs, namespaces }) {
+	render({ namespace }, { jobs, namespaces }) {
+		this.loadJobs(namespace);
+
 		const jobsPreview = jobs.map(job =>
 			<JobItem
 				key={ job.uuid }
@@ -84,7 +87,10 @@ export default class Config extends Component {
 
 		return (
 			<div>
-				<NamespaceSelection namespaces={ namespaces } />
+				<NamespaceSelection
+					namespace={ namespace }
+					namespaces={ namespaces }
+				/>
 				<div>
 					{ jobsPreview }
 				</div>

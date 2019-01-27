@@ -45,9 +45,7 @@ export default class JobItem extends Component {
 			'uk-card-hover',
 			'uk-width-auto',
 			'uk-margin-top',
-			'uk-margin-bottom',
-			'uk-margin-right',
-			'uk-margin-left'
+			'uk-margin-bottom'
 		);
 
 		const labelClass = job.active ? 'success' : 'danger';
