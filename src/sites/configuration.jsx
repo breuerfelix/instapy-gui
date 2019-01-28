@@ -1,6 +1,6 @@
 import { h, render, Component } from 'preact';
 import { connect } from 'store';
-import { JobItem, NamespaceSelection } from 'components';
+import { JobItem, NamespaceSelection, AddNamespaceModal } from 'components';
 import arrayMove from 'array-move';
 import { ConfigService } from 'services';
 import { route } from 'preact-router';
@@ -10,7 +10,12 @@ export default class Config extends Component {
 	state = {
 		jobs: [],
 		namespaces: [],
-		activeNamespace: ''
+		activeNamespace: '',
+
+		// modal stuff
+		modalIdent: '',
+		modalName: '',
+		modalDescription: ''
 	}
 
 	componentWillMount() {
@@ -25,17 +30,15 @@ export default class Config extends Component {
 
 	loadJobs = namespace => {
 		if (this.state.activeNamespace == namespace) return;
+		this.setState({ activeNamespace: namespace });
 
 		// loading jobs for current selection if there is one
 		if (!namespace) {
 			this.setState({
-				jobs: [],
-				activeNamespace: namespace
+				jobs: []
 			});
 			return;
 		}
-
-		this.setState({ activeNamespace: namespace });
 
 		// only fetch jobs if namespace is given
 		const jobsProm = ConfigService.fetchJobs(namespace)
@@ -73,7 +76,24 @@ export default class Config extends Component {
 		ConfigService.deleteJob(job);
 	}
 
-	render({ namespace }, { jobs, namespaces }) {
+	deleteNamespace = _ => {
+		const { namespaces } = this.state;
+		if (namespaces.length <= 1) {
+			console.error('you need at least one namespace!');
+			return;
+		}
+
+	}
+
+	addNamespace = namespace => {
+		console.log(namespace);
+	}
+
+	render({ namespace }, {
+		jobs,
+		namespaces
+	}) {
+
 		this.loadJobs(namespace);
 
 		const jobsPreview = jobs.map(job =>
@@ -90,6 +110,11 @@ export default class Config extends Component {
 				<NamespaceSelection
 					namespace={ namespace }
 					namespaces={ namespaces }
+					addNamespace={ this.addNamespace }
+					deleteNamespace={ this.deleteNamespace }
+				/>
+				<AddNamespaceModal
+					add={ this.addNamespace }
 				/>
 				<div>
 					{ jobsPreview }
