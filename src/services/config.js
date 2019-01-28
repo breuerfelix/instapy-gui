@@ -20,6 +20,14 @@ class ConfigService {
 		});
 	}
 
+	async deleteNamespace(namespace) {
+		console.log('deleting namespace!');
+	}
+
+	async addNamespace(namespace) {
+		console.log('adding namespace!');
+	}
+
 	async fetchJobs(namespace) {
 		console.log('loading jobs for namespace: ' + namespace);
 

@@ -2,20 +2,16 @@ import { h, render, Component } from 'preact';
 import { connect } from 'store';
 import { JobItem, NamespaceSelection, AddNamespaceModal } from 'components';
 import arrayMove from 'array-move';
-import { ConfigService } from 'services';
+import { ConfigService, translate } from 'services';
 import { route } from 'preact-router';
+import uikit from 'uikit';
 
 @connect()
 export default class Config extends Component {
 	state = {
 		jobs: [],
 		namespaces: [],
-		activeNamespace: '',
-
-		// modal stuff
-		modalIdent: '',
-		modalName: '',
-		modalDescription: ''
+		activeNamespace: ''
 	}
 
 	componentWillMount() {
@@ -77,16 +73,43 @@ export default class Config extends Component {
 	}
 
 	deleteNamespace = _ => {
-		const { namespaces } = this.state;
+		const { namespaces, activeNamespace } = this.state;
 		if (namespaces.length <= 1) {
 			console.error('you need at least one namespace!');
+			uikit.notification({
+				message: translate('notification_error_one_namespace'),
+				status: 'danger',
+				pos: 'top-center',
+				timeout: 5000
+			});
+
 			return;
 		}
 
+		const name = namespaces.find(x => x.ident == activeNamespace);
+		const idx = namespaces.indexOf(name);
+
+		if (idx == -1) {
+			console.error('could not locate namespace!');
+			return;
+		}
+		
+		namespaces.splice(idx, 1);
+
+		this.setState({ namespaces });
+		ConfigService.deleteNamespace(activeNamespace);
+		route(`/configuration/${namespaces[0].ident}`);
 	}
 
-	addNamespace = namespace => {
-		console.log(namespace);
+	addNamespace = async namespace => {
+		// await here, so the namespace will be registered once we change the route
+		await ConfigService.addNamespace(namespace);
+
+		const { namespaces } = this.state;
+		namespaces.push(namespace);
+		this.setState({ namespaces });
+
+		route(`/configuration/${namespace.ident}`);
 	}
 
 	render({ namespace }, {
@@ -110,11 +133,11 @@ export default class Config extends Component {
 				<NamespaceSelection
 					namespace={ namespace }
 					namespaces={ namespaces }
-					addNamespace={ this.addNamespace }
 					deleteNamespace={ this.deleteNamespace }
 				/>
 				<AddNamespaceModal
 					add={ this.addNamespace }
+					namespaces={ namespaces }
 				/>
 				<div>
 					{ jobsPreview }

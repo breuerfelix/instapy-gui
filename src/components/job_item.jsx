@@ -68,7 +68,7 @@ export default class JobItem extends Component {
 									class={`clickable-hover uk-label uk-label-${labelClass}`}
 									onClick={ this.toggleActive }
 								>
-									{ labelText }
+									{ translate(labelText) }
 								</span>
 								<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
 								<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />

@@ -17,7 +17,7 @@ export default class NamespaceSelection extends Component {
 				<div className="uk-width-1-2@s">
 					<form class='uk-form-stacked uk-margin-top'>
 						<label className="uk-form-label">
-							{ translate('namespaces') }
+							{ translate('configuration_namespaces') }
 						</label>
 						<div className="uk-grid uk-grid-small">
 							<div className="uk-width-1-2@s">
