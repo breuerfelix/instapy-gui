@@ -19,11 +19,11 @@ export default class NavBar extends Component {
 								InstaPy
 							</a>
 							<NavBarItem
-								text='DASHBOARD'
+								text='navbar_dashboard'
 								link='/dashboard'
 							/>
 							<NavBarItem
-								text='CONFIG'
+								text='navbar_configuration'
 								link='/configuration'
 							/>
 						</ul>
@@ -31,11 +31,11 @@ export default class NavBar extends Component {
 					<div className="uk-navbar-right">
 						<ul className="uk-navbar-nav">
 							<NavBarItem
-								text='NEWS'
+								text='navbar_news'
 								link='/news'
 							/>
 							<NavBarItem
-								text='GITHUB'
+								text='navbar_github'
 								link='https://github.com/scriptworld-git/instapy-gui'
 							/>
 						</ul>

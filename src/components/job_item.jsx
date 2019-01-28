@@ -49,29 +49,33 @@ export default class JobItem extends Component {
 		);
 
 		const labelClass = job.active ? 'success' : 'danger';
-		const labelText = job.active ? 'active' : 'inactive';
+		const labelText = job.active ? 'jobitem_active' : 'jobitem_inactive';
 
 		return (
 			<div class={ cardClass }>
 				<div class="uk-card-header">
 					<div class="uk-grid-small uk-flex-middle" uk-grid>
-						<div class="uk-width-expand">
-							<h1 class="uk-card-title uk-margin-remove-bottom">
-								{ translate(action.functionName) }
-							</h1>
+						<div className="uk-width-1-2@s">
+							<div class="uk-width-expand">
+								<h1 class="uk-card-title uk-margin-remove-bottom">
+									{ translate(action.functionName) }
+								</h1>
+							</div>
 						</div>
-						<div>
-							<span
-								class={`clickable-hover uk-label uk-label-${labelClass}`}
-								onClick={ this.toggleActive }
-							>
-								{ labelText }
-							</span>
-							<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
-							<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
-							<Icon name='settings' onClick={ this.toggleCard } />
-							<Icon name='info' />
-							<Icon name='trash' onClick={ e => deleteJob(job) } />
+						<div className="uk-width-1-2@s">
+							<div class='uk-align-right'>
+								<span
+									class={`clickable-hover uk-label uk-label-${labelClass}`}
+									onClick={ this.toggleActive }
+								>
+									{ labelText }
+								</span>
+								<Icon name='arrow-up' onClick={ e => moveJob(job, -1) } />
+								<Icon name='arrow-down' onClick={ e => moveJob(job, 1) } />
+								<Icon name='settings' onClick={ this.toggleCard } />
+								<Icon name='info' />
+								<Icon name='trash' onClick={ e => deleteJob(job) } />
+							</div>
 						</div>
 					</div>
 				</div>
