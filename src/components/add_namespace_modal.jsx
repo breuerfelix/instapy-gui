@@ -137,4 +137,4 @@ const Input = ({ label, placeholder, tooltip, value, link, stateObj, error }) =>
 			</div>
 		</div>
 	);
-}
+};
