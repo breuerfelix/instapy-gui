@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
 	entry: [
@@ -10,7 +11,11 @@ module.exports = {
 
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
-		modules: [ 'node_modules', 'src' ]
+		modules: [ 'node_modules', 'src' ],
+		alias: {
+			'react': 'preact-compat',
+			'react-dom': 'preact-compat'
+		}
 	},
 
 	performance: {
@@ -51,6 +56,7 @@ module.exports = {
 				use: [
 					'style-loader',
 					'css-loader',
+					'postcss-loader',
 					'sass-loader'
 				]
 			}

@@ -3,8 +3,6 @@ import { connect } from 'store';
 import { JobItem, NamespaceSelection, AddNamespaceModal } from 'components';
 import arrayMove from 'array-move';
 import { ConfigService, translate } from 'services';
-import { route } from 'preact-router';
-import uikit from 'uikit';
 
 @connect()
 export default class Config extends Component {
@@ -76,13 +74,7 @@ export default class Config extends Component {
 		const { namespaces, activeNamespace } = this.state;
 		if (namespaces.length <= 1) {
 			console.error('you need at least one namespace!');
-			uikit.notification({
-				message: translate('notification_error_one_namespace'),
-				status: 'danger',
-				pos: 'top-center',
-				timeout: 5000
-			});
-
+			// TODO throw notification
 			return;
 		}
 
@@ -98,7 +90,7 @@ export default class Config extends Component {
 
 		this.setState({ namespaces });
 		ConfigService.deleteNamespace(activeNamespace);
-		route(`/configuration/${namespaces[0].ident}`);
+		//route(`/configuration/${namespaces[0].ident}`);
 	}
 
 	addNamespace = async namespace => {
@@ -109,7 +101,7 @@ export default class Config extends Component {
 		namespaces.push(namespace);
 		this.setState({ namespaces });
 
-		route(`/configuration/${namespace.ident}`);
+		//route(`/configuration/${namespace.ident}`);
 	}
 
 	render({ namespace }, {
