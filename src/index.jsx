@@ -1,12 +1,11 @@
-import 'uikit/dist/css/uikit.min.css';
 import 'styles/main.scss';
 
-import uikit from 'uikit';
-import icons from 'uikit/dist/js/uikit-icons'; 
-uikit.use(icons);
+import 'jquery';
+import 'popper.js';
+import 'bootstrap';
 
 import { h, render, Component } from 'preact';
-import Router from 'preact-router';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'unistore/preact';
 
 import store from 'store';
@@ -16,24 +15,37 @@ import { Dashboard, Configuration, News } from 'sites';
 class App extends Component {
 	render() {
 		return (
-			<div>
-				<NavBar />
-				<SideBar />
-				<div class='uk-container'>
-					<Router>
-						<Dashboard
-							default path='/dashboard'
-						/>
-						<Configuration
-							path='/configuration/:namespace?'
-						/>
-						<News
-							path='/news'
-						/>
-					</Router>
+			<Router>
+				<div>
+					<div className="row no-gutters">
+
+						<div id='sidebar' className="col-12 col-md-auto d-none d-md-flex" style='width: 230px;'>
+							<Route
+								path='/'
+								component={ SideBar }
+							/>
+						</div>
+
+						<div className="col-12 col-md">
+							<NavBar />
+							<Route
+								path='/dashboard'
+								component={ Dashboard }
+							/>
+							<Route
+								path='/configuration'
+								component={ Configuration }
+							/>
+							<Route
+								path='/news'
+								component={ News }
+							/>
+							<Footer />
+						</div>
+
+					</div>
 				</div>
-				<Footer />
-			</div>
+			</Router>
 		);
 	}
 }

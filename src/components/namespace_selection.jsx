@@ -1,10 +1,9 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
-import { route } from 'preact-router';
 
 export default class NamespaceSelection extends Component {
 	namespaceChanged = e => {
-		route(`/configuration/${e.target.value}`);
+		//route(`/configuration/${e.target.value}`);
 	}
 
 	render({ namespaces, namespace, addNamespace, deleteNamespace }) {
@@ -49,6 +48,7 @@ export default class NamespaceSelection extends Component {
 					</form>
 				</div>
 				<div className="uk-width-1-2@s">
+					<button class="uk-button uk-button-default uk-position-medium">{ translate('button_add_job') }</button>
 				</div>
 			</div>
 		);

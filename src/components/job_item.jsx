@@ -1,5 +1,3 @@
-import 'styles/job_item.scss';
-
 import { h, render, Component } from 'preact';
 import { connect } from 'store';
 import { translate, ConfigService } from 'services';
@@ -45,7 +43,7 @@ export default class JobItem extends Component {
 			'uk-card-hover',
 			'uk-width-auto',
 			'uk-margin-top',
-			'uk-margin-bottom'
+			'uk-margin-bottom',
 		);
 
 		const labelClass = job.active ? 'success' : 'danger';

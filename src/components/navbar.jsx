@@ -1,61 +1,40 @@
-import 'styles/navbar.scss';
-
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
-import { Link } from 'preact-router/match';
+import { Link } from 'react-router-dom';
 
 export default class NavBar extends Component {
 	render() {
 		return (
-			<div uk-sticky='sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky'>
-				<nav class='uk-navbar-container uk-navbar' uk-navbar>
-					<div className="uk-navbar-left">
-						<ul className="uk-navbar-nav">
-							<a
-								type='button'
-								uk-toggle="target: #sidebar"
-								class='uk-navbar-item uk-logo'
-							>
-								InstaPy
-							</a>
-							<NavBarItem
-								text='navbar_dashboard'
-								link='/dashboard'
-							/>
-							<NavBarItem
-								text='navbar_configuration'
-								link='/configuration'
-							/>
-						</ul>
-					</div>
-					<div className="uk-navbar-right">
-						<ul className="uk-navbar-nav">
-							<NavBarItem
-								text='navbar_news'
-								link='/news'
-							/>
-							<NavBarItem
-								text='navbar_github'
-								link='https://github.com/scriptworld-git/instapy-gui'
-							/>
-						</ul>
-					</div>
-				</nav>
-			</div>
+			<nav class='navbar bg-light'>
+				<ul className="nav">
+					<a
+						class='navbar-brand'
+					>
+						InstaPy
+					</a>
+					<NavBarItem
+						text='navbar_dashboard'
+						link='/dashboard'
+					/>
+					<NavBarItem
+						text='navbar_configuration'
+						link='/configuration'
+					/>
+				</ul>
+			</nav>
 		);
 	}
 }
 
 const NavBarItem = ({ text, link }) => (
-	<li>
+	<li
+		class='nav-item'
+	>
 		<Link
-			activeClassName='uk-active'
-			class='uk-navbar-item'
-			href={ link }
+			to={ link }
+			class='nav-link'
 		>
 			{ translate(text) }
 		</Link>
 	</li>
 );
-
-

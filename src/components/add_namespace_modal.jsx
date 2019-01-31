@@ -1,7 +1,6 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import linkState from 'linkstate';
-import uikit from 'uikit';
 import classNames from 'classnames';
 
 export default class AddNamespaceModal extends Component {
@@ -33,7 +32,6 @@ export default class AddNamespaceModal extends Component {
 			return;
 		}
 
-		uikit.modal(this.modal).hide();
 		this.props.add({
 			ident: inputIdentifier,
 			name: inputName,
