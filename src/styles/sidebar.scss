@@ -38,7 +38,7 @@ $white: #ffffff;
 		color: $sidebar-font-header;
 		background-color: $sidebar-selected;
 		width: $sidebar-width;
-		height: 65px;
+		height: 56px;
 		display: table;
 		box-shadow: 0 4px 2px -2px rgba(0,0,0,0.1);
 
@@ -63,7 +63,7 @@ $white: #ffffff;
 		.angle {
 			float: right;
 			padding-right: 8px;
-			padding-top: 3px;
+			padding-top: 4px;
 		}
 	}
 
@@ -79,6 +79,10 @@ $white: #ffffff;
 	.sublevel-item:hover, .toplevel-item:hover {
 		color: $white;
 		cursor: pointer;
+	}
+
+	.toplevel-item:hover {
+		background-color: $sidebar-selected;
 	}
 
 	.active {
