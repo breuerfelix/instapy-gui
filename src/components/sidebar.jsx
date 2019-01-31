@@ -13,9 +13,10 @@ export default class SideBar extends Component {
 
 
 				<ul class='toplevel-list list-unstyled'>
-				<div className="headline">
-					features
-				</div>
+					<div className="headline">
+						features
+					</div>
+
 					<MenuItem
 						label='config'
 						icon='fa-cube'
