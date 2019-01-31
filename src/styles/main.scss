@@ -1,3 +1,23 @@
+$main-bg: #f2f3fa;
+$white: #ffffff;
+$header-height: 55px;
+
+$sb-font: 'Noto Sans', sans-serif;
+$primary-blue: #314860;
+
+//sidebar
+$sb-width: 230px;
+$sb-font-color: darken($white, 25%);
+$sb-highlight-item: lighten($primary-blue, 15%);
+$sb-bg-submenu: darken($primary-blue, 5%);
+
+$sb-bg: #314860;
+$sb-highlight-font-color: #1ab491;
+
+body {
+	background-color: $main-bg;
+}
+
 @import 'sidebar';
 @import 'navbar';
 

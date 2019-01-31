@@ -32,16 +32,8 @@ class App extends Component {
 						<div className="col-12 col-md">
 							<NavBar />
 							<Route
-								path='/dashboard'
-								component={ Dashboard }
-							/>
-							<Route
 								path='/configuration'
 								component={ Configuration }
-							/>
-							<Route
-								path='/news'
-								component={ News }
 							/>
 							<Footer />
 						</div>
