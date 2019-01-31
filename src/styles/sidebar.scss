@@ -5,6 +5,7 @@ $sidebar-font-header: #ffffff;
 $sidebar-width: 230px;
 $sidebar-selected-font: #1ab491;
 $sidebar-submenu-bg: #2a3b4d;
+$white: #ffffff;
 //$sidebar-selected-font: #4da0f2;
 
 #sidebar {
@@ -49,6 +50,7 @@ $sidebar-submenu-bg: #2a3b4d;
 	}
 
 	.toplevel-item, .sublevel-item {
+		transition: all 0.1s ease;
 		height: 45px;
 		width: $sidebar-width;
 		display: table-cell;
@@ -74,13 +76,14 @@ $sidebar-submenu-bg: #2a3b4d;
 		height: 35px;
 	}
 
-	.sublevel-item:hover {
-		color: $sidebar-selected-font;
+	.sublevel-item:hover, .toplevel-item:hover {
+		color: $white;
+		cursor: pointer;
 	}
 
-	.toplevel-item:hover, .active {
+	.active {
 		background-color: darken($sidebar-selected, 5%);
-		color: $sidebar-selected-font;
+		color: $sidebar-selected-font !important;
 	}
 
 }

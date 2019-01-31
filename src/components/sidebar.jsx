@@ -114,7 +114,7 @@ class MenuItem extends Component {
 				}
 
 				{ isDropdown &&
-					<ul class={ sublevelListClass }>
+					<ul aria-expanded='false' class={ sublevelListClass }>
 						{ children }
 					</ul>
 				}
