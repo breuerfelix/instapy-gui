@@ -1,25 +1,35 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
-import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { MenuItem } from 'components';
 
 export default class SideBar extends Component {
 	render({ location }) {
 		return (
 			<div class="sidebar noselect">
 				<div className="header">
-					<h3 class='' >InstaPy</h3>
+					<h3 >InstaPy GUI</h3>
 				</div>
 
-
 				<ul class='toplevel-list list-unstyled'>
+
 					<div className="headline">
-						features
+						{ translate('sidebar_account') }
 					</div>
 
 					<MenuItem
-						label='config'
-						icon='fa-cube'
+						label='sidebar_login'
+						icon='fas fa-user'
+						link='/account/login'
+						level='top'
+					/>
+
+					<div className="headline">
+						{ translate('sidebar_features') }
+					</div>
+
+					<MenuItem
+						label='sidebar_configuration'
+						icon='fas fa-sliders-h'
 						level='top'
 					>
 						<MenuItem
@@ -38,13 +48,13 @@ export default class SideBar extends Component {
 					</MenuItem>
 
 					<div className="headline">
-						settings
+						{ translate('sidebar_links') }
 					</div>
 
 					<MenuItem
-						label='sidebar_link'
-						icon='fa-check'
-						link='/dashboard'
+						label='sidebar_github'
+						icon='fab fa-github'
+						link='/github'
 						level='top'
 					/>
 
@@ -54,82 +64,3 @@ export default class SideBar extends Component {
 		);
 	}
 }
-
-class MenuItem extends Component {
-	state = {
-		open: false
-	}
-
-	toggleDropdown = _ => {
-		const { open } = this.state;
-		this.setState({ open: !open });
-	}
-
-	render({ label, icon = false, link = false, children, level = 'sub' }, { open }) {
-		const levelString = level + 'level';
-		const levelListString = 'sublevel-list';
-		const levelItemString = levelString + '-item';
-
-		const isDropdown = children.length > 0;
-
-		const sublevelListClass = classNames(levelListString, {
-			'collapse': !open
-		});
-
-		const dropdownIcon = !isDropdown ? false : classNames({
-			'fas': true,
-			'angle': true,
-			'fa-angle-left': !open,
-			'fa-angle-down': open,
-		});
-
-		const itemClass = classNames(levelItemString, {
-			'active': open && level == 'top'
-		});
-
-		// TODO check if link is in location and append active to link
-		return (
-			<li>
-				{ link &&
-						<Link to={ link }>
-							<Item
-								label={ label }
-								itemClass={ itemClass }
-								onClick={ false }
-								dropdownIcon= { false }
-								icon={ icon }
-							/>
-						</Link>
-				}
-				{ !link &&
-						<a>
-							<Item
-								label={ label }
-								itemClass={ itemClass }
-								onClick={ this.toggleDropdown }
-								dropdownIcon= { dropdownIcon }
-								icon={ icon }
-							/>
-						</a>
-				}
-
-				{ isDropdown &&
-					<ul aria-expanded='false' class={ sublevelListClass }>
-						{ children }
-					</ul>
-				}
-
-			</li>
-		);
-	}
-}
-
-const Item = ({ itemClass, label, icon, onClick, dropdownIcon }) => {
-	return (
-		<div class={ itemClass } onClick={ onClick }>
-			{ icon && <i className={ 'icon fas ' + icon } /> }
-			{ translate(label) }
-			{ dropdownIcon && <i className={ dropdownIcon } /> }
-		</div>
-	);
-};

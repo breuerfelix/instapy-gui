@@ -23,10 +23,12 @@ class Language {
 	}
 
 	defaultTable = {
-		navbar_dashboard: 'dashboard',
-		navbar_configuration: 'config',
-		navbar_news: 'news',
-		navbar_github: 'github',
+		sidebar_configuration: 'Configuration',
+		sidebar_github: 'GitHub',
+		sidebar_login: 'Login',
+		sidebar_account: 'ACCOUNT',
+		sidebar_features: 'FEATURES',
+		sidebar_links: 'LINKS',
 
 		button_save: 'save',
 		button_cancel: 'cancel',

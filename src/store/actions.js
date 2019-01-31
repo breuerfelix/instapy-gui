@@ -1,5 +1,6 @@
 const actions = store => ({
-	setActions: (state, actions) => ({ actions })
+	setActions: (state, actions) => ({ actions }),
+	toggleSidebar: (state, showSidebar) => ({ showSidebar }),
 });
 
 export default actions;
