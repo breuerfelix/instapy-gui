@@ -3,8 +3,8 @@ import { connect as org_connect } from 'unistore/preact';
 import actions from './actions';
 
 const initialState = {
+	showSidebar: true,
 	actions: [],
-	showSidebar: true
 };
 
 const store = createStore(initialState);

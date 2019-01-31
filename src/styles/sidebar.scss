@@ -1,44 +1,34 @@
-$sidebar-selected: #4c7093;
-$sidebar-bg: #314860;
-$sidebar-font: #abb4c1;
-$sidebar-font-header: #ffffff;
-$sidebar-width: 230px;
-$sidebar-selected-font: #1ab491;
-$sidebar-submenu-bg: #2a3b4d;
-$white: #ffffff;
-//$sidebar-selected-font: #4da0f2;
-
 #sidebar {
-	background: $sidebar-bg;
-	font-family: 'Noto Sans', sans-serif;
+	background: $primary-blue;
+	font-family: $sb-font;
 	min-height: 100vh;
 }
 
 .sidebar {
-	color: $sidebar-font;
+	font-size: 92%;
 	display: table;
  	text-decoration: none;
 
 	a, a:hover, a:focus {
 		text-decoration: none;
-		color: $sidebar-font;
+		color: $sb-font-color;
 	}
 
 	.headline {
 		padding-left: 15px;
 		font-size: 95%;
-		color: darken($sidebar-font, 10%);
+		color: darken($sb-font-color, 10%);
 		height: 45px;
 		display: table-cell;
 		vertical-align: middle;
-		width: $sidebar-width;
+		width: $sb-width;
 	}
 
 	.header {
-		color: $sidebar-font-header;
-		background-color: $sidebar-selected;
-		width: $sidebar-width;
-		height: 56px;
+		color: $white;
+		background-color: $sb-highlight-item;
+		width: $sb-width;
+		height: 55px;
 		display: table;
 		box-shadow: 0 4px 2px -2px rgba(0,0,0,0.1);
 
@@ -50,11 +40,12 @@ $white: #ffffff;
 	}
 
 	.toplevel-item, .sublevel-item {
-		transition: all 0.1s ease;
+		transition: all 0.2s ease;
 		height: 45px;
-		width: $sidebar-width;
+		width: $sb-width;
 		display: table-cell;
 		vertical-align: middle;
+		color: $sb-font-color;
 
 		.icon {
 			padding: 0 15px;
@@ -69,7 +60,7 @@ $white: #ffffff;
 
 	.sublevel-list {
 		list-style-type: none;
-		background-color: $sidebar-submenu-bg;
+		background-color: $sb-bg-submenu;
 	}
 
 	.sublevel-item {
@@ -82,12 +73,12 @@ $white: #ffffff;
 	}
 
 	.toplevel-item:hover {
-		background-color: $sidebar-selected;
+		background-color: $sb-highlight-item;
 	}
 
 	.active {
-		background-color: darken($sidebar-selected, 5%);
-		color: $sidebar-selected-font !important;
+		background-color: $sb-highlight-item;
+		color: $sb-highlight-font-color !important;
 	}
 
 }
