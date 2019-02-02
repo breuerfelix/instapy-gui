@@ -2,7 +2,7 @@ $main-bg: #f2f3fa;
 $white: #ffffff;
 $header-height: 55px;
 
-$sb-font: 'Noto Sans', sans-serif;
+$sb-font: 'Roboto', sans-serif;
 $primary-sb: #314860;
 
 //sidebar
@@ -25,6 +25,10 @@ $border-radius-card: 2px;
 
 body {
 	background-color: $main-bg;
+	font-variant: tabular-nums;
+	font-feature-settings: 'tnum';
+	font-family: $sb-font;
+	-webkit-font-smoothing: antialiased;
 }
 
 .card {

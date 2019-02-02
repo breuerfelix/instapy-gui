@@ -11,7 +11,7 @@ export default class SideBar extends Component {
 		return (
 			<div class="sidebar noselect">
 				<div className="header">
-					<h3 >InstaPy GUI</h3>
+					<h3>INSTAPY</h3>
 				</div>
 
 				<ul class='toplevel-list list-unstyled'>
