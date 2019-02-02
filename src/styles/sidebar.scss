@@ -77,10 +77,12 @@
 	}
 
 	.active {
-		background-color: $sb-highlight-item;
 		color: $sb-highlight-font-color !important;
 	}
 
+	.toplevel-item.active {
+		background-color: $sb-highlight-item;
+	}
 }
 
 .noselect {

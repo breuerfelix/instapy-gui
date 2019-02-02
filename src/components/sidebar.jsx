@@ -1,9 +1,13 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import { MenuItem } from 'components';
+import { connect } from 'store';
 
+@connect('username')
 export default class SideBar extends Component {
-	render({ location }) {
+	render({ location, username }) {
+		const labelLogin = username ? username : 'sidebar_login';
+
 		return (
 			<div class="sidebar noselect">
 				<div className="header">
@@ -17,7 +21,7 @@ export default class SideBar extends Component {
 					</div>
 
 					<MenuItem
-						label='sidebar_login'
+						label={ labelLogin }
 						icon='fas fa-user'
 						link='/account/login'
 						level='top'
@@ -33,17 +37,9 @@ export default class SideBar extends Component {
 						level='top'
 					>
 						<MenuItem
-							label='namespaces'
-							link='/hallo'
+							label='sidebar_templates'
+							link='/configuration'
 						/>
-						<MenuItem
-							label='list1'
-						>
-							<MenuItem
-								label='entry1'
-								link='/hallo'
-							/>
-						</MenuItem>
 
 					</MenuItem>
 

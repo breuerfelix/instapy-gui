@@ -1,9 +1,9 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-export default class MenuItem extends Component {
+class MenuItem extends Component {
 	state = {
 		open: false
 	}
@@ -13,15 +13,24 @@ export default class MenuItem extends Component {
 		this.setState({ open: !open });
 	}
 
+	checkLocation() {
+		// TODO check if link is in location and append active to itemClass
+		// but only on if the location is different from the last
+		return false;
+	}
+
+
 	render({ label, icon = false, link = false, children, level = 'sub' }, { open }) {
 		const levelString = level + 'level';
 		const levelListString = 'sublevel-list';
 		const levelItemString = levelString + '-item';
 
 		const isDropdown = children.length > 0;
+		if (this.checkLocation()) open = true;
 
 		const sublevelListClass = classNames(levelListString, {
-			'collapse': !open
+			'collapse': true,
+			'collapse-target': true
 		});
 
 		const dropdownIcon = !isDropdown ? false : classNames({
@@ -32,10 +41,9 @@ export default class MenuItem extends Component {
 		});
 
 		const itemClass = classNames(levelItemString, {
-			'active': open && level == 'top'
+			'active': open
 		});
 
-		// TODO check if link is in location and append active to link
 		return (
 			<li>
 				{ link &&
@@ -50,7 +58,12 @@ export default class MenuItem extends Component {
 						</Link>
 				}
 				{ !link &&
-						<a>
+						<a
+							data-toggle='collapse'
+							data-target='.collapse-target'
+							aria-expanded='false'
+							aria-controls={ label }
+						>
 							<Item
 								label={ label }
 								itemClass={ itemClass }
@@ -62,7 +75,7 @@ export default class MenuItem extends Component {
 				}
 
 				{ isDropdown &&
-					<ul aria-expanded='false' class={ sublevelListClass }>
+					<ul class={ sublevelListClass } id={ label }>
 						{ children }
 					</ul>
 				}
@@ -81,3 +94,5 @@ const Item = ({ itemClass, label, icon, onClick, dropdownIcon }) => {
 		</div>
 	);
 };
+
+export default withRouter(MenuItem);

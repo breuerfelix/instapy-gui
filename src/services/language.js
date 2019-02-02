@@ -33,6 +33,12 @@ class Language {
 		button_save: 'save',
 		button_cancel: 'cancel',
 
+		login_username: 'username',
+		login_password: 'password',
+		login_title: 'Login to Instagram',
+
+
+
 		notification_error_one_namespace: 'you need at least one template!',
 
 		jobitem_active: 'active',

@@ -10,7 +10,7 @@ import { Provider } from 'unistore/preact';
 
 import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
-import { Dashboard, Configuration, News } from 'sites';
+import { Account, Dashboard, Configuration, News } from 'sites';
 
 @connect('showSidebar')
 class App extends Component {
@@ -31,6 +31,10 @@ class App extends Component {
 
 						<div className="col-12 col-md">
 							<NavBar />
+							<Route
+								path='/account'
+								component={ Account }
+							/>
 							<Route
 								path='/configuration'
 								component={ Configuration }
