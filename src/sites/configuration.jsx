@@ -1,11 +1,15 @@
 import { h, render, Component } from 'preact';
+import { NamespacesCard } from 'cards';
 import { connect } from 'store';
+import { Route } from 'react-router-dom';
+
+
 import { JobItem, NamespaceSelection, AddNamespaceModal } from 'components';
 import arrayMove from 'array-move';
 import { ConfigService, translate } from 'services';
 
 @connect()
-export default class Config extends Component {
+export default class Configuration extends Component {
 	state = {
 		jobs: [],
 		namespaces: [],
@@ -15,11 +19,6 @@ export default class Config extends Component {
 	componentWillMount() {
 		const actionsProm = ConfigService.fetchActions()
 			.then(actions => this.props.setActions(actions));
-
-		const namespaces = ConfigService.fetchNamespaces()
-			.then(namespaces => {
-				this.setState({ namespaces });
-			});
 	}
 
 	loadJobs = namespace => {
@@ -70,41 +69,8 @@ export default class Config extends Component {
 		ConfigService.deleteJob(job);
 	}
 
-	deleteNamespace = _ => {
-		const { namespaces, activeNamespace } = this.state;
-		if (namespaces.length <= 1) {
-			console.error('you need at least one namespace!');
-			// TODO throw notification
-			return;
-		}
 
-		const name = namespaces.find(x => x.ident == activeNamespace);
-		const idx = namespaces.indexOf(name);
-
-		if (idx == -1) {
-			console.error('could not locate namespace!');
-			return;
-		}
-		
-		namespaces.splice(idx, 1);
-
-		this.setState({ namespaces });
-		ConfigService.deleteNamespace(activeNamespace);
-		//route(`/configuration/${namespaces[0].ident}`);
-	}
-
-	addNamespace = async namespace => {
-		// await here, so the namespace will be registered once we change the route
-		await ConfigService.addNamespace(namespace);
-
-		const { namespaces } = this.state;
-		namespaces.push(namespace);
-		this.setState({ namespaces });
-
-		//route(`/configuration/${namespace.ident}`);
-	}
-
-	render({ namespace }, {
+	render({ match, namespace }, {
 		jobs,
 		namespaces
 	}) {
@@ -121,19 +87,19 @@ export default class Config extends Component {
 		);
 
 		return (
-			<div>
-				<NamespaceSelection
-					namespace={ namespace }
-					namespaces={ namespaces }
-					deleteNamespace={ this.deleteNamespace }
-				/>
-				<AddNamespaceModal
-					add={ this.addNamespace }
-					namespaces={ namespaces }
-				/>
-				<div>
-					{ jobsPreview }
+			<div class='row'>
+
+				<div className="col">
+					<Route
+						path={ `${match.url}/id/:namespace?` }
+						component={ NamespacesCard }
+					/>
 				</div>
+
+				<div className="col">
+					test
+				</div>
+
 			</div>
 		);
 	}
