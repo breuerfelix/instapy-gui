@@ -25,9 +25,11 @@ $border-radius-card: 2px;
 
 body {
 	background-color: $main-bg;
+	font-family: $sb-font;
+	font-weight: 400;
 	font-variant: tabular-nums;
 	font-feature-settings: 'tnum';
-	font-family: $sb-font;
+	-webkit-font-feature-settings: 'tnum';
 	-webkit-font-smoothing: antialiased;
 }
 
