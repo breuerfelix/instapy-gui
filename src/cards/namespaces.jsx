@@ -1,10 +1,8 @@
 import { h, render, Component } from 'preact';
+import { DescriptionCard } from 'cards';
 import { ConfigService, translate } from 'services';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
-
-import linkState from 'linkstate';
-import { connect } from 'store';
+import { withRouter, Route } from 'react-router-dom';
 
 class NamespacesCard extends Component {
 	state = {
@@ -22,7 +20,7 @@ class NamespacesCard extends Component {
 		this.setState({ namespace: e.target.value });
 
 		const { namespace } = this.state;
-		history.push(`/configuration/id/${namespace}`);
+		history.push(`/configuration/namespaces/id/${namespace}`);
 	}
 
 	deleteNamespace = _ => {
@@ -45,7 +43,7 @@ class NamespacesCard extends Component {
 
 		this.setState({ namespaces });
 		ConfigService.deleteNamespace(namespace);
-		this.props.history.push(`/configuration/id/${namespaces[0].ident}`);
+		this.props.history.push(`/configuration/namespaces/id/${namespaces[0].ident}`);
 	}
 
 	addNamespace = async namespace => {
@@ -56,7 +54,7 @@ class NamespacesCard extends Component {
 		namespaces.push(namespace);
 		this.setState({ namespaces });
 
-		this.props.history.push(`/configuration/id/${namespace.ident}`);
+		this.props.history.push(`/configuration/namespaces/id/${namespace.ident}`);
 	}
 
 	editNamespace = async namespace => {
@@ -65,47 +63,65 @@ class NamespacesCard extends Component {
 
 	render({ match, history }, { namespaces, namespace }) {
 		const { params } = match;
-		if (params.namespace)
-			if (namespace != params.namespace)
-				this.setState({ namespace: params.namespace });
+		if (namespace != params.namespace)
+			this.setState({ namespace: params.namespace });
+
+		let namespace_obj = namespaces.find(x => x.ident == namespace);
 
 		const namespaceOptions = namespaces.map(namespace =>
 			<option value={ namespace.ident }>{ namespace.name }</option>
 		);
 
 		return (
-			<div class="card">
+			<div class='row'>
+				<div className="col-padding col-md">
+					<div class="card" style="height: 200px;">
 
-				<div class="card-header">
-					{ translate('namespaces_title') }
-				</div>
+						<div class="card-header">
+							{ translate('namespaces_title') }
+						</div>
 
-				<div class="card-body">
-					<select
-						value={ namespace }
-						className="form-control"
-						onChange={ this.namespaceChanged }
-					>
-						{ namespaceOptions }
-					</select>
+						<div class="card-body">
+							<select
+								value={ namespace }
+								className="form-control"
+								onChange={ this.namespaceChanged }
+							>
+								{ namespaceOptions }
+							</select>
 
-				</div>
+						</div>
 
-				<div className="card-footer">
-					<div className="iconnav btn-group" role='group' style='float: right;'>
-						<IconButton
-							icon='fas fa-plus'
-							onclick={ _ => history.push('/configuration/add') }
-						/>
-						<IconButton
-							icon='fas fa-edit'
-							onclick={ this.editNamespace }
-						/>
-						<IconButton
-							icon='fas fa-trash'
-							onclick={ this.deleteNamespace }
-						/>
+						<div className="card-footer">
+							<div className="iconnav btn-group" role='group' style='float: right;'>
+								<IconButton
+									icon='fas fa-plus'
+									onclick={ _ => history.push('/configuration/add') }
+								/>
+								<IconButton
+									icon='fas fa-edit'
+									onclick={ this.editNamespace }
+								/>
+								<IconButton
+									icon='fas fa-trash'
+									onclick={ this.deleteNamespace }
+								/>
+							</div>
+						</div>
+
 					</div>
+				</div>
+
+				<div className="col-padding col-md">
+					{ namespace_obj &&
+						<Route
+							path={ '/configuration/namespaces/id/:namespace' }
+							render={ (props) => <DescriptionCard
+								{ ...props }
+								namespace={ namespace_obj }
+							/> }
+						/>
+					}
 				</div>
 
 			</div>

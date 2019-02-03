@@ -37,8 +37,8 @@ export default class SideBar extends Component {
 						level='top'
 					>
 						<MenuItem
-							label='sidebar_templates'
-							link='/configuration/id'
+							label='sidebar_namespaces'
+							link='/configuration/namespaces/id'
 						/>
 
 					</MenuItem>
