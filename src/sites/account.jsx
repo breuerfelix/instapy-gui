@@ -7,14 +7,14 @@ export default class Account extends Component {
 		return (
 			<div class='row'>
 
-				<div className="col" style='margin: 25px;'>
+				<div className="col-padding col-md">
 					<Route
 						path={ `${ match.url }/login` }
 						component={ LoginCard }
 					/>
 				</div>
 
-				<div className="col" style='margin: 25px;'>
+				<div className="col-padding col-md">
 				</div>
 
 			</div>
