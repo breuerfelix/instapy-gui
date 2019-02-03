@@ -17,10 +17,6 @@ $sb-highlight-font-color: $white;
 
 $border-radius-card: 2px;
 
-
-@import 'sidebar';
-@import 'navbar';
-@import 'login';
 @import '~bootstrap/scss/bootstrap';
 
 body {
@@ -41,8 +37,9 @@ select {
     /* and then whatever styles you want*/
 }
 
-.col {
-	margin: 20px;
+.no-gutters {
+	margin-right: -15px;
+	margin-left: -15px;
 }
 
 .card {
@@ -52,3 +49,26 @@ select {
 		background-color: $white;
 	}
 }
+
+.col, .col-xs, .col-sm, .col-md, .col-lg, .col-xl {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.row {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.no-gutters {
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.col-padding {
+	padding: 15px;
+}
+
+@import 'sidebar';
+@import 'navbar';
+@import 'login';

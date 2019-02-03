@@ -89,14 +89,14 @@ export default class Configuration extends Component {
 		return (
 			<div class='row'>
 
-				<div className="col">
+				<div className="col-padding col-md">
 					<Route
 						path={ `${match.url}/id/:namespace?` }
 						component={ NamespacesCard }
 					/>
 				</div>
 
-				<div className="col">
+				<div className="col-padding col-md">
 					test
 				</div>
 

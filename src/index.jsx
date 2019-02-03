@@ -17,11 +17,11 @@ class App extends Component {
 	render({ showSidebar }) {
 		return (
 			<Router>
-				<div>
+				<div class='container-fluid'>
 					<div className="row no-gutters">
 
 						{ showSidebar &&
-							<div id='sidebar' className="col-12 col-md-auto d-none d-md-flex" style='width: 230px;'>
+							<div id='sidebar' className="col" style='max-width: 230px;'>
 								<Route
 									path='/'
 									component={ SideBar }
@@ -29,7 +29,7 @@ class App extends Component {
 							</div>
 						}
 
-						<div className="col-12 col-md">
+						<div className="col">
 							<NavBar />
 							<Route
 								path='/account'
