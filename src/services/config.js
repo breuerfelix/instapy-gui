@@ -8,12 +8,12 @@ class ConfigService {
 					{
 						ident: 'startbla',
 						name: 'bla blub',
-						description: 'yeah man'
+						description: 'this is a description the user is able to write down.'
 					},
 					{
 						ident: 'starter',
 						name: 'hallu',
-						description: 'yeah man'
+						description: 'very very detailed description of this template over here'
 					}
 				]
 			);

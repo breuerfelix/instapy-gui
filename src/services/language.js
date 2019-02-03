@@ -24,6 +24,7 @@ class Language {
 
 	defaultTable = {
 		sidebar_configuration: 'Configuration',
+		sidebar_namespaces: 'Templates',
 		sidebar_github: 'GitHub',
 		sidebar_login: 'Login',
 		sidebar_account: 'ACCOUNT',
@@ -36,6 +37,12 @@ class Language {
 		login_username: 'username',
 		login_password: 'password',
 		login_title: 'Login to Instagram',
+
+		namespaces_title: 'Templates',
+		namespaces_description: 'Description',
+
+
+
 
 
 
