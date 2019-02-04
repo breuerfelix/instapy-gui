@@ -1,6 +1,7 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import { connect } from 'store';
+import $ from 'jquery';
 
 @connect('actions')
 export default class JobCard extends Component {
@@ -26,6 +27,7 @@ export default class JobCard extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 		this.setState({ expanded: !this.state.expanded });
+		$(this.body).collapse('toggle');
 	}
 
 	render({ moveJob, deleteJob }, { action, expanded, job }) {
@@ -69,11 +71,11 @@ export default class JobCard extends Component {
 						</div>
 					</div>
 
-					{ expanded &&
-							<div class="card-body">
-								configuration will be here soon!
-							</div>
-					}
+					<div className="collapse" ref={ body => this.body = body }>
+						<div class="card-body">
+							configuration will be here soon!
+						</div>
+					</div>
 
 				</div>
 			</div>
