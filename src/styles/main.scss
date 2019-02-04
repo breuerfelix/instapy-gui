@@ -15,7 +15,8 @@ $sb-bg-submenu: darken($primary-sb, 5%);
 //$sb-highlight-font-color: rgb(252, 85, 114);
 $sb-highlight-font-color: $white;
 
-$border-radius-card: 2px;
+$border-radius: 2px;
+$border-radius-card: $border-radius;
 
 @import '~bootstrap/scss/bootstrap';
 
@@ -47,7 +48,7 @@ select {
 }
 
 .card {
-	border-radius: $border-radius-card !important;
+	border-radius: $border-radius !important;
 
 	.card-header, .card-footer {
 		background-color: $white;
@@ -55,7 +56,11 @@ select {
 }
 
 .modal-content {
-	border-radius: $border-radius-card !important;
+	border-radius: $border-radius !important;
+}
+
+input, textarea, select {
+	border-radius: $border-radius !important;
 }
 
 .col, .col-xs, .col-sm, .col-md, .col-lg, .col-xl {

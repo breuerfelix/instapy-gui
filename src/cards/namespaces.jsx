@@ -110,7 +110,7 @@ class NamespacesCard extends Component {
 									onclick={ this.editNamespace }
 								/>
 								<IconButton
-									icon='fas fa-trash'
+									icon='fas fa-trash-alt'
 									onclick={ this.deleteNamespace }
 								/>
 							</div>
