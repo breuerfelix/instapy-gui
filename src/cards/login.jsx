@@ -77,7 +77,7 @@ class LoginCard extends Component {
 						</div>
 
 					</div>
-					<div className="card-footer">
+					<div className="card-footer" style='text-align: right;'>
 						<button type='submit' onClick={ this.save } class="btn btn-outline-dark">
 							{ translate('button_save') }
 						</button>

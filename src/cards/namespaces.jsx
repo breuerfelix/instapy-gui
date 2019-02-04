@@ -3,6 +3,7 @@ import { DescriptionCard } from 'cards';
 import { ConfigService, translate } from 'services';
 import classNames from 'classnames';
 import { withRouter, Route } from 'react-router-dom';
+import { AddNamespaceModal } from 'components';
 
 class NamespacesCard extends Component {
 	state = {
@@ -61,7 +62,7 @@ class NamespacesCard extends Component {
 		console.log('edit namespace.... coming soon');
 	}
 
-	render({ match, history }, { namespaces, namespace }) {
+	render({ match }, { namespaces, namespace }) {
 		const { params } = match;
 		if (namespace != params.namespace)
 			this.setState({ namespace: params.namespace });
@@ -93,11 +94,17 @@ class NamespacesCard extends Component {
 						</div>
 
 						<div className="card-footer">
-							<div className="iconnav btn-group" role='group' style='float: right;'>
-								<IconButton
-									icon='fas fa-plus'
-									onclick={ _ => history.push('/configuration/add') }
-								/>
+							<div className="iconnav btn-group float-right" role='group'>
+								<button
+									class="btn btn-outline-dark"
+									type='button'
+									style='border-width: 0;'
+									data-toggle='modal'
+									data-target='#add-namespace-modal'
+								>
+									<i class='fas fa-plus'>
+									</i>
+								</button>
 								<IconButton
 									icon='fas fa-edit'
 									onclick={ this.editNamespace }
@@ -110,6 +117,10 @@ class NamespacesCard extends Component {
 						</div>
 
 					</div>
+					<AddNamespaceModal
+						namespaces={ namespaces }
+						add={ this.addNamespace }
+					/>
 				</div>
 
 				<div className="col-padding col-md">
