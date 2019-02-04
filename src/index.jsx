@@ -31,15 +31,17 @@ class App extends Component {
 
 						<div className="col">
 							<NavBar />
-							<Route
-								path='/account'
-								component={ Account }
-							/>
-							<Route
-								path='/configuration'
-								component={ Configuration }
-							/>
-							<Footer />
+							<div style='padding: 15px 15px 0 15px;'>
+								<Route
+									path='/account'
+									component={ Account }
+								/>
+								<Route
+									path='/configuration'
+									component={ Configuration }
+								/>
+								<Footer />
+							</div>
 						</div>
 
 					</div>

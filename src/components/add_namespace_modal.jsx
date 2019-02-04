@@ -2,105 +2,137 @@ import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import linkState from 'linkstate';
 import classNames from 'classnames';
+import slugify from 'slugify';
+import $ from 'jquery';
 
 export default class AddNamespaceModal extends Component {
 	state = {
-		inputIdentifier: null,
 		inputName: null,
 		inputDescription: null,
 
-		errorIdentifier: false,
-		errorName: false
+		errorName: false,
+		errorDescription: false
 	}
 
-	addNamespace = _ => {
-		const { inputIdentifier, inputName, inputDescription } = this.state;
+	addNamespace = e => {
+		e.preventDefault();
+		const { inputName, inputDescription } = this.state;
 
 		this.setState({
-			errorIdentifier: !inputIdentifier,
+			errorDescription: !inputDescription,
 			errorName: !inputName
 		});
 
-		const { errorIdentifier, errorName } = this.state;
-		if (errorIdentifier || errorName) return;
+		const { errorDescription, errorName } = this.state;
+		if (errorDescription || errorName) return;
 
-		const found = this.props.namespaces.find(x => x.ident == inputIdentifier);
+
+		const slug = slugify(inputName, {
+			lower: true,
+			// TODO extend with a nice remove regex like -> remove: /[*+~.()'"!:@]/},
+		});
+
+		const found = this.props.namespaces.find(x => x.ident == slug);
 
 		if (found) {
-			this.setState({ errorIdentifier: true });
+			this.setState({ errorName: true });
 			console.warn('template with this identifier already exsits!');
 			return;
 		}
 
 		this.props.add({
-			ident: inputIdentifier,
+			ident: slug,
 			name: inputName,
 			description: inputDescription
 		});
+
+		console.log(this.modal)
+		$(this.modal).modal('hide');
 	}
 
 	render(props, {
-		inputIdentifier,
 		inputName,
 		inputDescription,
-		errorIdentifier,
+		errorDescription,
 		errorName
 	}) {
+
+		const inputNameClass = classNames({
+			'form-control': true,
+			'is-invalid': errorName
+		});
+
+		const inputDescriptionClass = classNames({
+			'form-control': true,
+			'is-invalid': errorDescription
+		});
+
 		return (
 			<div
 				ref={ modal => this.modal = modal }
 				id="add-namespace-modal"
-				class='uk-modal' uk-modal
+				class='modal fade'
+				tabindex='-1'
+				role='dialog'
+				aria-hidden='true'
+				arial-labelledby='add-namespace-modal-title'
 			>
-				<div class="uk-modal-dialog uk-margin-auto-vertical">
-					<button class="uk-modal-close-default" type="button" uk-close></button>
-					<div class="uk-modal-header">
-						<h3 class="uk-modal-title">{ translate('new_namespace_title') }</h3>
-					</div>
-					<div class="uk-modal-body">
-						<form class="uk-form-horizontal uk-margin-large">
-							<Input
-								label='namespace_identifier_label'
-								placeholder='namespace_identifier_placeholder'
-								tooltip='namespace_identifier_tooltip'
-								value={ inputIdentifier }
-								link='inputIdentifier'
-								stateObj={ this }
-								error={ errorIdentifier }
-							/>
-							<Input
-								label='namespace_name_label'
-								placeholder='namespace_name_placeholder'
-								tooltip='namespace_name_tooltip'
-								value={ inputName }
-								link='inputName'
-								stateObj={ this }
-								error={ errorName }
-							/>
-							<Input
-								label='namespace_description_label'
-								placeholder='namespace_description_placeholder'
-								tooltip='namespace_description_tooltip'
-								value={ inputDescription }
-								link='inputDescription'
-								stateObj={ this }
-							/>
-						</form>
-					</div>
-					<div class="uk-modal-footer uk-text-right">
-						<button
-							class="uk-button uk-button-primary"
-							onClick={ this.addNamespace }
-							type="button"
-						>
-							{ translate('button_save') }
-						</button>
-						<button
-							class="uk-button uk-button-default uk-modal-close uk-margin-left"
-							type="button"
-						>
-							{ translate('button_cancel') }
-						</button>
+				<div class='modal-dialog' role='document'>
+					<div className="modal-content">
+						<div class="modal-header">
+							<h5 id='add-namespace-modal-title' class="modal-title">{ translate('new_namespace_title') }</h5>
+							<button className="close" type='button' data-dismiss='modal' aria-label='Close'>
+								<span aria-hidden='true'>&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<form onSubmit={ this.addNamespace }>
+								<div class="form-group">
+									<label>{ translate('namespace_name_label') }</label>
+									<div className="input-group">
+										<input
+											class={ inputNameClass }
+											type="text"
+											placeholder={ translate('namespace_name_placeholder') }
+											value={ inputName }
+											onInput={ linkState(this, 'inputName') }
+										/>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label>{ translate('namespace_description_label') }</label>
+									<div className="input-group">
+										<textarea
+											class={ inputDescriptionClass }
+											type="text"
+											placeholder={ translate('namespace_description_placeholder') }
+											value={ inputDescription }
+											onInput={ linkState(this, 'inputDescription') }
+											rows='3'
+										/>
+									</div>
+								</div>
+
+							</form>
+						</div>
+
+						<div class="modal-footer">
+							<button
+								class="btn btn-outline-dark"
+								data-dismiss='modal'
+								type="button"
+							>
+								{ translate('button_cancel') }
+							</button>
+							<button
+								class="btn btn-outline-dark"
+								onClick={ this.addNamespace }
+								type="button"
+							>
+								{ translate('button_save') }
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -110,26 +142,25 @@ export default class AddNamespaceModal extends Component {
 
 const Input = ({ label, placeholder, tooltip, value, link, stateObj, error }) => {
 	const inputClass = classNames({
-		'uk-input': true,
+		'form-control': true,
 		'uk-form-danger': error
 	});
 
 	return (
-		<div class="uk-margin">
-			<label class="uk-form-label">{ translate(label) }</label>
-			<div class="uk-form-controls">
-				<div className="uk-inline uk-width-expand">
+		<div class="form-group">
+			<label>{ translate(label) }</label>
+			<div className="input-group">
+				<input
+					class={ inputClass }
+					type="text"
+					placeholder={ translate(placeholder) }
+					value={ value }
+					onInput={ linkState(stateObj, link) }
+				/>
+				<div className="input-group-append">
 					<a
-						class="uk-form-icon uk-form-icon-flip"
-						uk-tooltip={ translate(tooltip) }
-						uk-icon="icon: info"
-					></a>
-					<input
-						class={ inputClass }
-						type="text"
-						placeholder={ translate(placeholder) }
-						value={ value }
-						onInput={ linkState(stateObj, link) }
+						class="fas fa-info input-group-text"
+						data-content={ translate(tooltip) }
 					/>
 				</div>
 			</div>

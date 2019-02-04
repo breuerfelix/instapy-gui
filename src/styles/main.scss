@@ -37,6 +37,10 @@ select {
     /* and then whatever styles you want*/
 }
 
+.btn {
+	border-radius: 1px;
+}
+
 .no-gutters {
 	margin-right: -15px;
 	margin-left: -15px;
@@ -48,6 +52,10 @@ select {
 	.card-header, .card-footer {
 		background-color: $white;
 	}
+}
+
+.modal-content {
+	border-radius: $border-radius-card !important;
 }
 
 .col, .col-xs, .col-sm, .col-md, .col-lg, .col-xl {
@@ -66,7 +74,7 @@ select {
 }
 
 .col-padding {
-	padding: 15px;
+	padding: 10px;
 }
 
 @import 'sidebar';

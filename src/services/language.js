@@ -41,7 +41,11 @@ class Language {
 		namespaces_title: 'Templates',
 		namespaces_description: 'Description',
 
-
+		new_namespace_title: 'Add Template',
+		namespace_name_label: 'Name',
+		namespace_name_placeholder: 'Following by hashtag #sport',
+		namespace_description_label: 'Description',
+		namespace_description_placeholder: 'i need to buy milk',
 
 
 
@@ -53,19 +57,12 @@ class Language {
 
 		configuration_namespaces: 'templates',
 
-		new_namespace_title: 'add template',
-
 		namespace_identifier_label: 'identifier',
 		namespace_identifier_tooltip: 'allowed characters are a-z, underscore and hyphen',
 		namespace_identifier_placeholder: 'following-sports',
 
-		namespace_name_label: 'name',
 		namespace_name_tooltip: 'this name will be displayed in your dropdown list',
-		namespace_name_placeholder: 'Following by Hashtag Sport',
 
-		namespace_description_label: 'description',
-		namespace_description_tooltip: 'any additional info for your template',
-		namespace_description_placeholder: 'i need to buy milk'
 	};
 }
 
