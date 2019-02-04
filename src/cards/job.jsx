@@ -43,10 +43,10 @@ export default class JobCard extends Component {
 
 					<div class="card-header" style={ headerStyle } onClick={ this.toggleCard }>
 						<div className="row">
-							<div class='col-md'>
+							<div class='col-md align-self-center'>
 								{ translate(action.functionName) }
 							</div>
-							<div style='text-align: right;' class='col-md'>
+							<div style='text-align: right;' class='col-md align-self-center'>
 								<div className="iconnav btn-group" role='group'>
 									<IconButton
 										icon='fas fa-arrow-up'
