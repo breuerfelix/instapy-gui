@@ -46,7 +46,6 @@ export default class AddNamespaceModal extends Component {
 			description: inputDescription
 		});
 
-		console.log(this.modal)
 		$(this.modal).modal('hide');
 	}
 
