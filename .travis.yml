@@ -18,6 +18,7 @@ install:
 script:
   - npm run test
   - npm run build
+  - echo "instapy.felixbreuer.me" >> dist/CNAME
 
 deploy:
   provider: pages

@@ -21,8 +21,6 @@ export default class JobsCard extends Component {
 	moveJob = (job, direction) => {
 		const { jobs } = this.state;
 		const idx = jobs.indexOf(job);
-		console.log(job)
-		console.log(jobs)
 
 		if (idx == -1) {
 			console.error('could not locate job: ' + job);
