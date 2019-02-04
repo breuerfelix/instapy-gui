@@ -37,7 +37,7 @@ class ConfigService {
 					{
 						uuid: uuid(),
 						namespace: 'starter',
-						functionName: 'login',
+						functionName: 'follow_set_something',
 						active: true,
 						params: [
 							{
@@ -92,7 +92,7 @@ class ConfigService {
 			resolve(
 				[
 					{
-						functionName: 'login',
+						functionName: 'follow_set_something',
 						description: 'this performs the login',
 						params: [
 							{
