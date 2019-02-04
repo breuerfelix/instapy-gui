@@ -13,7 +13,10 @@ class NamespacesCard extends Component {
 
 	componentWillMount() {
 		const namespaces = ConfigService.fetchNamespaces()
-			.then(namespaces => this.setState({ namespaces }));
+			.then(namespaces => {
+				this.setState({ namespaces });
+				this.props.history.push(`/configuration/namespaces/id/${namespaces[0].ident}`);
+			});
 	}
 
 	namespaceChanged = e => {
