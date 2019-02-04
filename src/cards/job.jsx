@@ -21,6 +21,7 @@ export default class JobCard extends Component {
 		}
 
 		this.setState({ action, job });
+		$(this.body).collapse('hide');
 	}
 
 	toggleCard = e => {
