@@ -3,6 +3,7 @@ import { translate } from 'services';
 import { Link } from 'react-router-dom';
 import { connect } from 'store';
 import classNames from 'classnames';
+import { Location } from 'components';
 
 @connect('showSidebar')
 export default class NavBar extends Component {
@@ -20,13 +21,15 @@ export default class NavBar extends Component {
 		
 		return (
 			<nav class='navbar bg-light'>
-				<ul className="nav">
-					<form class='form-inline'>
-						<button className="btn btn-outline-dark" onClick={ this.toggleSidebar }>
-							<i class={ burgerIconClass } />
-						</button>
-					</form>
-				</ul>
+
+				<form class='form-inline'>
+					<button className="btn btn-outline-dark" onClick={ this.toggleSidebar }>
+						<i class={ burgerIconClass } />
+					</button>
+				</form>
+
+				<Location />
+
 			</nav>
 		);
 	}
