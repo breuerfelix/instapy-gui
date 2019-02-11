@@ -12,9 +12,8 @@
 		"electron-dev": "ELECTRON_IS_DEV=1 electron .",
 		"electron-build": "webpack --config webpack.electron.config.js",
 		"electron-package": "ELECTRON_IS_DEV=0 electron-packager --all --ignore src .",
-		"temp": "electron-packager .",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
-		"lint-fix": "eslint --fix --config .eslintrc.yml --ext jsx --ext js src"
+		"lint:fix": "eslint --fix --config .eslintrc.yml --ext jsx --ext js src"
 	},
 	"author": "Felix Breuer",
 	"license": "MIT",

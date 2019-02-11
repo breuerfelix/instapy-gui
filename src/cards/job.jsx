@@ -20,6 +20,7 @@ export default class JobCard extends Component {
 			return;
 		}
 
+		// TODO if element IS collapsing, do nothing
 		this.setState({ action, job });
 		$(this.body).collapse('hide');
 	}

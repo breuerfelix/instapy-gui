@@ -18,7 +18,7 @@ export default class NavBar extends Component {
 			'fa-bars': !showSidebar,
 			'fa-times': showSidebar
 		});
-		
+
 		return (
 			<nav class='navbar bg-light'>
 

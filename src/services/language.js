@@ -33,6 +33,7 @@ class Language {
 
 		button_save: 'save',
 		button_cancel: 'cancel',
+		button_add: 'add',
 
 		login_username: 'username',
 		login_password: 'password',
@@ -47,22 +48,11 @@ class Language {
 		namespace_description_label: 'Description',
 		namespace_description_placeholder: 'i need to buy milk',
 
-
-
-
-		notification_error_one_namespace: 'you need at least one template!',
-
-		jobitem_active: 'active',
-		jobitem_inactive: 'inactive',
-
-		configuration_namespaces: 'templates',
-
-		namespace_identifier_label: 'identifier',
-		namespace_identifier_tooltip: 'allowed characters are a-z, underscore and hyphen',
-		namespace_identifier_placeholder: 'following-sports',
-
-		namespace_name_tooltip: 'this name will be displayed in your dropdown list',
-
+		actions_title: 'Add Action',
+		input_search_placeholder: 'search ...',
+		actions_tab_set: 'set',
+		actions_tab_follow: 'follow',
+		actions_tab_interact: 'interact',
 	};
 }
 
