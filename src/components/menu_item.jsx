@@ -11,6 +11,7 @@ class MenuItem extends Component {
 	toggleDropdown = _ => {
 		const { open } = this.state;
 		this.setState({ open: !open });
+		// TODO if element IS collapsing, do nothing
 	}
 
 	checkLocation() {

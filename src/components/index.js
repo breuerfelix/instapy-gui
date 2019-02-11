@@ -4,6 +4,7 @@ import Footer from './footer';
 import AddNamespaceModal from './add_namespace_modal';
 import MenuItem from './menu_item';
 import Location from './location';
+import ActionsModal from './actions_modal';
 
 export {
 	NavBar,
@@ -11,5 +12,6 @@ export {
 	Footer,
 	AddNamespaceModal,
 	MenuItem,
-	Location
+	Location,
+	ActionsModal,
 };

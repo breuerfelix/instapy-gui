@@ -32,58 +32,113 @@ class ConfigService {
 		console.log('loading jobs for namespace: ' + namespace);
 
 		return new Promise((resolve, reject) => {
-			resolve(
-				[
-					{
-						uuid: uuid(),
-						namespace: 'starter',
-						functionName: 'follow_set_something',
-						active: true,
-						params: [
-							{
-								position: 0,
-								name: 'username',
-								value: 'felix',
-							},
-							{
-								position: 1,
-								name: 'password',
-								value: 'bla',
-							}
-						]
-					},
-					{
-						uuid: uuid(),
-						namespace: 'starter',
-						functionName: 'follow_by_hashtag',
-						active: false,
-						params: [
-							{
-								position: 0,
-								name: 'hashtag',
-								value: [
-									'bla',
-									'sports',
-									'programming'
-								],
-							}
-						]
-					},
-					{
-						uuid: uuid(),
-						namespace: 'starter',
-						functionName: 'follow_by_username',
-						active: true,
-						params: [
-							{
-								position: 0,
-								name: 'username',
-								value: 'barack_obama'
-							}
-						]
-					}
-				]
-			);
+			if (namespace == 'starter') {
+				resolve(
+					[
+						{
+							uuid: uuid(),
+							namespace: 'starter',
+							functionName: 'follow_set_something',
+							active: true,
+							params: [
+								{
+									position: 0,
+									name: 'username',
+									value: 'felix',
+								},
+								{
+									position: 1,
+									name: 'password',
+									value: 'bla',
+								}
+							]
+						},
+						{
+							uuid: uuid(),
+							namespace: 'starter',
+							functionName: 'follow_by_hashtag',
+							active: false,
+							params: [
+								{
+									position: 0,
+									name: 'hashtag',
+									value: [
+										'bla',
+										'sports',
+										'programming'
+									],
+								}
+							]
+						},
+						{
+							uuid: uuid(),
+							namespace: 'starter',
+							functionName: 'follow_by_username',
+							active: true,
+							params: [
+								{
+									position: 0,
+									name: 'username',
+									value: 'barack_obama'
+								}
+							]
+						}
+					]
+				);
+			} else {
+				resolve(
+					[
+						{
+							uuid: uuid(),
+							namespace: 'startbla',
+							functionName: 'follow_set_something',
+							active: true,
+							params: [
+								{
+									position: 0,
+									name: 'username',
+									value: 'felix',
+								},
+								{
+									position: 1,
+									name: 'password',
+									value: 'bla',
+								}
+							]
+						},
+						{
+							uuid: uuid(),
+							namespace: 'startbla',
+							functionName: 'follow_by_hashtag',
+							active: false,
+							params: [
+								{
+									position: 0,
+									name: 'hashtag',
+									value: [
+										'bla',
+										'sports',
+										'programming'
+									],
+								}
+							]
+						},
+						{
+							uuid: uuid(),
+							namespace: 'startbla',
+							functionName: 'follow_by_username',
+							active: true,
+							params: [
+								{
+									position: 0,
+									name: 'username',
+									value: 'barack_obama'
+								}
+							]
+						}
+					]
+				);
+			}
 		});
 	}
 

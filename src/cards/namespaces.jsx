@@ -42,7 +42,7 @@ class NamespacesCard extends Component {
 			console.error('could not locate namespace!');
 			return;
 		}
-		
+
 		namespaces.splice(idx, 1);
 
 		this.setState({ namespaces });

@@ -30,7 +30,7 @@ class LoginCard extends Component {
 		setUsername(username);
 		history.push('/');
 	}
-	
+
 	render(props, { username, password, errorPassword, errorUsername }) {
 		const usernameClass = classNames({
 			'form-control': true,

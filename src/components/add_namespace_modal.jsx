@@ -138,31 +138,3 @@ export default class AddNamespaceModal extends Component {
 		);
 	}
 }
-
-const Input = ({ label, placeholder, tooltip, value, link, stateObj, error }) => {
-	const inputClass = classNames({
-		'form-control': true,
-		'uk-form-danger': error
-	});
-
-	return (
-		<div class="form-group">
-			<label>{ translate(label) }</label>
-			<div className="input-group">
-				<input
-					class={ inputClass }
-					type="text"
-					placeholder={ translate(placeholder) }
-					value={ value }
-					onInput={ linkState(stateObj, link) }
-				/>
-				<div className="input-group-append">
-					<a
-						class="fas fa-info input-group-text"
-						data-content={ translate(tooltip) }
-					/>
-				</div>
-			</div>
-		</div>
-	);
-};

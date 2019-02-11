@@ -1,12 +1,17 @@
 import { h, render, Component } from 'preact';
 import { ConfigService, translate } from 'services';
 import arrayMove from 'array-move';
-import { JobCard } from 'cards';
+import { JobCard, AddJobCard } from 'cards';
+import { ActionsModal } from 'components';
 
 export default class JobsCard extends Component {
 	state = {
 		jobs: [],
 		activeNamespace: ''
+	}
+
+	addJob = _ => {
+		console.log('test');
 	}
 
 	loadJobs = namespace => {
@@ -26,7 +31,7 @@ export default class JobsCard extends Component {
 			console.error('could not locate job: ' + job);
 			return;
 		}
-		
+
 		arrayMove.mut(jobs, idx, idx + direction);
 
 		this.setState({ jobs });
@@ -42,7 +47,7 @@ export default class JobsCard extends Component {
 			console.error('could not locate job!');
 			return;
 		}
-		
+
 		jobs.splice(idx, 1);
 
 		this.setState({ jobs });
@@ -52,7 +57,7 @@ export default class JobsCard extends Component {
 	render({ match: { params: { namespace } } }, { jobs }) {
 		this.loadJobs(namespace);
 
-		const jobList = jobs.map(job => 
+		const jobList = jobs.map(job =>
 			<JobCard
 				key={ job.uuid }
 				job={ job }
@@ -64,6 +69,8 @@ export default class JobsCard extends Component {
 		return (
 			<div>
 				{ jobList }
+				<AddJobCard clicked={ this.addJob }/>
+				<ActionsModal />
 			</div>
 		);
 	}
