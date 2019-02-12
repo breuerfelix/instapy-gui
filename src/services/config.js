@@ -187,7 +187,63 @@ class ConfigService {
 								description: 'username of account'
 							}
 						]
-					}
+					},
+					{
+						functionName: 'set_by_hashtag',
+						description: 'follow people by a given hashtag',
+						params: [
+							{
+								position: 0,
+								name: 'hashtags',
+								defaultValue: null,
+								optional: false,
+								type: 'list:string',
+								description: 'hashtag list'
+							}
+						]
+					},
+					{
+						functionName: 'set_by_username',
+						description: 'follow people by a given hashtag',
+						params: [
+							{
+								position: 0,
+								name: 'hashtags',
+								defaultValue: null,
+								optional: false,
+								type: 'list:string',
+								description: 'hashtag list'
+							}
+						]
+					},
+					{
+						functionName: 'interact_by_hashtag',
+						description: 'follow people by a given hashtag',
+						params: [
+							{
+								position: 0,
+								name: 'hashtags',
+								defaultValue: null,
+								optional: false,
+								type: 'list:string',
+								description: 'hashtag list'
+							}
+						]
+					},
+					{
+						functionName: 'interact_by_username',
+						description: 'follow people by a given hashtag',
+						params: [
+							{
+								position: 0,
+								name: 'hashtags',
+								defaultValue: null,
+								optional: false,
+								type: 'list:string',
+								description: 'hashtag list'
+							}
+						]
+					},
 				]
 			);
 		});
