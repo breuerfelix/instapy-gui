@@ -67,7 +67,7 @@ export default class JobsCard extends Component {
 		);
 
 		return (
-			<div>
+			<div class='jobs'>
 				{ jobList }
 				<AddJobCard clicked={ this.addJob }/>
 				<ActionsModal />

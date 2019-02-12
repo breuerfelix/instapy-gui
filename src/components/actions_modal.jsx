@@ -3,7 +3,9 @@ import { translate } from 'services';
 import linkState from 'linkstate';
 import classNames from 'classnames';
 import $ from 'jquery';
+import { connect } from 'store';
 
+@connect('actions')
 export default class ActionsModal extends Component {
 	state = {
 		inputSearch: null
@@ -15,7 +17,11 @@ export default class ActionsModal extends Component {
 		$(this.modal).modal('hide');
 	}
 
-	render(props, { inputSearch }) {
+	render({ actions }, { inputSearch }) {
+		const setActions = actions.filter(action => action.functionName.startsWith('set'));
+		const followActions = actions.filter(action => action.functionName.startsWith('follow'));
+		const interactActions = actions.filter(action => action.functionName.startsWith('interact'));
+
 		return (
 			<div
 				ref={ modal => this.modal = modal }
@@ -43,6 +49,7 @@ export default class ActionsModal extends Component {
 										placeholder={ translate('input_search_placeholder') }
 										value={ inputSearch }
 										onInput={ linkState(this, 'inputSearch') }
+										disabled
 									/>
 								</div>
 							</div>
@@ -93,25 +100,25 @@ export default class ActionsModal extends Component {
 									class="tab-pane fade show active"
 									id="set"
 									role="tabpanel"
-									aria-labelledby="home-tab"
+									aria-labelledby="set-tab"
 								>
-									tab set
+									<ActionTable actions={ setActions } />
 								</div>
 								<div
 									class="tab-pane fade"
 									id="follow"
 									role="tabpanel"
-									aria-labelledby="profile-tab"
+									aria-labelledby="follow-tab"
 								>
-									tab follow
+									<ActionTable actions={ followActions } />
 								</div>
 								<div
 									class="tab-pane fade"
 									id="interact"
 									role="tabpanel"
-									aria-labelledby="contact-tab"
+									aria-labelledby="interact-tab"
 								>
-									tab interact
+									<ActionTable actions={ interactActions } />
 								</div>
 							</div>
 
@@ -139,3 +146,42 @@ export default class ActionsModal extends Component {
 		);
 	}
 }
+
+const ActionTable = ({ actions, add }) => {
+	const css = {
+		cursor: 'pointer',
+		color: 'black',
+		outline: 0,
+		border: 'none'
+	};
+
+	const rows = actions.map(action =>
+		<tr>
+			<td>{ action.functionName }</td>
+			<td>
+				<a
+					tabindex='0'
+					style={ css }
+					class='fas fa-info noselect'
+					data-container='body'
+					data-trigger='focus'
+					data-toggle='popover'
+					data-placement='top'
+					data-content={ action.description }
+				/>
+			</td>
+			<td><a class='fas fa-plus' onClick={ add } style='cursor: pointer;'></a></td>
+		</tr>
+	);
+
+	// enable popover
+	$('[data-toggle="popover"]').popover();
+
+	return (
+		<table class="table table-hover">
+			<tbody>
+				{ rows }
+			</tbody>
+		</table>
+	);
+};
