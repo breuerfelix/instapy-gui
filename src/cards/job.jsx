@@ -20,7 +20,6 @@ export default class JobCard extends Component {
 			return;
 		}
 
-		// TODO if element IS collapsing, do nothing
 		this.setState({ action, job });
 		$(this.body).collapse('hide');
 	}
@@ -28,6 +27,10 @@ export default class JobCard extends Component {
 	toggleCard = e => {
 		e.preventDefault();
 		e.stopPropagation();
+
+		// do nothing if currentlu opening or closing
+		if ($(this.body).hasClass('collapsing')) return;
+
 		this.setState({ expanded: !this.state.expanded });
 		$(this.body).collapse('toggle');
 	}

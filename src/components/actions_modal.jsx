@@ -124,22 +124,24 @@ export default class ActionsModal extends Component {
 
 						</div>
 
-						<div class="modal-footer">
-							<button
-								class="btn btn-outline-dark"
-								data-dismiss='modal'
-								type="button"
-							>
-								{ translate('button_cancel') }
-							</button>
-							<button
-								class="btn btn-outline-dark"
-								onClick={ this.addAction }
-								type="button"
-							>
-								{ translate('button_add') }
-							</button>
-						</div>
+						{ false &&
+							<div class="modal-footer">
+								<button
+									class="btn btn-outline-dark"
+									data-dismiss='modal'
+									type="button"
+								>
+									{ translate('button_cancel') }
+								</button>
+								<button
+									class="btn btn-outline-dark"
+									onClick={ this.addAction }
+									type="button"
+								>
+									{ translate('button_add') }
+								</button>
+							</div>
+						}
 					</div>
 				</div>
 			</div>
