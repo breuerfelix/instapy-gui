@@ -55,71 +55,14 @@ export default class ActionsModal extends Component {
 							</div>
 
 							<ul class="nav nav-tabs nav-justified" id="actions-tab" role="tablist">
-								<li class="nav-item">
-									<a
-										class="nav-link active"
-										id="set-tab"
-										data-toggle="tab"
-										href="#set"
-										role="tab"
-										aria-controls="set"
-										aria-selected="true"
-									>
-										{ translate('actions_tab_set') }
-									</a>
-								</li>
-								<li class="nav-item">
-									<a
-										class="nav-link"
-										id="follow-tab"
-										data-toggle="tab"
-										href="#follow"
-										role="tab"
-										aria-controls="follow"
-										aria-selected="false"
-									>
-										{ translate('actions_tab_follow') }
-									</a>
-								</li>
-								<li class="nav-item">
-									<a
-										class="nav-link"
-										id="interact-tab"
-										data-toggle="tab"
-										href="#interact"
-										role="tab"
-										aria-controls="interact"
-										aria-selected="false"
-									>
-										{ translate('actions_tab_interact') }
-									</a>
-								</li>
+								<TabHeader name='set' active={ true } />
+								<TabHeader name='follow' />
+								<TabHeader name='interact' />
 							</ul>
 							<div class="tab-content">
-								<div
-									class="tab-pane fade show active"
-									id="set"
-									role="tabpanel"
-									aria-labelledby="set-tab"
-								>
-									<ActionTable actions={ setActions } />
-								</div>
-								<div
-									class="tab-pane fade"
-									id="follow"
-									role="tabpanel"
-									aria-labelledby="follow-tab"
-								>
-									<ActionTable actions={ followActions } />
-								</div>
-								<div
-									class="tab-pane fade"
-									id="interact"
-									role="tabpanel"
-									aria-labelledby="interact-tab"
-								>
-									<ActionTable actions={ interactActions } />
-								</div>
+								<TabContent name='set' actions={ setActions } active={ true } />
+								<TabContent name='follow' actions={ setActions } />
+								<TabContent name='interact' actions={ setActions } />
 							</div>
 
 						</div>
@@ -148,6 +91,49 @@ export default class ActionsModal extends Component {
 		);
 	}
 }
+
+const TabHeader = ({ name, active = false }) => {
+	const classes = classNames({
+		'nav-link': true,
+		'active': active
+	});
+
+	return (
+		<li class="nav-item">
+			<a
+				class={ classes }
+				id={ `${name}-tab` }
+				data-toggle="tab"
+				href={ `#${name}` }
+				role="tab"
+				aria-controls={ name }
+				aria-selected="true"
+			>
+				{ translate(`actions_tab_${name}`) }
+			</a>
+		</li>
+	);
+};
+
+const TabContent = ({ name, actions, active = false }) => {
+	const classes = classNames({
+		'tab-pane': true,
+		'fade': true,
+		'show': active,
+		'active': active
+	});
+
+	return (
+		<div
+			class={ classes }
+			id={ name }
+			role="tabpanel"
+			aria-labelledby={ `${name}-tab` }
+		>
+			<ActionTable actions={ actions } />
+		</div>
+	);
+};
 
 const ActionTable = ({ actions, add }) => {
 	const css = {
