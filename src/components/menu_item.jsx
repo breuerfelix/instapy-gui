@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import classNames from 'classnames';
 import { Link, withRouter } from 'react-router-dom';
+import $ from 'jquery';
 
 class MenuItem extends Component {
 	state = {
@@ -9,9 +10,11 @@ class MenuItem extends Component {
 	}
 
 	toggleDropdown = _ => {
+		// dont open if item is currentlu closing or opening
+		if ($(this.list).hasClass('collapsing')) return;
+
 		const { open } = this.state;
 		this.setState({ open: !open });
-		// TODO if element IS collapsing, do nothing
 	}
 
 	checkLocation() {
@@ -19,7 +22,6 @@ class MenuItem extends Component {
 		// but only on if the location is different from the last
 		return false;
 	}
-
 
 	render({ label, icon = false, link = false, children, level = 'sub' }, { open }) {
 		const levelString = level + 'level';
@@ -76,7 +78,11 @@ class MenuItem extends Component {
 				}
 
 				{ isDropdown &&
-					<ul class={ sublevelListClass } id={ label }>
+					<ul
+						class={ sublevelListClass }
+						id={ label }
+						ref={ list => this.list = list }
+					>
 						{ children }
 					</ul>
 				}
