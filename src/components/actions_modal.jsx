@@ -60,9 +60,9 @@ export default class ActionsModal extends Component {
 								<TabHeader name='interact' />
 							</ul>
 							<div class="tab-content">
-								<TabContent name='set' actions={ setActions } active={ true } />
-								<TabContent name='follow' actions={ setActions } />
-								<TabContent name='interact' actions={ setActions } />
+								<TabContent name='set' actions={ setActions } add={ this.addAction } active={ true } />
+								<TabContent name='follow' actions={ setActions } add={ this.addAction } />
+								<TabContent name='interact' actions={ setActions } add={ this.addAction } />
 							</div>
 
 						</div>
@@ -115,7 +115,7 @@ const TabHeader = ({ name, active = false }) => {
 	);
 };
 
-const TabContent = ({ name, actions, active = false }) => {
+const TabContent = ({ name, actions, add, active = false }) => {
 	const classes = classNames({
 		'tab-pane': true,
 		'fade': true,
@@ -130,7 +130,7 @@ const TabContent = ({ name, actions, active = false }) => {
 			role="tabpanel"
 			aria-labelledby={ `${name}-tab` }
 		>
-			<ActionTable actions={ actions } />
+			<ActionTable actions={ actions } add={ add } />
 		</div>
 	);
 };
