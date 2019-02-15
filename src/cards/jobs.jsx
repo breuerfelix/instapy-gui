@@ -10,10 +10,6 @@ export default class JobsCard extends Component {
 		activeNamespace: ''
 	}
 
-	addJob = _ => {
-		console.log('test');
-	}
-
 	loadJobs = namespace => {
 		if (this.state.activeNamespace == namespace) return;
 		this.setState({ activeNamespace: namespace });
@@ -21,6 +17,11 @@ export default class JobsCard extends Component {
 		// only fetch jobs if namespace is given
 		const jobsProm = ConfigService.fetchJobs(namespace)
 			.then(jobs => this.setState({ jobs }));
+	}
+
+	addJob = action => {
+		console.log(action)
+
 	}
 
 	moveJob = (job, direction) => {
@@ -69,8 +70,8 @@ export default class JobsCard extends Component {
 		return (
 			<div class='jobs'>
 				{ jobList }
-				<AddJobCard clicked={ this.addJob }/>
-				<ActionsModal />
+				<AddJobCard />
+				<ActionsModal add={ this.addJob } />
 			</div>
 		);
 	}
