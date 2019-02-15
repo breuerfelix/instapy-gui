@@ -11,10 +11,10 @@ export default class ActionsModal extends Component {
 		inputSearch: null
 	}
 
-	addAction = e => {
-		e.preventDefault();
-
+	addAction = action => {
 		$(this.modal).modal('hide');
+		const { add } = this.props;
+		add(action);
 	}
 
 	render({ actions }, { inputSearch }) {
@@ -158,7 +158,13 @@ const ActionTable = ({ actions, add }) => {
 					data-content={ action.description }
 				/>
 			</td>
-			<td><a class='fas fa-plus' onClick={ add } style='cursor: pointer;'></a></td>
+			<td>
+				<a
+					class='fas fa-plus'
+					onClick={ e => { e.preventDefault(); add(action); } }
+					style='cursor: pointer;'>
+				</a>
+			</td>
 		</tr>
 	);
 
