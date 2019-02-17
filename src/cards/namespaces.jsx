@@ -28,6 +28,7 @@ class NamespacesCard extends Component {
 	}
 
 	deleteNamespace = _ => {
+		// TODO show modal to confirm the deletion
 		const { namespaces, namespace } = this.state;
 		if (namespaces.length <= 1) {
 			console.error('you need at least one namespace!');
@@ -52,7 +53,7 @@ class NamespacesCard extends Component {
 
 	addNamespace = async namespace => {
 		// await here, so the namespace will be registered once we change the route
-		await ConfigService.addNamespace(namespace);
+		namespace = await ConfigService.addNamespace(namespace);
 
 		const { namespaces } = this.state;
 		namespaces.push(namespace);

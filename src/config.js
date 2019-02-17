@@ -1,7 +1,7 @@
 const config = {
 };
 
-const MOCK_DATA = true;
+const MOCK_DATA = false;
 
 export {
 	MOCK_DATA

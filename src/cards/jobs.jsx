@@ -15,7 +15,7 @@ export default class JobsCard extends Component {
 		this.setState({ activeNamespace: namespace });
 
 		// only fetch jobs if namespace is given
-		const jobsProm = ConfigService.fetchJobs(namespace)
+		ConfigService.fetchJobs(namespace)
 			.then(jobs => this.setState({ jobs }));
 	}
 

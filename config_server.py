@@ -47,6 +47,7 @@ def update_namespace(namespace):
 
     if body['action'] == 'delete':
         db.remove((where('type') == 'namespace') & (where('ident') == namespace))
+        # delete all jobs connected to this namespace
         db.remove((where('type') == 'job') & (where('namespace') == namespace))
         db.all()
 
@@ -57,6 +58,13 @@ def update_namespace(namespace):
 @app.route('/namespaces/<namespace>/jobs', methods=['GET'])
 def get_namespace(namespace):
     result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+    return json.dumps(result)
+
+
+
+@app.route('/actions', methods=['GET'])
+def get_actions():
+    result = db.search(where('type') == 'action')
     return json.dumps(result)
 
 
@@ -78,7 +86,7 @@ def init_jobs():
         'type': 'job',
         'uuid': '234340898239048',
         'namespace': 'quickstart-follow-hashtag',
-        'functioName': 'follow_by_hashtag',
+        'functionName': 'follow_by_hashtag',
         'active': True,
         'params': [
             {
