@@ -12,6 +12,13 @@ import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
 import { Account, Dashboard, Configuration, News } from 'sites';
 
+import { MOCK_DATA } from 'config';
+
+if (MOCK_DATA) {
+	const mocks = require('mocks').default;
+	mocks.apply();
+}
+
 @connect('showSidebar')
 class App extends Component {
 	render({ showSidebar }) {
