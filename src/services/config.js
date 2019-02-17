@@ -1,270 +1,69 @@
-import uuid from 'uuid/v1';
+import { fetchGet, fetchPost } from 'core';
 
 class ConfigService {
+	constructor() {
+		this.endpoint = 'http://localhost:3000';
+	}
+
 	async fetchNamespaces() {
-		return new Promise((resolve, reject) => {
-			resolve(
-				[
-					{
-						ident: 'startbla',
-						name: 'bla blub',
-						description: 'this is a description the user is able to write down.'
-					},
-					{
-						ident: 'starter',
-						name: 'hallu',
-						description: 'very very detailed description of this template over here'
-					}
-				]
-			);
-		});
+		return await fetchGet(this.endpoint + '/namespaces');
 	}
 
 	async deleteNamespace(namespace) {
 		console.log('deleting namespace!');
+		const data = {
+			action: 'delete'
+		};
+
+		return await fetchPost(this.endpoint + '/namespaces/' + namespace, data);
 	}
 
 	async addNamespace(namespace) {
 		console.log('adding namespace!');
+		const data = {
+			action: 'add',
+			namespace
+		};
+
+		return await fetchPost(this.endpoint + '/namespaces', data);
 	}
 
 	async fetchJobs(namespace) {
 		console.log('loading jobs for namespace: ' + namespace);
-
-		return new Promise((resolve, reject) => {
-			if (namespace == 'starter') {
-				resolve(
-					[
-						{
-							uuid: uuid(),
-							namespace: 'starter',
-							functionName: 'follow_set_something',
-							active: true,
-							params: [
-								{
-									position: 0,
-									name: 'username',
-									value: 'felix',
-								},
-								{
-									position: 1,
-									name: 'password',
-									value: 'bla',
-								}
-							]
-						},
-						{
-							uuid: uuid(),
-							namespace: 'starter',
-							functionName: 'follow_by_hashtag',
-							active: false,
-							params: [
-								{
-									position: 0,
-									name: 'hashtag',
-									value: [
-										'bla',
-										'sports',
-										'programming'
-									],
-								}
-							]
-						},
-						{
-							uuid: uuid(),
-							namespace: 'starter',
-							functionName: 'follow_by_username',
-							active: true,
-							params: [
-								{
-									position: 0,
-									name: 'username',
-									value: 'barack_obama'
-								}
-							]
-						}
-					]
-				);
-			} else {
-				resolve(
-					[
-						{
-							uuid: uuid(),
-							namespace: 'startbla',
-							functionName: 'follow_set_something',
-							active: true,
-							params: [
-								{
-									position: 0,
-									name: 'username',
-									value: 'felix',
-								},
-								{
-									position: 1,
-									name: 'password',
-									value: 'bla',
-								}
-							]
-						},
-						{
-							uuid: uuid(),
-							namespace: 'startbla',
-							functionName: 'follow_by_hashtag',
-							active: false,
-							params: [
-								{
-									position: 0,
-									name: 'hashtag',
-									value: [
-										'bla',
-										'sports',
-										'programming'
-									],
-								}
-							]
-						},
-						{
-							uuid: uuid(),
-							namespace: 'startbla',
-							functionName: 'follow_by_username',
-							active: true,
-							params: [
-								{
-									position: 0,
-									name: 'username',
-									value: 'barack_obama'
-								}
-							]
-						}
-					]
-				);
-			}
-		});
+		return await fetchGet(`${this.endpoint}/namespaces/${namespace}/jobs`);
 	}
 
 	async fetchActions() {
-		return new Promise((resolve, reject) => {
-			resolve(
-				[
-					{
-						functionName: 'follow_set_something',
-						description: 'this performs the login',
-						params: [
-							{
-								position: 0,
-								name: 'username',
-								defaultValue: null,
-								optional: false,
-								type: 'string',
-								description: 'login username'
-							}
-						]
-					},
-					{
-						functionName: 'follow_by_hashtag',
-						description: 'follow people by a given hashtag',
-						params: [
-							{
-								position: 0,
-								name: 'hashtags',
-								defaultValue: null,
-								optional: false,
-								type: 'list:string',
-								description: 'hashtag list'
-							}
-						]
-					},
-					{
-						functionName: 'follow_by_username',
-						description: 'follow people by a given username',
-						params: [
-							{
-								position: 0,
-								name: 'username',
-								defaultValue: null,
-								optional: false,
-								type: 'string',
-								description: 'username of account'
-							}
-						]
-					},
-					{
-						functionName: 'set_by_hashtag',
-						description: 'follow people by a given hashtag',
-						params: [
-							{
-								position: 0,
-								name: 'hashtags',
-								defaultValue: null,
-								optional: false,
-								type: 'list:string',
-								description: 'hashtag list'
-							}
-						]
-					},
-					{
-						functionName: 'set_by_username',
-						description: 'follow people by a given hashtag',
-						params: [
-							{
-								position: 0,
-								name: 'hashtags',
-								defaultValue: null,
-								optional: false,
-								type: 'list:string',
-								description: 'hashtag list'
-							}
-						]
-					},
-					{
-						functionName: 'interact_by_hashtag',
-						description: 'follow people by a given hashtag',
-						params: [
-							{
-								position: 0,
-								name: 'hashtags',
-								defaultValue: null,
-								optional: false,
-								type: 'list:string',
-								description: 'hashtag list'
-							}
-						]
-					},
-					{
-						functionName: 'interact_by_username',
-						description: 'follow people by a given hashtag',
-						params: [
-							{
-								position: 0,
-								name: 'hashtags',
-								defaultValue: null,
-								optional: false,
-								type: 'list:string',
-								description: 'hashtag list'
-							}
-						]
-					},
-				]
-			);
-		});
+		return await fetchGet(`${this.endpoint}/actions`);
 	}
 
 	async updateJobs(jobs) {
-		// TODO update all jobs from a given namespace
 		console.log('updating jobs...');
-		return null;
+		const data = {
+			action: 'update',
+			jobs
+		};
+
+		return await fetchPost(this.endpoint + '/namespaces/' + jobs[0].namespace + '/jobs', data);
 	}
 
 	async deleteJob(job) {
-		// TODO delete a specific job based on uuid and namespace
 		console.log('deleting job...');
-		return null;
+		const data = {
+			action: 'delete'
+		};
+
+		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job.uuid}`, data);
 	}
 
 	async updateJob(job) {
-		// TODO update a specific job based on uuid and namespace
 		console.log('updating job...');
-		return null;
+		const data = {
+			action: 'update',
+			job
+		};
+
+		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job.uuid}`, data);
 	}
 }
 
