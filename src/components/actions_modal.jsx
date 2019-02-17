@@ -61,8 +61,8 @@ export default class ActionsModal extends Component {
 							</ul>
 							<div class="tab-content">
 								<TabContent name='set' actions={ setActions } add={ this.addAction } active={ true } />
-								<TabContent name='follow' actions={ setActions } add={ this.addAction } />
-								<TabContent name='interact' actions={ setActions } add={ this.addAction } />
+								<TabContent name='follow' actions={ followActions } add={ this.addAction } />
+								<TabContent name='interact' actions={ interactActions } add={ this.addAction } />
 							</div>
 
 						</div>
