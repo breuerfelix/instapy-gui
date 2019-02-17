@@ -1,0 +1,3 @@
+tinydb
+flask
+flask-cors
