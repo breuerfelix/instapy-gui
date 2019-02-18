@@ -4,3 +4,4 @@ package-lock.json
 .DS_Store
 config.json
 __pycache__
+*.pyc
