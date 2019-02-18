@@ -26,6 +26,8 @@ class LoginCard extends Component {
 		if (errorPassword || errorUsername) return;
 
 		const { setUsername, history } = this.props;
+
+		// save username and password
 		AccountService.setLoginCredentials(username, password);
 		setUsername(username);
 		history.push('/');

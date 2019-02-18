@@ -1,10 +1,16 @@
 import { h, render, Component } from 'preact';
-import { translate } from 'services';
+import { translate, AccountService } from 'services';
 import { MenuItem } from 'components';
 import { connect } from 'store';
 
 @connect('username')
 export default class SideBar extends Component {
+	componentWillMount() {
+		// retrieve username from server
+		AccountService.getLoginCredentials()
+			.then(res => this.props.setUsername(res.username));
+	}
+
 	render({ location, username }) {
 		const labelLogin = username ? username : 'sidebar_login';
 
