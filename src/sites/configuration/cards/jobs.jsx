@@ -66,7 +66,7 @@ export default class JobsCard extends Component {
 
 	moveJob = async (job, direction) => {
 		const { jobs } = this.state;
-		const idx = jobs.indexOf(job);
+		const idx = jobs.findIndex(x => x.uuid == job.uuid);
 
 		if (idx == -1) {
 			console.error('could not locate job: ' + job);
