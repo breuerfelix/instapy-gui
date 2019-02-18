@@ -3,7 +3,7 @@ import json
 from flask import Flask, request
 from flask_cors import CORS
 
-from config import actions, namespaces
+from config import actions, namespaces, init_db, db
 
 
 PORT = 3000
@@ -18,5 +18,6 @@ CORS(app)
 if __name__ == '__main__':
     print('starting server....')
     #eventlet.wsgi.server(eventlet.listen(('', PORT)), app)
+    init_db()
     app.run(debug=True, port=PORT)
-    #init_db()
+    db.close()

@@ -7,7 +7,6 @@ def init_db():
     '''Initialize a default Database.'''
     # clear the db
     db.purge()
-    db.all()
 
     init_namespaces()
     init_jobs()
@@ -19,8 +18,30 @@ def init_jobs():
     db.insert({
         'type': 'job',
         'uuid': '234340898239048',
+        'position': 1,
         'namespace': 'quickstart-follow-hashtag',
         'functionName': 'follow_by_hashtag',
+        'active': True,
+        'params': [
+            {
+                'position': 0,
+                'name': 'username',
+                'value': 'felix',
+            },
+            {
+                'position': 1,
+                'name': 'password',
+                'value': 'bla',
+            }
+        ]
+    })
+
+    db.insert({
+        'type': 'job',
+        'uuid': '23434239048',
+        'position': 0,
+        'namespace': 'quickstart-follow-hashtag',
+        'functionName': 'set_by_hashtag',
         'active': True,
         'params': [
             {

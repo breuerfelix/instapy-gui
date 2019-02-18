@@ -60,9 +60,43 @@ def get_jobs(namespace):
 
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['POST'])
 def update_jobs(namespace):
-    # TODO program
-    result = db.search((where('type') == 'job') & (where('namespace') == namespace))
-    return json.dumps(result)
+    body = json.loads(request.data)
+
+    if body['action'] == 'update':
+        new_jobs = body['jobs']
+        for new_job in new_jobs:
+            db.update(new_job,
+                (where('type') == 'job') &
+                (where('namespace') == namespace) &
+                (where('uuid') == new_job['uuid'])
+            )
+
+        # return all saved jobs
+        result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+        return json.dumps(result)
+
+    if body['action'] == 'add':
+        new_job = body['job']
+        old_job = db.get(
+            (where('type') == 'job') &
+            (where('uuid') == new_job['uuid'])
+        )
+
+        if old_job:
+            return json.dumps({ 'error': 'uuid already in use!' })
+
+
+        db.insert(new_job)
+
+        # return all saved jobs
+        result = db.search(
+            (where('type') == 'job') &
+            (where('namespace') == namespace)
+        )
+
+        return json.dumps(result)
+
+    return json.dumps({ 'error': 'Could not find matching action!' })
 
 
 
@@ -71,6 +105,7 @@ def update_job(namespace, uuid):
     body = json.loads(request.data)
 
     if body['action'] == 'delete':
+        # remove single job
         db.remove(
             (where('type') == 'job') &
             (where('namespace') == namespace) &
@@ -78,9 +113,20 @@ def update_job(namespace, uuid):
         )
         db.all()
 
-        return json.dumps({ 'done': True })
+        # update all jobs, because of their new position
+        new_jobs = body['jobs']
+        for new_job in new_jobs:
+            db.update(new_job,
+                (where('type') == 'job') &
+                (where('namespace') == namespace) &
+                (where('uuid') == new_job['uuid'])
+            )
 
-    elif body['action'] == 'update':
+        # return all saved jobs
+        result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+        return json.dumps(result)
+
+    if body['action'] == 'update':
         new_job = body['job']
         job = db.update(new_job,
             (where('type') == 'job') &
@@ -88,7 +134,6 @@ def update_job(namespace, uuid):
             (where('uuid') == uuid)
         )
 
-        print('updated job: ' + str(job))
         return json.dumps(job)
 
 
