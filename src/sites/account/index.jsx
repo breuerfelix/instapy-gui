@@ -1,6 +1,6 @@
 import { h, render, Component } from 'preact';
 import { Route } from 'react-router-dom';
-import { LoginCard } from 'cards';
+import LoginCard from './login_card';
 
 export default class Account extends Component {
 	render({ match }) {

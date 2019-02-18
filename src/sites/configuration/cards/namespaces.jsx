@@ -1,9 +1,9 @@
 import { h, render, Component } from 'preact';
-import { DescriptionCard } from 'cards';
+import DescriptionCard from './description';
 import { ConfigService, translate } from 'services';
 import classNames from 'classnames';
 import { withRouter, Route } from 'react-router-dom';
-import { AddNamespaceModal } from 'components';
+import { AddNamespaceModal } from 'modals';
 
 class NamespacesCard extends Component {
 	state = {

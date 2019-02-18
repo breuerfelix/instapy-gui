@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import { NamespacesCard, JobsCard } from 'cards';
+import { NamespacesCard, JobsCard } from './cards';
 import { connect } from 'store';
 import { Route } from 'react-router-dom';
 import { ConfigService, translate } from 'services';
