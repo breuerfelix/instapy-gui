@@ -108,9 +108,12 @@ class InputBox extends Component {
 		// TODO maybe not test if paramter is optional or just test type
 
 		if (type == 'text') {
-			this.setState({
-				error: !values.value
-			});
+			let error = false;
+
+			if (Array.isArray(values.value)) error = values.value.length < 1;
+			else error = !values.value;
+
+			this.setState({ error });
 		} else {
 			// test if input is a number
 			if (!values.value) {
