@@ -47,10 +47,11 @@ class ConfigService {
 		return await fetchPost(this.endpoint + '/namespaces/' + jobs[0].namespace + '/jobs', data);
 	}
 
-	async deleteJob(job) {
+	async deleteJob(job, jobs) {
 		console.log('deleting job...');
 		const data = {
-			action: 'delete'
+			action: 'delete',
+			jobs
 		};
 
 		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job.uuid}`, data);
@@ -64,6 +65,16 @@ class ConfigService {
 		};
 
 		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job.uuid}`, data);
+	}
+
+	async addJob(job) {
+		console.log('adding job...');
+		const data = {
+			action: 'add',
+			job
+		};
+
+		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs`, data);
 	}
 }
 
