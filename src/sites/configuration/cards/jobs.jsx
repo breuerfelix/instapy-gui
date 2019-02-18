@@ -37,11 +37,21 @@ export default class JobsCard extends Component {
 		// initialize param list
 		const params = [];
 		for (let param of action.params) {
-			params.push({
+			const para = {
 				position: param.position,
 				name: param.name,
 				value: param.defaultValue
-			});
+			};
+
+			// TODO remove this when we have a proper list view
+			// joins default list params togehter
+			if (param.type.startsWith('list')) {
+				if (param.defaulValue) {
+					para.value = param.defaultValue.join(';');
+				}
+			}
+
+			params.push(para);
 		}
 
 		// initialize job object
@@ -51,7 +61,7 @@ export default class JobsCard extends Component {
 			functionName: action.functionName,
 			position: jobs.length,
 			namespace: activeNamespace,
-			active: false,
+			active: true,
 			params
 		};
 

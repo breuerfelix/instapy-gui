@@ -60,6 +60,9 @@ export default class JobCard extends Component {
 
 		// TODO add button for active / inactive
 
+		// enable popover
+		$('[data-toggle="popover"]').popover();
+
 		const headerStyle = expanded ? null : 'border-bottom: 0;';
 
 		return (
@@ -88,6 +91,17 @@ export default class JobCard extends Component {
 									<IconButton
 										icon='fas fa-cog'
 										onclick={ this.toggleCard }
+									/>
+									<a
+										class='btn btn-outline-dark fas fa-info noselect'
+										style='border-width: 0;'
+										tabindex='0'
+										data-container='body'
+										data-trigger='focus'
+										data-toggle='popover'
+										data-placement='top'
+										data-content={ action.description }
+										onClick={ e => e.stopPropagation() }
 									/>
 									<IconButton
 										icon='fas fa-trash-alt'

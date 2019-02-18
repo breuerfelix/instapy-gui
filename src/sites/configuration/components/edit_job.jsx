@@ -58,18 +58,18 @@ class ConfigItem extends Component {
 
 
 		let valueInput = null;
-		if (param.type == 'string') {
+		if (param.type.startsWith('str')) {
 			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
 		}
-		else if (param.type == 'integer') {
+		else if (param.type.startsWith('int')) {
 			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } type='number' />;
 		}
-		else if (param.type == 'boolean') {
+		else if (param.type.startsWith('bool')) {
 			valueInput = <BooleanBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
 		}
 		else if (param.type.startsWith('list')) {
 			// TODO make a proper list view
-			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } list={ true } />;
+			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
 		}
 
 		return (
@@ -103,7 +103,7 @@ class InputBox extends Component {
 	}
 
 	validate = () => {
-		const { type = 'text', values, list = false } = this.props;
+		const { type = 'text', values } = this.props;
 
 		// TODO maybe not test if paramter is optional or just test type
 
@@ -123,13 +123,6 @@ class InputBox extends Component {
 		}
 
 		const { error } = this.state;
-
-		// split the input up if its a list!
-		// TODO remove this when having a real list input
-		if (list && !error) {
-			values.value = values.value.split(';');
-		}
-
 		return !error;
 	}
 
@@ -177,8 +170,8 @@ class BooleanBox extends Component {
 
 		return (
 			<select class={ classes } value={ values.value } onChange={ e => values.value = e.target.value }>
-				<option value='True'>true</option>
-				<option value='False'>false</option>
+				<option value='true'>true</option>
+				<option value='false'>false</option>
 			</select>
 		);
 	}
