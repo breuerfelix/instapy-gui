@@ -128,13 +128,15 @@ def update_job(namespace, uuid):
 
     if body['action'] == 'update':
         new_job = body['job']
-        job = db.update(new_job,
+        db.update(new_job,
             (where('type') == 'job') &
             (where('namespace') == namespace) &
             (where('uuid') == uuid)
         )
 
-        return json.dumps(job)
+        # return all saved jobs
+        result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+        return json.dumps(result)
 
 
     return json.dumps({ 'error': 'Could not find matching action!' })

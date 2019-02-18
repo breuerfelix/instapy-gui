@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import { connect } from 'store';
 import $ from 'jquery';
+import { EditJob } from '../components';
 
 @connect('actions')
 export default class JobCard extends Component {
@@ -24,6 +25,21 @@ export default class JobCard extends Component {
 		$(this.body).collapse('hide');
 	}
 
+	updateJob = e => {
+		e.stopPropagation();
+
+		// return if validation is not true
+		if (!this.editJob.validate()) {
+			// open card if error occured
+			$(this.body).collapse('show');
+			this.setState({ expanded: true });
+			return;
+		}
+
+		// TODO maybe make a popover over the save icon which displays 'saved';
+		this.props.updateJob(this.state.job);
+	}
+
 	toggleCard = e => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -35,12 +51,14 @@ export default class JobCard extends Component {
 		$(this.body).collapse('toggle');
 	}
 
-	render({ moveJob, deleteJob }, { action, expanded, job }) {
+	render({ moveJob, deleteJob, updateJob }, { action, expanded, job }) {
 		if (!action) {
 			// TODO send error to elk stack
 			console.error('error rendering, no matching actions!');
 			return;
 		}
+
+		// TODO add button for active / inactive
 
 		const headerStyle = expanded ? null : 'border-bottom: 0;';
 
@@ -55,6 +73,10 @@ export default class JobCard extends Component {
 							</div>
 							<div style='text-align: right;' class='col-md align-self-center'>
 								<div className="iconnav btn-group" role='group'>
+									<IconButton
+										icon='fas fa-save'
+										onclick={ this.updateJob }
+									/>
 									<IconButton
 										icon='fas fa-arrow-up'
 										onclick={ e => { e.stopPropagation(); moveJob(job, -1); } }
@@ -78,7 +100,7 @@ export default class JobCard extends Component {
 
 					<div className="collapse" ref={ body => this.body = body }>
 						<div class="card-body">
-							configuration will be here soon!
+							<EditJob ref={ edit => this.editJob = edit } job={ job } action={ action } />
 						</div>
 					</div>
 

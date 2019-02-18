@@ -15,47 +15,7 @@ def init_db():
     init_actions()
 
 def init_jobs():
-    db.insert({
-        'type': 'job',
-        'uuid': '234340898239048',
-        'position': 1,
-        'namespace': 'quickstart-follow-hashtag',
-        'functionName': 'follow_by_hashtag',
-        'active': True,
-        'params': [
-            {
-                'position': 0,
-                'name': 'username',
-                'value': 'felix',
-            },
-            {
-                'position': 1,
-                'name': 'password',
-                'value': 'bla',
-            }
-        ]
-    })
-
-    db.insert({
-        'type': 'job',
-        'uuid': '23434239048',
-        'position': 0,
-        'namespace': 'quickstart-follow-hashtag',
-        'functionName': 'set_by_hashtag',
-        'active': True,
-        'params': [
-            {
-                'position': 0,
-                'name': 'username',
-                'value': 'felix',
-            },
-            {
-                'position': 1,
-                'name': 'password',
-                'value': 'bla',
-            }
-        ]
-    })
+    pass
 
 
 def init_namespaces():
@@ -69,64 +29,49 @@ def init_namespaces():
 def init_actions():
     db.insert({
         'type': 'action',
-        'functionName': 'follow_set_something',
-        'description': 'this performs the login',
+        'functionName': 'set_do_comment',
+        'description': 'blabla...',
         'params': [
             {
                 'position': 0,
-                'name': 'username',
+                'name': 'enabled',
+                'defaultValue': False,
+                'optional': True,
+                'type': 'boolean',
+                'description': 'Enable commenting on media.'
+            },
+            {
+                'position': 1,
+                'name': 'percentage',
                 'defaultValue': None,
                 'optional': False,
-                'type': 'string',
-                'description': 'login username'
+                'type': 'integer',
+                'description': 'How often the bot should comment on media.'
             }
         ]
     })
 
     db.insert({
         'type': 'action',
-        'functionName': 'follow_by_hashtag',
-        'description': 'this performs the login',
+        'functionName': 'set_comments',
+        'description': 'blabla...',
         'params': [
             {
                 'position': 0,
-                'name': 'username',
+                'name': 'comments',
                 'defaultValue': None,
                 'optional': False,
-                'type': 'string',
-                'description': 'login username'
-            }
-        ]
-    })
-
-    db.insert({
-        'type': 'action',
-        'functionName': 'set_by_hashtag',
-        'description': 'this performs the login',
-        'params': [
+                'type': 'list:string',
+                'description': 'Comments which should be done. Add username of the poster with @{}'
+            },
             {
-                'position': 0,
-                'name': 'username',
+                'position': 1,
+                'name': 'media',
                 'defaultValue': None,
-                'optional': False,
+                'optional': True,
+                # type will be enum later on
                 'type': 'string',
-                'description': 'login username'
-            }
-        ]
-    })
-
-    db.insert({
-        'type': 'action',
-        'functionName': 'interact_by_hashtag',
-        'description': 'this performs the login',
-        'params': [
-            {
-                'position': 0,
-                'name': 'username',
-                'defaultValue': None,
-                'optional': False,
-                'type': 'string',
-                'description': 'login username'
+                'description': 'Specify the media for given comments.'
             }
         ]
     })
