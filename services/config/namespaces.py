@@ -45,7 +45,6 @@ def update_namespace(namespace):
         db.remove((where('type') == 'namespace') & (where('ident') == namespace))
         # delete all jobs connected to this namespace
         db.remove((where('type') == 'job') & (where('namespace') == namespace))
-        db.all()
 
         return json.dumps({ 'done': True })
 
@@ -111,7 +110,6 @@ def update_job(namespace, uuid):
             (where('namespace') == namespace) &
             (where('uuid') == uuid)
         )
-        db.all()
 
         # update all jobs, because of their new position
         new_jobs = body['jobs']
