@@ -1,8 +1,9 @@
 import { h, render, Component } from 'preact';
 import { ConfigService, translate } from 'services';
 import arrayMove from 'array-move';
-import { JobCard, AddJobCard } from 'cards';
-import { ActionsModal } from 'components';
+import JobCard from './job';
+import AddJobCard from './add_job';
+import { ActionsModal } from 'modals';
 
 export default class JobsCard extends Component {
 	state = {
@@ -20,8 +21,7 @@ export default class JobsCard extends Component {
 	}
 
 	addJob = action => {
-		console.log(action)
-
+		// TODO implement
 	}
 
 	moveJob = (job, direction) => {
