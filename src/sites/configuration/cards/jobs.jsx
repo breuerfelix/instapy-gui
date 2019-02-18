@@ -64,6 +64,11 @@ export default class JobsCard extends Component {
 		this.setJobs(result);
 	}
 
+	updateJob = async job => {
+		const jobs = await ConfigService.updateJob(job);
+		this.setJobs(jobs);
+	}
+
 	moveJob = async (job, direction) => {
 		const { jobs } = this.state;
 		const idx = jobs.findIndex(x => x.uuid == job.uuid);
@@ -117,6 +122,7 @@ export default class JobsCard extends Component {
 				job={ job }
 				moveJob={ this.moveJob }
 				deleteJob={ this.deleteJob }
+				updateJob={ this.updateJob }
 			/>
 		);
 
