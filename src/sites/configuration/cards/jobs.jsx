@@ -56,7 +56,6 @@ export default class JobsCard extends Component {
 
 		// initialize job object
 		const job = {
-			type: 'job',
 			uuid: uuid(),
 			functionName: action.functionName,
 			position: jobs.length,
@@ -80,6 +79,9 @@ export default class JobsCard extends Component {
 	}
 
 	moveJob = async (job, direction) => {
+		// TODO only move job if ALL jobs are valid !!
+		// otherwise some garbage data might be saved into those variables
+
 		const { jobs } = this.state;
 		const idx = jobs.findIndex(x => x.uuid == job.uuid);
 

@@ -2,14 +2,15 @@ import json
 from flask import Blueprint, request
 from tinydb import where
 
-from config import db
+from config import account_table
 
 account = Blueprint('account', __name__)
 
+# TODO remove type account when we have more than one account
 
 @account.route('/login', methods=['GET'])
 def get_credentials():
-    result = db.get(where('type') == 'account')
+    result = account_table.get(where('type') == 'account')
     username = None
 
     if result:
@@ -24,5 +25,5 @@ def set_credentials():
     body = json.loads(request.data)
     body['type'] = 'account'
 
-    result = db.upsert(body, where('type') == 'account')
+    result = account_table.upsert(body, where('type') == 'account')
     return json.dumps({ 'done': True })

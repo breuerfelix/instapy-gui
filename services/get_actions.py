@@ -24,7 +24,6 @@ def get_actions():
         action = dict()
         function = getattr(InstaPy, func)
 
-        action['type'] = 'action'
         action['functionName'] = func
         action['description'] = getdoc(function)
 
@@ -56,13 +55,13 @@ def get_actions():
     return actions
     
 
-from config import db
+from config import action_table, db
 from tinydb import where
 
 if __name__ == '__main__':
-    db.remove(where('type') == 'action')
+    action_table.purge()
 
     actions = get_actions()
 
-    db.insert_multiple(actions)
+    action_table.insert_multiple(actions)
     db.close()

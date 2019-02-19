@@ -2,14 +2,14 @@ import json
 from flask import Blueprint, request
 from tinydb import where
 
-from config import db
+from config import namespace_table, job_table
 
 namespaces = Blueprint('namespaces', __name__)
 
 
 @namespaces.route('/namespaces', methods=['GET'])
 def get_namespaces():
-    result = db.search(where('type') == 'namespace')
+    result = namespace_table.all()
     return json.dumps(result)
 
 
@@ -19,15 +19,14 @@ def update_namespaces():
     body = json.loads(request.data)
     namespace = body['namespace']
     if body['action'] == 'add':
-        result = db.search((where('type') == 'namespace') & (where('ident') == namespace['ident']))
+        result = namespace_table.search(where('ident') == namespace['ident'])
 
         if result:
             return {
                 'error': 'Ident already used!'
             }
 
-        db.insert({
-            'type': 'namespace',
+        namespace_table.insert({
             'ident': namespace['ident'],
             'name': namespace['name'],
             'description': namespace['description']
@@ -42,9 +41,9 @@ def update_namespace(namespace):
     body = json.loads(request.data)
 
     if body['action'] == 'delete':
-        db.remove((where('type') == 'namespace') & (where('ident') == namespace))
+        namespace_table.remove(where('ident') == namespace)
         # delete all jobs connected to this namespace
-        db.remove((where('type') == 'job') & (where('namespace') == namespace))
+        job_table.remove(where('namespace') == namespace)
 
         return json.dumps({ 'done': True })
 
@@ -52,7 +51,7 @@ def update_namespace(namespace):
 
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['GET'])
 def get_jobs(namespace):
-    result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+    result = job_table.search(where('namespace') == namespace)
     return json.dumps(result)
 
 
@@ -64,34 +63,27 @@ def update_jobs(namespace):
     if body['action'] == 'update':
         new_jobs = body['jobs']
         for new_job in new_jobs:
-            db.update(new_job,
-                (where('type') == 'job') &
+            job_table.update(new_job,
                 (where('namespace') == namespace) &
                 (where('uuid') == new_job['uuid'])
             )
 
         # return all saved jobs
-        result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+        result = job_table.search(where('namespace') == namespace)
         return json.dumps(result)
 
     if body['action'] == 'add':
         new_job = body['job']
-        old_job = db.get(
-            (where('type') == 'job') &
-            (where('uuid') == new_job['uuid'])
-        )
+        old_job = job_table.get(where('uuid') == new_job['uuid'])
 
         if old_job:
             return json.dumps({ 'error': 'uuid already in use!' })
 
 
-        db.insert(new_job)
+        job_table.insert(new_job)
 
         # return all saved jobs
-        result = db.search(
-            (where('type') == 'job') &
-            (where('namespace') == namespace)
-        )
+        result = job_table.search(where('namespace') == namespace)
 
         return json.dumps(result)
 
@@ -105,8 +97,7 @@ def update_job(namespace, uuid):
 
     if body['action'] == 'delete':
         # remove single job
-        db.remove(
-            (where('type') == 'job') &
+        job_table.remove(
             (where('namespace') == namespace) &
             (where('uuid') == uuid)
         )
@@ -114,26 +105,24 @@ def update_job(namespace, uuid):
         # update all jobs, because of their new position
         new_jobs = body['jobs']
         for new_job in new_jobs:
-            db.update(new_job,
-                (where('type') == 'job') &
+            job_table.update(new_job,
                 (where('namespace') == namespace) &
                 (where('uuid') == new_job['uuid'])
             )
 
         # return all saved jobs
-        result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+        result = job_table.search(where('namespace') == namespace)
         return json.dumps(result)
 
     if body['action'] == 'update':
         new_job = body['job']
-        db.update(new_job,
-            (where('type') == 'job') &
+        job_table.update(new_job,
             (where('namespace') == namespace) &
             (where('uuid') == uuid)
         )
 
         # return all saved jobs
-        result = db.search((where('type') == 'job') & (where('namespace') == namespace))
+        result = job_table.search(where('namespace') == namespace)
         return json.dumps(result)
 
 
