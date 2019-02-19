@@ -6,6 +6,9 @@ import $ from 'jquery';
 
 export default class EditJob extends Component {
 	validate = () => {
+		// TODO remove this, just for debug until we know when its optional
+		return true;
+		/*
 		if (!this.configs) return false;
 
 		var oneFail = false;
@@ -17,18 +20,34 @@ export default class EditJob extends Component {
 		}
 
 		return !oneFail;
+		*/
 	}
 
 	render({ job, action }) {
 		this.configs = [];
-		const configs = action.params.map(param =>
-			<ConfigItem
-				ref={ conf => this.configs.push(conf) }
-				key={ param.position }
-				param={ param }
-				values={ job.params.find(par => par.name == param.name) }
-			/>
-		);
+
+		const configs = action.params.map(param => {
+			let values = job.params.find(par => par.name == param.name);
+			// values are not set
+			if (!values) {
+				values = {
+					position: param.position,
+					name: param.name,
+					value: param.defaultValue
+				};
+
+				job.params.push(values);
+			}
+
+			return (
+				<ConfigItem
+					ref={ conf => this.configs.push(conf) }
+					key={ param.position }
+					param={ param }
+					values={ values }
+				/>
+			);
+		});
 
 		return (
 			<form>
@@ -58,10 +77,15 @@ class ConfigItem extends Component {
 
 
 		let valueInput = null;
-		if (param.type.startsWith('str')) {
+		if (!param.type) {
+			// default if there is no given type
 			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
 		}
-		else if (param.type.startsWith('int')) {
+		else if (param.type.startsWith('str')) {
+			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
+		}
+		else if (param.type.startsWith('int') || param.type.startsWith('float')) {
+			// TODO make a proper float box
 			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } type='number' />;
 		}
 		else if (param.type.startsWith('bool')) {

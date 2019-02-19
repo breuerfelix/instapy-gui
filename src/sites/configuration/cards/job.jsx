@@ -34,6 +34,10 @@ export default class JobCard extends Component {
 			$(this.body).collapse('show');
 			this.setState({ expanded: true });
 			return;
+		} else {
+			// close card if successful
+			$(this.body).collapse('hide');
+			this.setState({ expanded: false });
 		}
 
 		// TODO maybe make a popover over the save icon which displays 'saved';
