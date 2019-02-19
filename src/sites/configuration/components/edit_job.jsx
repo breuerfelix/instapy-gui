@@ -26,7 +26,7 @@ export default class EditJob extends Component {
 				ref={ conf => this.configs.push(conf) }
 				key={ param.position }
 				param={ param }
-				values={ job.params.find(par => par.position == param.position) }
+				values={ job.params.find(par => par.name == param.name) }
 			/>
 		);
 
@@ -77,20 +77,8 @@ class ConfigItem extends Component {
 				<label class="col-md-4 col-form-label">
 					{ translate(param.name) }
 				</label>
-				<div class="col-md-7">
+				<div class="col-md-8">
 					{ valueInput }
-				</div>
-				<div class='col-md-1 align-self-center' style='text-align: center;'>
-					<a
-						tabindex='0'
-						style={ css }
-						class='fas fa-info noselect'
-						data-container='body'
-						data-trigger='focus'
-						data-toggle='popover'
-						data-placement='top'
-						data-content={ param.description }
-					/>
 				</div>
 			</div>
 		);
@@ -119,9 +107,8 @@ class InputBox extends Component {
 			if (!values.value) {
 				this.setState({ error: true });
 			} else {
-				this.setState({
-					error: !values.value.match(/^-{0,1}\d+$/)
-				});
+				values.value = parseInt(values.value);
+				this.setState({ error: false });
 			}
 		}
 
@@ -157,7 +144,7 @@ class BooleanBox extends Component {
 		const { values } = this.props;
 
 		this.setState({
-			error: !values.value
+			error: values.value == null || values.value == undefined
 		});
 
 		const { error } = this.state;
@@ -173,8 +160,8 @@ class BooleanBox extends Component {
 
 		return (
 			<select class={ classes } value={ values.value } onChange={ e => values.value = e.target.value }>
-				<option value='true'>true</option>
-				<option value='false'>false</option>
+				<option value='true'>{ translate('true') }</option>
+				<option value='false'>{ translate('false') }</option>
 			</select>
 		);
 	}
