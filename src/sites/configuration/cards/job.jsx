@@ -13,16 +13,27 @@ export default class JobCard extends Component {
 	}
 
 	componentWillMount() {
-		const { actions, job } = this.props;
-
-		const action = actions.find(action => action.functionName == job.functionName);
-		if (!action) {
-			console.error('error finding matching action! ' + job.functionName);
-			return;
-		}
-
-		this.setState({ action, job });
+		const { job } = this.props;
+		this.setState({ job });
 		$(this.body).collapse('hide');
+	}
+
+	setAction = () => {
+		// return true if the action is already set
+		const { action } = this.state;
+		if (action) return true;
+
+		const { actions } = this.props;
+		if (!actions) return false;
+
+		const { job } = this.state;
+		const newAction = actions.find(act => act.functionName == job.functionName);
+
+		if (!newAction) return false;
+
+		this.setState({ action: newAction });
+		// return false so it rerenders cause of set State and return true afterwards
+		return false;
 	}
 
 	updateJob = e => {
@@ -56,11 +67,8 @@ export default class JobCard extends Component {
 	}
 
 	render({ moveJob, deleteJob, updateJob }, { action, expanded, job }) {
-		if (!action) {
-			// TODO send error to elk stack
-			console.error('error rendering, no matching actions!');
-			return;
-		}
+		// dont render if the action is not loaded yet
+		if (!this.setAction()) return;
 
 		// TODO add button for active / inactive
 
