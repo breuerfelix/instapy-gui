@@ -20,5 +20,5 @@ if __name__ == '__main__':
     print('starting server....')
     #eventlet.wsgi.server(eventlet.listen(('', PORT)), app)
     init_db()
-    app.run(debug=False, port=PORT)
+    app.run(debug=True, port=PORT)
     db.close()
