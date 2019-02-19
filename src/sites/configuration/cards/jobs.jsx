@@ -128,6 +128,7 @@ export default class JobsCard extends Component {
 	render({ match: { params: { namespace } } }, { jobs }) {
 		this.loadJobs(namespace);
 
+		// no job card will be rendered if job is not loaded
 		const jobList = jobs.map(job =>
 			<JobCard
 				key={ job.uuid }
@@ -139,7 +140,7 @@ export default class JobsCard extends Component {
 		);
 
 		return (
-			<div class='jobs'>
+			<div className='jobs'>
 				{ jobList }
 				<AddJobCard />
 				<ActionsModal add={ this.addJob } />
