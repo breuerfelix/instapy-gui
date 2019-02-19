@@ -6,7 +6,7 @@
 	"main": "src/index.js",
 	"scripts": {
 		"test": "npm run lint",
-		"start": "webpack-dev-server --config webpack.dev.config.js",
+		"start": "open http://localhost:8080 && webpack-dev-server --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
 		"electron": "ELECTRON_IS_DEV=0 electron .",
 		"electron-dev": "ELECTRON_IS_DEV=1 electron .",
