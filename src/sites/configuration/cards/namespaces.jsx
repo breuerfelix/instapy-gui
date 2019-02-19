@@ -78,15 +78,15 @@ class NamespacesCard extends Component {
 		);
 
 		return (
-			<div class='row'>
+			<div className='row'>
 				<div className="col-padding col-md">
-					<div class="card" style="height: 200px;">
+					<div className="card" style={{ height: '200px' }}>
 
-						<div class="card-header">
+						<div className="card-header">
 							{ translate('namespaces_title') }
 						</div>
 
-						<div class="card-body">
+						<div className="card-body">
 							<select
 								value={ namespace }
 								className="form-control"
@@ -100,13 +100,13 @@ class NamespacesCard extends Component {
 						<div className="card-footer">
 							<div className="iconnav btn-group float-right" role='group'>
 								<button
-									class="btn btn-outline-dark"
+									className="btn btn-outline-dark"
 									type='button'
-									style='border-width: 0;'
+									style={{ borderWidth: '0' }}
 									data-toggle='modal'
 									data-target='#add-namespace-modal'
 								>
-									<i class='fas fa-plus'>
+									<i className='fas fa-plus'>
 									</i>
 								</button>
 								<IconButton
@@ -146,12 +146,12 @@ class NamespacesCard extends Component {
 
 const IconButton = ({ icon, onclick }) => (
 	<button
-		class="btn btn-outline-dark"
+		className="btn btn-outline-dark"
 		type='button'
-		style='border-width: 0;'
+		style={{ borderWidth: '0' }}
 		onClick={ onclick }
 	>
-		<i class={ icon }>
+		<i className={ icon }>
 		</i>
 	</button>
 );

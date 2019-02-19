@@ -139,7 +139,7 @@ export default class JobsCard extends Component {
 		);
 
 		return (
-			<div class='jobs'>
+			<div className='jobs'>
 				{ jobList }
 				<AddJobCard />
 				<ActionsModal add={ this.addJob } />
