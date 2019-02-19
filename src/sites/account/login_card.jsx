@@ -45,19 +45,19 @@ class LoginCard extends Component {
 		});
 
 		return (
-			<div class="card">
+			<div className="card">
 				<form>
-					<div class="card-header">
+					<div className="card-header">
 						{ translate('login_title') }
 					</div>
-					<div class="card-body">
+					<div className="card-body">
 
 						<div className="input-group">
 							<div className="input-group-prepend">
 								<i className="input-group-text fas fa-user"></i>
 							</div>
 							<input
-								class={ usernameClass }
+								className={ usernameClass }
 								type="text"
 								placeholder={ translate('login_username') }
 								value={ username }
@@ -70,7 +70,7 @@ class LoginCard extends Component {
 								<i className="input-group-text fas fa-key"></i>
 							</div>
 							<input
-								class={ passwordClass }
+								className={ passwordClass }
 								type="password"
 								placeholder={ translate('login_password') }
 								value={ password }
@@ -79,8 +79,8 @@ class LoginCard extends Component {
 						</div>
 
 					</div>
-					<div className="card-footer" style='text-align: right;'>
-						<button type='submit' onClick={ this.save } class="btn btn-outline-dark">
+					<div className="card-footer" style={{ textAlign: 'right' }}>
+						<button type='submit' onClick={ this.save } className="btn btn-outline-dark">
 							{ translate('button_save') }
 						</button>
 					</div>

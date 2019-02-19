@@ -70,15 +70,15 @@ export default class JobCard extends Component {
 		const headerStyle = expanded ? null : 'border-bottom: 0;';
 
 		return (
-			<div class="col-padding col">
-				<div class="card">
+			<div className="col-padding col">
+				<div className="card">
 
-					<div class="card-header" style={ headerStyle } onClick={ this.toggleCard }>
+					<div className="card-header" style={ headerStyle } onClick={ this.toggleCard }>
 						<div className="row">
-							<div class='col-md align-self-center'>
+							<div className='col-md align-self-center'>
 								{ translate(action.functionName) }
 							</div>
-							<div style='text-align: right;' class='col-md align-self-center'>
+							<div style={{ textAlign: 'right' }} className='col-md align-self-center'>
 								<div className="iconnav btn-group" role='group'>
 									<IconButton
 										icon='fas fa-save'
@@ -97,8 +97,8 @@ export default class JobCard extends Component {
 										onclick={ this.toggleCard }
 									/>
 									<a
-										class='btn btn-outline-dark fas fa-info noselect'
-										style='border-width: 0;'
+										className='btn btn-outline-dark fas fa-info noselect'
+										style={{ borderWidth : 0}}
 										tabindex='0'
 										data-container='body'
 										data-trigger='focus'
@@ -117,7 +117,7 @@ export default class JobCard extends Component {
 					</div>
 
 					<div className="collapse" ref={ body => this.body = body }>
-						<div class="card-body">
+						<div className="card-body">
 							<EditJob ref={ edit => this.editJob = edit } job={ job } action={ action } />
 						</div>
 					</div>
@@ -130,12 +130,12 @@ export default class JobCard extends Component {
 
 const IconButton = ({ icon, onclick }) => (
 	<button
-		class="btn btn-outline-dark"
+		className="btn btn-outline-dark"
 		type='button'
-		style='border-width: 0;'
+		style={{ borderWidth: 0 }}
 		onClick={ onclick }
 	>
-		<i class={ icon }>
+		<i className={ icon }>
 		</i>
 	</button>
 );

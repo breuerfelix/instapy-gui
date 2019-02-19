@@ -79,7 +79,7 @@ class MenuItem extends Component {
 
 				{ isDropdown &&
 					<ul
-						class={ sublevelListClass }
+						className={ sublevelListClass }
 						id={ label }
 						ref={ list => this.list = list }
 					>
@@ -94,7 +94,7 @@ class MenuItem extends Component {
 
 const Item = ({ itemClass, label, icon, onClick, dropdownIcon }) => {
 	return (
-		<div class={ itemClass } onClick={ onClick }>
+		<div className={ itemClass } onClick={ onClick }>
 			{ icon && <i className={ 'icon ' + icon } /> }
 			{ translate(label) }
 			{ dropdownIcon && <i className={ dropdownIcon } /> }

@@ -15,12 +15,12 @@ export default class SideBar extends Component {
 		const labelLogin = username ? username : 'sidebar_login';
 
 		return (
-			<div class="sidebar noselect">
+			<div className="sidebar noselect">
 				<div className="header">
 					<h3>INSTAPY</h3>
 				</div>
 
-				<ul class='toplevel-list list-unstyled'>
+				<ul className='toplevel-list list-unstyled'>
 
 					<div className="headline">
 						{ translate('sidebar_account') }

@@ -26,25 +26,25 @@ export default class ActionsModal extends Component {
 			<div
 				ref={ modal => this.modal = modal }
 				id="actions-modal"
-				class='modal fade'
+				className='modal fade'
 				tabindex='-1'
 				role='dialog'
 				aria-hidden='true'
 				arial-labelledby='actions-modal-title'
 			>
-				<div class='modal-dialog' role='document'>
+				<div className='modal-dialog' role='document'>
 					<div className="modal-content">
-						<div class="modal-header">
-							<h5 id='actions-modal-title' class="modal-title">{ translate('actions_title') }</h5>
+						<div className="modal-header">
+							<h5 id='actions-modal-title' className="modal-title">{ translate('actions_title') }</h5>
 							<button className="close" type='button' data-dismiss='modal' aria-label='Close'>
 								<span aria-hidden='true'>&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
-							<div class="form-group">
+						<div className="modal-body">
+							<div className="form-group">
 								<div className="input-group">
 									<input
-										class='form-control'
+										className='form-control'
 										type='text'
 										placeholder={ translate('input_search_placeholder') }
 										value={ inputSearch }
@@ -54,12 +54,12 @@ export default class ActionsModal extends Component {
 								</div>
 							</div>
 
-							<ul class="nav nav-tabs nav-justified" id="actions-tab" role="tablist">
+							<ul className="nav nav-tabs nav-justified" id="actions-tab" role="tablist">
 								<TabHeader name='set' active={ true } />
 								<TabHeader name='follow' />
 								<TabHeader name='interact' />
 							</ul>
-							<div class="tab-content">
+							<div className="tab-content">
 								<TabContent name='set' actions={ setActions } add={ this.addAction } active={ true } />
 								<TabContent name='follow' actions={ followActions } add={ this.addAction } />
 								<TabContent name='interact' actions={ interactActions } add={ this.addAction } />
@@ -68,16 +68,16 @@ export default class ActionsModal extends Component {
 						</div>
 
 						{ false &&
-							<div class="modal-footer">
+							<div className="modal-footer">
 								<button
-									class="btn btn-outline-dark"
+									className="btn btn-outline-dark"
 									data-dismiss='modal'
 									type="button"
 								>
 									{ translate('button_cancel') }
 								</button>
 								<button
-									class="btn btn-outline-dark"
+									className="btn btn-outline-dark"
 									onClick={ this.addAction }
 									type="button"
 								>
@@ -99,9 +99,9 @@ const TabHeader = ({ name, active = false }) => {
 	});
 
 	return (
-		<li class="nav-item">
+		<li className="nav-item">
 			<a
-				class={ classes }
+				className={ classes }
 				id={ `${name}-tab` }
 				data-toggle="tab"
 				href={ `#${name}` }
@@ -125,7 +125,7 @@ const TabContent = ({ name, actions, add, active = false }) => {
 
 	return (
 		<div
-			class={ classes }
+			className={ classes }
 			id={ name }
 			role="tabpanel"
 			aria-labelledby={ `${name}-tab` }
@@ -150,7 +150,7 @@ const ActionTable = ({ actions, add }) => {
 				<a
 					tabindex='0'
 					style={ css }
-					class='fas fa-info noselect'
+					className='fas fa-info noselect'
 					data-container='body'
 					data-trigger='focus'
 					data-toggle='popover'
@@ -160,9 +160,9 @@ const ActionTable = ({ actions, add }) => {
 			</td>
 			<td>
 				<a
-					class='fas fa-plus'
+					className='fas fa-plus'
 					onClick={ e => { e.preventDefault(); add(action); } }
-					style='cursor: pointer;'>
+					style={{ cursor: 'pointer' }}>
 				</a>
 			</td>
 		</tr>
@@ -172,7 +172,7 @@ const ActionTable = ({ actions, add }) => {
 	$('[data-toggle="popover"]').popover();
 
 	return (
-		<table class="table table-hover">
+		<table className="table table-hover">
 			<tbody>
 				{ rows }
 			</tbody>
