@@ -2,13 +2,9 @@
 
 # how to start developing
 
-* run `pip3 install -r requirements.txt`
-* run `pip3 install -I https://github.com/timgrossmann/InstaPy/zipball/signature-types`
-* `cd services`
-* run `python3 get_actions.py`
-* run `python3 config_service.py`
+* run `./install.sh`
+* You can continue if you see the message "Running on http://127.0.0.1:3000/"
 * open new tab and cd into root folder
-* run `npm install`
 * run `npm start`
 * open `localhost:8080`
 
