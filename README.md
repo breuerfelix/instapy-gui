@@ -1,8 +1,6 @@
 # instapy-gui
 
-**checkout the current development status right over here: [click here!](https://instapy.felixbreuer.me/)**
-
-# how to
+# how to start developing
 
 * run `pip3 install -r requirements.txt`
 * run `pip3 install -I https://github.com/timgrossmann/InstaPy/zipball/signature-types`
@@ -14,6 +12,4 @@
 * run `npm start`
 * open `localhost:8080`
 
-# build
-
-- install wine if you want to build electron binaries for windows on linux or mac
+* start the actual bot with `cd services && python3 start_bot.py`
