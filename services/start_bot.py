@@ -38,9 +38,6 @@ if __name__ == '__main__':
     insta_username = user['username']
     insta_password = user['password']
 
-    insta_username = 'contacting.john.doe'
-    insta_password = 'ThisIsJohnDoe'
-
     # get an InstaPy session!
     # set headless_browser=True to run InstaPy in the background
     session = InstaPy(username = insta_username,
