@@ -81,6 +81,7 @@ export default class JobsCard extends Component {
 	moveJob = async (job, direction) => {
 		// TODO only move job if ALL jobs are valid !!
 		// otherwise some garbage data might be saved into those variables
+		// TODO or make a new endpoint which only moves the job, and does only change the pos
 
 		const { jobs } = this.state;
 		const idx = jobs.findIndex(x => x.uuid == job.uuid);

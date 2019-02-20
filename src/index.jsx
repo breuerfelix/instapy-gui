@@ -10,7 +10,7 @@ import { Provider } from 'unistore/preact';
 
 import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
-import { Account, Configuration } from 'sites';
+import { Account, Configuration, Start } from 'sites';
 
 import { MOCK_DATA } from 'config';
 
@@ -28,7 +28,7 @@ class App extends Component {
 					<div className="row no-gutters">
 
 						{ showSidebar &&
-							<div id='sidebar' className="col" style='max-width: 230px;'>
+							<div id='sidebar' className='col' style='max-width: 230px;'>
 								<Route
 									path='/'
 									component={ SideBar }
@@ -36,7 +36,7 @@ class App extends Component {
 							</div>
 						}
 
-						<div className="col">
+						<div className='col'>
 							<NavBar />
 							<div style='padding: 15px 15px 0 15px;'>
 								<Route
@@ -46,6 +46,10 @@ class App extends Component {
 								<Route
 									path='/configuration'
 									component={ Configuration }
+								/>
+								<Route
+									path='/start'
+									component={ Start }
 								/>
 								<Footer />
 							</div>

@@ -18,9 +18,11 @@ class MenuItem extends Component {
 	}
 
 	checkLocation() {
-		// TODO check if link is in location and append active to itemClass
-		// but only on if the location is different from the last
-		return false;
+		const { location: { pathname }, link, linkMatch } = this.props;
+
+		// TODO linkMatch also have to get matched, maybe handle opening and closing also on our own ?
+
+		return pathname.startsWith(link);
 	}
 
 	render({ label, icon = false, link = false, children, level = 'sub' }, { open }) {
