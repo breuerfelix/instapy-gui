@@ -71,7 +71,7 @@ class Language {
 		actions_tab_interact: 'interact',
 
 		startbot_title: 'Start InstaPy',
-		startbot_select_namespace: 'Select template',
+		startbot_select_namespace: 'Select Template',
 
 		console_title: 'Console'
 	};
