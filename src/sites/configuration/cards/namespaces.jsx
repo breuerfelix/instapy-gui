@@ -15,7 +15,7 @@ class NamespacesCard extends Component {
 		const namespaces = ConfigService.fetchNamespaces()
 			.then(namespaces => {
 				this.setState({ namespaces });
-				this.props.history.push(`/configuration/namespaces/id/${namespaces[0].ident}`);
+				this.props.history.push(`/configuration/namespaces/${namespaces[0].ident}`);
 			});
 	}
 
@@ -24,7 +24,7 @@ class NamespacesCard extends Component {
 		this.setState({ namespace: e.target.value });
 
 		const { namespace } = this.state;
-		history.push(`/configuration/namespaces/id/${namespace}`);
+		history.push(`/configuration/namespaces/${namespace}`);
 	}
 
 	deleteNamespace = _ => {
@@ -48,7 +48,7 @@ class NamespacesCard extends Component {
 
 		this.setState({ namespaces });
 		ConfigService.deleteNamespace(namespace);
-		this.props.history.push(`/configuration/namespaces/id/${namespaces[0].ident}`);
+		this.props.history.push(`/configuration/namespaces/${namespaces[0].ident}`);
 	}
 
 	addNamespace = async namespace => {
@@ -59,7 +59,7 @@ class NamespacesCard extends Component {
 		namespaces.push(namespace);
 		this.setState({ namespaces });
 
-		this.props.history.push(`/configuration/namespaces/id/${namespace.ident}`);
+		this.props.history.push(`/configuration/namespaces/${namespace.ident}`);
 	}
 
 	editNamespace = async namespace => {
@@ -112,6 +112,7 @@ class NamespacesCard extends Component {
 								<IconButton
 									icon='fas fa-edit'
 									onclick={ this.editNamespace }
+									disabled={ true }
 								/>
 								<IconButton
 									icon='fas fa-trash-alt'
@@ -130,7 +131,7 @@ class NamespacesCard extends Component {
 				<div className="col-padding col-md">
 					{ namespace_obj &&
 						<Route
-							path={ '/configuration/namespaces/id/:namespace' }
+							path={ '/configuration/namespaces/:namespace' }
 							render={ (props) => <DescriptionCard
 								{ ...props }
 								namespace={ namespace_obj }
@@ -144,12 +145,13 @@ class NamespacesCard extends Component {
 	}
 }
 
-const IconButton = ({ icon, onclick }) => (
+const IconButton = ({ icon, onclick, disabled = false }) => (
 	<button
 		className="btn btn-outline-dark"
 		type='button'
 		style={{ borderWidth: '0' }}
 		onClick={ onclick }
+		disabled={ disabled }
 	>
 		<i className={ icon }>
 		</i>

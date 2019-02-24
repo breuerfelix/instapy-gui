@@ -18,6 +18,17 @@ module.exports = merge(common, {
 		inline: true,
 		progress: true,
 		compress: true,
-		historyApiFallback: true
+		historyApiFallback: true,
+		proxy: {
+			'/api': {
+				target: 'http://localhost:3000',
+				pathRewrite: { '^/api': '' }
+			},
+			'/socket': {
+				target: 'http://localhost:3001',
+				pathRewrite: { '^/socket': '' },
+				ws: true
+			}
+		}
 	}
 });

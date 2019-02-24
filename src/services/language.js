@@ -30,10 +30,20 @@ class Language {
 		sidebar_account: 'ACCOUNT',
 		sidebar_features: 'FEATURES',
 		sidebar_links: 'LINKS',
+		sidebar_start: 'Start',
 
 		button_save: 'save',
 		button_cancel: 'cancel',
 		button_add: 'add',
+		button_start: 'start',
+		button_stop: 'stop',
+
+		status: 'Status',
+		status_loading: 'loading',
+		status_running: 'running',
+		status_stopped: 'stopped',
+		status_done: 'done',
+		status_error: 'error',
 
 		login_username: 'username',
 		login_password: 'password',
@@ -53,6 +63,11 @@ class Language {
 		actions_tab_set: 'set',
 		actions_tab_follow: 'follow',
 		actions_tab_interact: 'interact',
+
+		startbot_title: 'Start InstaPy',
+		startbot_select_namespace: 'Select template',
+
+		console_title: 'Console'
 	};
 }
 

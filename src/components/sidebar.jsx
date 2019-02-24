@@ -38,16 +38,35 @@ export default class SideBar extends Component {
 					</div>
 
 					<MenuItem
+						label='sidebar_start'
+						icon='fas fa-play'
+						link='/start'
+						level='top'
+					/>
+
+					<MenuItem
 						label='sidebar_configuration'
 						icon='fas fa-sliders-h'
+						link='/configuration/namespaces'
 						level='top'
-					>
-						<MenuItem
-							label='sidebar_namespaces'
-							link='/configuration/namespaces/id'
-						/>
+					/>
 
-					</MenuItem>
+					{
+						/* example for nested sidebar element
+						<MenuItem
+							label='sidebar_configuration'
+							icon='fas fa-sliders-h'
+							level='top'
+							linkMatch='/configuration'
+						>
+							<MenuItem
+								label='sidebar_namespaces'
+								link='/configuration/namespaces/id'
+							/>
+
+						</MenuItem>
+						 */
+					}
 
 					<div className="headline">
 						{ translate('sidebar_links') }

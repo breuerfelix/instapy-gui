@@ -1,8 +1,9 @@
 import { fetchGet, fetchPost } from 'core';
+import config from 'config';
 
 class ConfigService {
 	constructor() {
-		this.endpoint = 'http://localhost:3000';
+		this.endpoint = config.apiEndpoint;
 	}
 
 	async fetchNamespaces() {

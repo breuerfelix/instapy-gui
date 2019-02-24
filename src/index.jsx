@@ -5,12 +5,12 @@ import 'popper.js';
 import 'bootstrap';
 
 import { h, render, Component } from 'preact';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'unistore/preact';
 
 import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
-import { Account, Configuration } from 'sites';
+import { Account, Configuration, Start } from 'sites';
 
 import { MOCK_DATA } from 'config';
 
@@ -28,7 +28,7 @@ class App extends Component {
 					<div className="row no-gutters">
 
 						{ showSidebar &&
-							<div id='sidebar' className="col" style={{ maxWidth: '230px' }}>
+              <div id='sidebar' className='col' style={{ maxWidth: '230px' }}>
 								<Route
 									path='/'
 									component={ SideBar }
@@ -36,9 +36,10 @@ class App extends Component {
 							</div>
 						}
 
-						<div className="col">
+						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
+								<Route exact path='/' render={() => <Redirect to='/start' /> } />
 								<Route
 									path='/account'
 									component={ Account }
@@ -46,6 +47,10 @@ class App extends Component {
 								<Route
 									path='/configuration'
 									component={ Configuration }
+								/>
+								<Route
+									path='/start'
+									component={ Start }
 								/>
 								<Footer />
 							</div>
