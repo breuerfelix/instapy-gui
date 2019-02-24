@@ -4,7 +4,7 @@ import json
 import asyncio
 import websockets
 
-from src import bot_handler
+from service_socket import bot_handler
 
 PORT = 3001
 

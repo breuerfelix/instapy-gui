@@ -7,7 +7,8 @@ import eventlet.wsgi
 from flask import Flask, request
 from flask_cors import CORS
 
-from src import db, init_db, actions, namespaces, account
+from src import db, init_db
+from service_config import actions, account, namespaces
 
 PORT = 3000
 

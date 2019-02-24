@@ -21,7 +21,12 @@ export default class StartBot extends Component {
 			namespace: namespace.ident
 		});
 
-		this.setState({ running: !running, status: !running ? 'running' : 'stopped' });
+		this.setState({ running: !running, status: 'loading' });
+
+		SocketService.send({
+			handler: 'bot_state',
+			action: 'get'
+		});
 	}
 
 	namespaceChanged = e => {
@@ -55,10 +60,24 @@ export default class StartBot extends Component {
 				// set first namespace if there is one
 				if (namespaces) this.setState({ namespace: namespaces[0] });
 			});
+
+		this.botInterval = setInterval(this.getBotState, 2000);
+	}
+
+	getBotState = () => {
+		// event to get current bot state
+		SocketService.send({
+			handler: 'bot_state',
+			action: 'get'
+		});
 	}
 
 	componentWillUnmount() {
 		SocketService.unregister(this);
+
+		if (this.botInterval) {
+			clearInterval(this.botInterval);
+		}
 	}
 
 	render(props, { namespaces, namespace, running, status }) {

@@ -9,9 +9,10 @@
 		"start": "webpack-dev-server --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
 		"build:electron": "webpack --config webpack.electron.config.js",
-		"build:docker": "npm run build:docker:webserver && npm run build:docker:services",
-		"build:docker:webserver": "docker build -t felixbreuer/instapy-webserver:latest -f webserver.Dockerfile --rm .",
-		"build:docker:services": "docker build -t felixbreuer/instapy-services:latest -f services.Dockerfile --rm .",
+		"build:docker": "npm run build:docker:webserver && npm run build:docker:config && npm run build:docker:socket",
+		"build:docker:webserver": "docker build -t felixbreuer/instapy-webserver:latest -f conf/webserver.Dockerfile --rm .",
+		"build:docker:config": "docker build -t felixbreuer/instapy-service-config:latest -f conf/service_config.Dockerfile --rm .",
+		"build:docker:socket": "docker build -t felixbreuer/instapy-service-socket:latest -f conf/service_socket.Dockerfile --rm .",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
 		"lint:fix": "eslint --fix --config .eslintrc.yml --ext jsx --ext js src"
 	},
