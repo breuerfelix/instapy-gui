@@ -51,34 +51,40 @@ export default class SideBar extends Component {
 						level='top'
 					/>
 
-					{
-						/* example for nested sidebar element
-						<MenuItem
-							label='sidebar_configuration'
-							icon='fas fa-sliders-h'
-							level='top'
-							linkMatch='/configuration'
-						>
-							<MenuItem
-								label='sidebar_namespaces'
-								link='/configuration/namespaces/id'
-							/>
-
-						</MenuItem>
-						 */
-					}
-
 					<div className="headline">
 						{ translate('sidebar_links') }
 					</div>
 
 					<MenuItem
-						label='sidebar_github'
-						icon='fab fa-github'
-						link='/github'
+						label='link_donate'
+						icon='fas fa-donate'
+						link='https://opencollective.com/instapy'
 						level='top'
+						external={ true }
 					/>
 
+					<MenuItem
+						label='sidebar_other'
+						icon='fas fa-globe-americas'
+						level='top'
+					>
+						<MenuItem
+							label='link_instapy'
+							link='http://github.com/timgrossmann/instapy'
+							external={ true }
+						/>
+						<MenuItem
+							label='link_instapy_gui'
+							link='http://github.com/breuerfelix/instapy-gui'
+							external={ true }
+						/>
+						<MenuItem
+							label='link_submit_issue'
+							link='http://github.com/breuerfelix/instapy-gui/issues'
+							external={ true }
+						/>
+
+					</MenuItem>
 				</ul>
 
 			</div>
