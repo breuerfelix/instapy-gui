@@ -21,7 +21,7 @@ class Location extends Component {
 						<Link
 							className="fas fa-home"
 							to='/'
-							style={{ textDecoration: 'none'}}
+							style={{ textDecoration: 'none' }}
 						/>
 					</li>
 					{ items }
