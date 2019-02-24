@@ -3,10 +3,8 @@ node_js:
   - "10"
 dist: trusty
 sudo: false
-
-branches:
-  only:
-  - master
+services:
+  - docker
 
 cache:
   directories:
@@ -18,12 +16,10 @@ install:
 script:
   - npm run test
   - npm run build
-  - echo "instapy.felixbreuer.me" >> dist/CNAME
-
+  - npm run build:docker
 deploy:
-  provider: pages
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: dist
+  provider: script
+  script: bash scripts/deploy_docker.sh
   on:
     branch: master

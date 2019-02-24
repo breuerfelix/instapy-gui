@@ -18,7 +18,12 @@ async function fetchPost(url, data) {
 	return json;
 }
 
+const sleep = (ms) => {
+	return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 export {
 	fetchGet,
-	fetchPost
+	fetchPost,
+	sleep
 };
