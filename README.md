@@ -16,4 +16,5 @@
 
 # docker
 
-* `docker-compose up` in current directory
+* `docker-compose -d up` in current directory
+* open `http://localhost` to view the gui
