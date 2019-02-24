@@ -1,15 +1,11 @@
-.navbar .btn {
-	border-radius: 2px;
-	border-width: 0;
-}
-
-.navbar {
+.header {
 	box-shadow: 0 3px 2px -2px rgba(0,0,0,0.1);
 	height: $header-height;
 
 	.breadcrumb {
 		background-color: $gray-100;
 		font-size: 90%;
+		height: $header-height;
 
 		li:last-child a {
 			color: $gray-700;
