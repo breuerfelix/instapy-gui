@@ -1,8 +1,9 @@
 import { fetchGet, fetchPost } from 'core';
+import config from 'config';
 
 class AccountService {
 	constructor() {
-		this.endpoint = 'http://localhost:3000';
+		this.endpoint = config.apiEndpoint;
 	}
 
 	async setLoginCredentials(username, password) {
