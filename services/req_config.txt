@@ -1,0 +1,4 @@
+tinydb
+flask
+flask-cors
+eventlet

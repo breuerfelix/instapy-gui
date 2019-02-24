@@ -11,8 +11,8 @@ from tinydb import where
 
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
-from .database import db, account_table, job_table, action_table
-from .settings import ASSETS
+from src import db, account_table, job_table, action_table
+from src import ASSETS
 
 
 def threaded(fn):
@@ -62,10 +62,15 @@ class bot_handler:
     bot = None
 
     def toggle_bot(running, namespace):
-        bot_handler.shutdown()
+        if not running:
+            bot_handler.shutdown()
+            return
 
-        if running:
-            bot_handler.bot = start_bot(namespace)
+        if bot_handler.bot:
+            if bot_handler.bot.is_alive():
+                return
+
+        bot_handler.bot = start_bot(namespace)
 
 
     def get_status():

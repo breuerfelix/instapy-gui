@@ -2,7 +2,7 @@ import json
 from flask import Blueprint
 from tinydb import where
 
-from .database import action_table as db
+from src import action_table as db
 
 actions = Blueprint('actions', __name__)
 
