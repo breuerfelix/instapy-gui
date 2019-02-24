@@ -112,6 +112,7 @@ class NamespacesCard extends Component {
 								<IconButton
 									icon='fas fa-edit'
 									onclick={ this.editNamespace }
+									disabled={ true }
 								/>
 								<IconButton
 									icon='fas fa-trash-alt'
@@ -144,12 +145,13 @@ class NamespacesCard extends Component {
 	}
 }
 
-const IconButton = ({ icon, onclick }) => (
+const IconButton = ({ icon, onclick, disabled = false }) => (
 	<button
 		class="btn btn-outline-dark"
 		type='button'
 		style='border-width: 0;'
 		onClick={ onclick }
+		disabled={ disabled }
 	>
 		<i class={ icon }>
 		</i>

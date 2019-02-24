@@ -1,9 +1,14 @@
+import os
 from tinydb import TinyDB, where
 
-db = TinyDB('./config.json')
+from .settings import DATABASE
+
+print('using database: ' + DATABASE)
+
+db = TinyDB(DATABASE)
 
 # tables
-cache_size = 30
+cache_size = 0
 account_table = db.table('account', cache_size = cache_size)
 job_table = db.table('job', cache_size = cache_size)
 action_table = db.table('action', cache_size = cache_size)
@@ -15,7 +20,7 @@ def init_db():
     '''Initialize a default Database.'''
     result = namespace_table.all()
     # return if there is data
-    #if result: return
+    if result: return
 
     # clear tables
     job_table.purge()

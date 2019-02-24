@@ -1,10 +1,13 @@
+#!/usr/bin/env python
+
 import json
+import eventlet
+import eventlet.wsgi
 
 from flask import Flask, request
 from flask_cors import CORS
 
-from config import db, init_db, actions, namespaces, account
-
+from src import db, init_db, actions, namespaces, account
 
 PORT = 3000
 
@@ -15,10 +18,9 @@ app.register_blueprint(account)
 
 CORS(app)
 
-
 if __name__ == '__main__':
-    print('starting server....')
-    #eventlet.wsgi.server(eventlet.listen(('', PORT)), app)
+    print('starting config server....')
     init_db()
-    app.run(debug=True, port=PORT)
+    eventlet.wsgi.server(eventlet.listen(('', PORT)), app)
+    #app.run(debug=True, port=PORT)
     db.close()

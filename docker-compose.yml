@@ -1,0 +1,25 @@
+version: "3"
+services:
+  instapy:
+    image: felixbreuer/instapy-services:latest
+    container_name: instapy-gui
+    restart: unless-stopped
+    volumes:
+      - instapy-data:/usr/instapy/assets
+    networks:
+      - instapy-net
+  webserver:
+    image: felixbreuer/instapy-webserver:latest
+    container_name: instapy-nginx
+    restart: unless-stopped
+    ports:
+      - 222:80
+    networks:
+      - instapy-net
+
+networks:
+  instapy-net:
+    driver: bridge
+
+volumes:
+  instapy-data:

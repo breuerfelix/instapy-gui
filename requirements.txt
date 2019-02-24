@@ -1,3 +1,7 @@
 tinydb
 flask
 flask-cors
+websockets
+websocket-client
+eventlet
+https://github.com/timgrossmann/InstaPy/zipball/gui-features
