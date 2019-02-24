@@ -25,7 +25,7 @@ class MenuItem extends Component {
 		return pathname.startsWith(link);
 	}
 
-	render({ label, icon = false, link = false, children, level = 'sub' }, { open }) {
+	render({ label, icon = false, link = false, children, level = 'sub', external = false }, { open }) {
 		const levelString = level + 'level';
 		const levelListString = 'sublevel-list';
 		const levelItemString = levelString + '-item';
@@ -51,7 +51,7 @@ class MenuItem extends Component {
 
 		return (
 			<li>
-				{ link &&
+				{ (link && !external) &&
 						<Link to={ link }>
 							<Item
 								label={ label }
@@ -61,6 +61,17 @@ class MenuItem extends Component {
 								icon={ icon }
 							/>
 						</Link>
+				}
+				{ (link && external) &&
+						<a href={ link } target='__blank'>
+							<Item
+								label={ label }
+								itemClass={ itemClass }
+								onClick={ false }
+								dropdownIcon= { false }
+								icon={ icon }
+							/>
+						</a>
 				}
 				{ !link &&
 						<a
