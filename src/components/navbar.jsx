@@ -20,7 +20,7 @@ export default class NavBar extends Component {
 		});
 
 		return (
-			<nav class='navbar bg-light'>
+			<nav className='header bg-light'>
 
 				{ false && // this is the button to hide sidebar
 					<form class='form-inline'>
