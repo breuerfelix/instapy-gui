@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from instapy import InstaPy
 from inspect import signature, getdoc, Parameter
 
@@ -14,10 +16,9 @@ def get_actions():
                 func.startswith('follow') or 
                 func.startswith('interact')
         ): continue
-        
-        #print(f'function found: {func}')
+
         real_funcs.append(func)
-        
+
 
     actions = []
     for func in real_funcs:
@@ -53,15 +54,17 @@ def get_actions():
         actions.append(action)
 
     return actions
-    
 
-from config import action_table, db
+
+from src import action_table, db
 from tinydb import where
 
 if __name__ == '__main__':
     action_table.purge()
+    print('deleting actions table done')
 
     actions = get_actions()
-
     action_table.insert_multiple(actions)
+    print('inserted actions to table')
+
     db.close()

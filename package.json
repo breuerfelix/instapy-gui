@@ -1,5 +1,5 @@
 {
-	"name": "InstaPyGUI",
+	"name": "instapy-gui",
 	"productName": "InstaPy GUI",
 	"version": "0.0.1",
 	"description": "",
@@ -8,10 +8,10 @@
 		"test": "npm run lint",
 		"start": "webpack-dev-server --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
-		"electron": "ELECTRON_IS_DEV=0 electron .",
-		"electron-dev": "ELECTRON_IS_DEV=1 electron .",
-		"electron-build": "webpack --config webpack.electron.config.js",
-		"electron-package": "ELECTRON_IS_DEV=0 electron-packager --all --ignore src .",
+		"build:electron": "webpack --config webpack.electron.config.js",
+		"build:docker": "npm run build:docker:webserver && npm run build:docker:services",
+		"build:docker:webserver": "docker build -t felixbreuer/instapy-webserver:latest -f webserver.Dockerfile --rm .",
+		"build:docker:services": "docker build -t felixbreuer/instapy-services:latest -f services.Dockerfile --rm .",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
 		"lint:fix": "eslint --fix --config .eslintrc.yml --ext jsx --ext js src"
 	},
