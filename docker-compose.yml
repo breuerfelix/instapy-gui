@@ -1,0 +1,33 @@
+version: "3"
+services:
+  webserver:
+    image: felixbreuer/instapy-webserver:latest
+    container_name: instapy-webserver
+    restart: unless-stopped
+    ports:
+      - 80:80
+    networks:
+      - instapy-net
+  instapy-config:
+    image: felixbreuer/instapy-service-config:latest
+    container_name: instapy-service-config
+    restart: unless-stopped
+    volumes:
+      - instapy-data:/usr/instapy/assets
+    networks:
+      - instapy-net
+  instapy-socket:
+    image: felixbreuer/instapy-service-socket:latest
+    container_name: instapy-service-socket
+    restart: unless-stopped
+    volumes:
+      - instapy-data:/usr/instapy/assets
+    networks:
+      - instapy-net
+
+networks:
+  instapy-net:
+    driver: bridge
+
+volumes:
+  instapy-data:

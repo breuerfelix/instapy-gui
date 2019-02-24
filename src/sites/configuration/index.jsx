@@ -15,11 +15,11 @@ export default class Configuration extends Component {
 		return (
 			<div>
 				<Route
-					path={ `${match.url}/namespaces/id/:namespace?` }
+					path={ `${match.url}/namespaces/:namespace?` }
 					component={ NamespacesCard }
 				/>
 				<Route
-					path={ `${match.url}/namespaces/id/:namespace` }
+					path={ `${match.url}/namespaces/:namespace` }
 					component={ JobsCard }
 				/>
 			</div>
