@@ -106,7 +106,7 @@ export default class JobCard extends Component {
 									/>
 									<a
 										className='btn btn-outline-dark fas fa-info noselect'
-										style={{ borderWidth : 0}}
+										style={{ borderWidth : 0 }}
 										tabindex='0'
 										data-container='body'
 										data-trigger='focus'

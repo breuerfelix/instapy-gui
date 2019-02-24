@@ -28,7 +28,7 @@ class App extends Component {
 					<div className="row no-gutters">
 
 						{ showSidebar &&
-              <div id='sidebar' className='col' style={{ maxWidth: '230px' }}>
+							<div id='sidebar' className='col' style={{ maxWidth: '230px' }}>
 								<Route
 									path='/'
 									component={ SideBar }
