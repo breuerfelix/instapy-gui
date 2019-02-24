@@ -5,7 +5,7 @@ import 'popper.js';
 import 'bootstrap';
 
 import { h, render, Component } from 'preact';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'unistore/preact';
 
 import store, { connect } from 'store';
@@ -39,6 +39,7 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style='padding: 15px 15px 0 15px;'>
+								<Route exact path='/' render={() => <Redirect to='/start' /> } />
 								<Route
 									path='/account'
 									component={ Account }
