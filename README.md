@@ -2,17 +2,20 @@
 
 # how to start developing
 
-* run `pip3 install -r requirements.txt`
-* run `pip3 install -I https://github.com/timgrossmann/InstaPy/zipball/gui-features`
+## backend
+
 * `cd services`
+* `pip3 install -r req_config.txt`
+* `pip3 install -r req_socket.txt`
 * run `python3 get_actions.py`
 * run `python3 config_service.py`
-* open new tab and cd into root folder
-* run `npm install`
-* run `npm start`
-* open `localhost:8080`
+* open another terminal tab
+* run `python3 config_socket.py`
 
-* start the actual bot with `cd services && python3 start_bot.py`
+## frontend
+
+* `npm start`
+* open `localhost:8080`
 
 # docker
 
