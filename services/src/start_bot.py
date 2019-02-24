@@ -87,9 +87,6 @@ class bot_handler:
 
         os.kill(bot_handler.bot.pid, SIGUSR1)
         os.kill(bot_handler.bot.pid, SIGINT)
-        #bot_handler.bot.terminate()
-        #bot_handler.bot.join()
-        bot_handler.bot = None
 
 
 
@@ -129,18 +126,16 @@ def start_bot(namespace):
     # get an InstaPy session!
     session = InstaPy(username = insta_username,
                       password = insta_password,
-                      headless_browser = False,
-                      show_logs = True,
+                      headless_browser = True,
+                      show_logs = False,
                       log_handler = log_handler,
                       browser_binary_path = '/usr/bin/chromedriver')
 
     # function that will be executed before sig kill, to the browser window closes
-    def on_exit(*args):
-        print('got user signal')
+    def exit_browser(*args):
         session.browser.quit()
 
-    signal(SIGUSR1, on_exit)
-    print('got here')
+    signal(SIGUSR1, exit_browser)
 
     with smart_run(session):
         for job in jobs:

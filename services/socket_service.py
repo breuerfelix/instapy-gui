@@ -23,8 +23,6 @@ async def send(data):
     if not USERS: return
 
     try:
-        print('send data:')
-        print(json.dumps(data))
         await asyncio.wait([user.send(json.dumps(data)) for user in USERS])
     except:
         print('error sending message: ' + json.dumps(data))
@@ -52,8 +50,6 @@ async def listener(websocket, path):
                 print('error loading json')
 
             if data:
-                print('got data:')
-                print(json.dumps(data))
                 # notify all handlers
                 for handler in HANDLERS:
                     await handler(data)
