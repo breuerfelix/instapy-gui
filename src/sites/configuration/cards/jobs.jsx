@@ -45,7 +45,7 @@ export default class JobsCard extends Component {
 
 			// TODO remove this when we have a proper list view
 			// joins default list params togehter
-			if (param.type.startsWith('list')) {
+			if (param.type && param.type.startsWith('list')) {
 				if (param.defaulValue) {
 					para.value = param.defaultValue.join(';');
 				}
