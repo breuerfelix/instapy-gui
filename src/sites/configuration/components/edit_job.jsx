@@ -97,11 +97,11 @@ class ConfigItem extends Component {
 		}
 
 		return (
-			<div class="form-group row">
-				<label class="col-md-4 col-form-label">
+			<div className="form-group row">
+				<label className="col-md-4 col-form-label">
 					{ translate(param.name) }
 				</label>
-				<div class="col-md-8">
+				<div className="col-md-8">
 					{ valueInput }
 				</div>
 			</div>
@@ -149,7 +149,7 @@ class InputBox extends Component {
 		return (
 			<input
 				type={ type }
-				class={ classes }
+				className={ classes }
 				placeholder={ param.placeholder }
 				value={ values.value }
 				onChange={ e => values.value = e.target.value }
@@ -183,7 +183,7 @@ class BooleanBox extends Component {
 		});
 
 		return (
-			<select class={ classes } value={ values.value } onChange={ e => values.value = e.target.value }>
+			<select className={ classes } value={ values.value } onChange={ e => values.value = e.target.value }>
 				<option value='true'>{ translate('true') }</option>
 				<option value='false'>{ translate('false') }</option>
 			</select>

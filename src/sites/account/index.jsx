@@ -5,7 +5,7 @@ import LoginCard from './login_card';
 export default class Account extends Component {
 	render({ match }) {
 		return (
-			<div class='row'>
+			<div className='row'>
 
 				<div className="col-padding col-md">
 					<Route

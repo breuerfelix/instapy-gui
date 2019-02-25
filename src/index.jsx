@@ -24,11 +24,11 @@ class App extends Component {
 	render({ showSidebar }) {
 		return (
 			<Router>
-				<div class='container-fluid'>
+				<div className='container-fluid'>
 					<div className="row no-gutters">
 
 						{ showSidebar &&
-							<div id='sidebar' className='col' style='max-width: 230px;'>
+							<div id='sidebar' className='col' style={{ maxWidth: '230px' }}>
 								<Route
 									path='/'
 									component={ SideBar }
@@ -38,7 +38,7 @@ class App extends Component {
 
 						<div className='col'>
 							<NavBar />
-							<div style='padding: 15px 15px 0 15px;'>
+							<div style={{ padding: '15px 15px 0 15px' }}>
 								<Route exact path='/' render={() => <Redirect to='/start' /> } />
 								<Route
 									path='/account'

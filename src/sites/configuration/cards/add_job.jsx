@@ -5,12 +5,12 @@ import { connect } from 'store';
 const AddJobCard = () => {
 	// TODO align this plus sign to the middle SOMEHOW
 	return (
-		<div class="col-padding col">
-			<div class="card">
+		<div className="col-padding col">
+			<div className="card">
 
-				<div class="card-body row">
+				<div className="card-body row">
 					<a
-						class='fas fa-plus fa-3x col-auto align-self-center'
+						className='fas fa-plus fa-3x col-auto align-self-center'
 						data-toggle='modal'
 						data-target='#actions-modal'
 					></a>

@@ -2,13 +2,13 @@ import { h } from 'preact';
 import { translate } from 'services';
 
 const DescriptionCard = ({ namespace }) => (
-	<div class="card" style='height: 200px;'>
+	<div className="card" style='height: 200px;'>
 
-		<div class="card-header">
+		<div className="card-header">
 			{ translate('namespaces_description') }
 		</div>
 
-		<div class="card-body">
+		<div className="card-body">
 			{ namespace.description }
 		</div>
 
