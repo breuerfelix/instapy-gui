@@ -6,7 +6,7 @@
 	"main": "src/index.js",
 	"scripts": {
 		"test": "npm run lint",
-		"start": "webpack-dev-server --config webpack.dev.config.js",
+		"start": "webpack-dev-server --open --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
 		"build:electron": "webpack --config webpack.electron.config.js",
 		"build:docker": "npm run build:docker:webserver && npm run build:docker:config && npm run build:docker:socket",

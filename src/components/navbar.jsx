@@ -20,11 +20,11 @@ export default class NavBar extends Component {
 		});
 
 		return (
-			<nav class='navbar bg-light'>
+			<nav className='navbar bg-light'>
 
-				<form class='form-inline'>
+				<form className='form-inline'>
 					<button className="btn btn-outline-dark" onClick={ this.toggleSidebar }>
-						<i class={ burgerIconClass } />
+						<i className={ burgerIconClass } />
 					</button>
 				</form>
 
@@ -37,11 +37,11 @@ export default class NavBar extends Component {
 
 const NavBarItem = ({ text, link }) => (
 	<li
-		class='nav-item'
+		className='nav-item'
 	>
 		<Link
 			to={ link }
-			class='nav-link'
+			className='nav-link'
 		>
 			{ translate(text) }
 		</Link>

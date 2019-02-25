@@ -16,12 +16,12 @@ class Location extends Component {
 
 		return (
 			<nav aria-label='breakcrumb align-middle'>
-				<ol class="breadcrumb">
-					<li class='breadcrumb-item'>
+				<ol className="breadcrumb">
+					<li className='breadcrumb-item'>
 						<Link
 							className="fas fa-home"
 							to='/'
-							style='text-decoration: none;'
+							style={{ textDecoration: 'none' }}
 						/>
 					</li>
 					{ items }
@@ -36,7 +36,7 @@ const BreadItem = ({ path, label }) => {
 	const newPath = path.substring(0, index + label.length);
 
 	return (
-		<li class="breadcrumb-item">
+		<li className="breadcrumb-item">
 			<Link
 				to={ newPath }
 			>
