@@ -39,11 +39,11 @@ export default class NavBar extends Component {
 
 const NavBarItem = ({ text, link }) => (
 	<li
-		class='nav-item'
+		className='nav-item'
 	>
 		<Link
 			to={ link }
-			class='nav-link'
+			className='nav-link'
 		>
 			{ translate(text) }
 		</Link>

@@ -15,6 +15,7 @@ class Location extends Component {
 		);
 
 		return (
+
 			<div aria-label='breakcrumb'>
 				<ol className='breadcrumb row align-items-center'>
 					<li className='breadcrumb-item'>
