@@ -75,7 +75,6 @@ class ConfigItem extends Component {
 			border: 'none'
 		};
 
-
 		let valueInput = null;
 		if (!param.type) {
 			// default if there is no given type
