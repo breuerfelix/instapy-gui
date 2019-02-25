@@ -10,6 +10,8 @@ PORT = 3001
 
 USERS = set()
 HANDLERS = set()
+# store past 300 messages
+LOG_STORE = []
 
 def add_handler(func):
     HANDLERS.add(func)
@@ -83,15 +85,33 @@ async def start_bot_handler(data):
 async def send_logs_handler(data):
     if data['handler'] != 'instapy': return
 
+    LOG_STORE.insert(0, data['message'])
+
+    # delete last 50 items if list is too long
+    if len(LOG_STORE) > 300: del LOG_STORE[-50:]
+
     await send({
         'handler': 'logger',
+        'action': 'single',
         'message': data['message']
+    })
+
+
+async def send_all_logs_handler(data):
+    if data['handler'] != 'logger': return
+
+    # TODO add if action == 'get'
+    await send({
+        'handler': 'logger',
+        'action': 'multiple',
+        'message': LOG_STORE
     })
 
 
 if __name__ == '__main__':
     add_handler(start_bot_handler)
     add_handler(send_logs_handler)
+    add_handler(send_all_logs_handler)
 
     asyncio.get_event_loop().run_until_complete(
         websockets.serve(listener, '', PORT)
