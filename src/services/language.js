@@ -31,6 +31,12 @@ class Language {
 		sidebar_features: 'FEATURES',
 		sidebar_links: 'LINKS',
 		sidebar_start: 'Start',
+		sidebar_other: 'Other',
+
+		link_donate: 'Donate',
+		link_instapy: 'InstaPy',
+		link_instapy_gui: 'InstaPy-GUI',
+		link_submit_issue: 'Found a Bug ?',
 
 		button_save: 'save',
 		button_cancel: 'cancel',
@@ -65,7 +71,7 @@ class Language {
 		actions_tab_interact: 'interact',
 
 		startbot_title: 'Start InstaPy',
-		startbot_select_namespace: 'Select template',
+		startbot_select_namespace: 'Select Template',
 
 		console_title: 'Console'
 	};

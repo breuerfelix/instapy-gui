@@ -45,7 +45,7 @@ export default class JobsCard extends Component {
 
 			// TODO remove this when we have a proper list view
 			// joins default list params togehter
-			if (param.type.startsWith('list')) {
+			if (param.type && param.type.startsWith('list')) {
 				if (param.defaulValue) {
 					para.value = param.defaultValue.join(';');
 				}
@@ -106,7 +106,7 @@ export default class JobsCard extends Component {
 
 	deleteJob = async job => {
 		const { jobs } = this.state;
-		const idx = jobs.indexOf(job);
+		const idx = jobs.findIndex(x => x.uuid == job.uuid);
 
 		if (idx == -1) {
 			console.error('could not locate job!');

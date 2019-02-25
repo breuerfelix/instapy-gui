@@ -3,16 +3,25 @@ import { SocketService, translate } from 'services';
 
 export default class Console extends Component {
 	state = {
-		logList: [],
-		scrolled: false
+		logList: []
 	}
 
 	recieveSocketData = data => {
 		if (data.handler != 'logger') return;
 
-		const { logList, scrolled } = this.state;
-		logList.splice(0, 0, data.message);
-		this.setState({ logList });
+		if (data.action == 'single') {
+			const { logList } = this.state;
+			logList.splice(0, 0, data.message);
+			this.setState({ logList });
+			return;
+		}
+
+		if (data.action == 'multiple') {
+			let { logList } = this.state;
+			logList = [ ...data.message, ...logList ];
+			this.setState({ logList });
+			return;
+		}
 	}
 
 	componentWillMount() {
