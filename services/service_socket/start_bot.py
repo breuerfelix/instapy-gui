@@ -36,8 +36,6 @@ class my_handler(logging.Handler):
             datefmt='%Y-%m-%d %H:%M:%S')
         self.setFormatter(logger_formatter)
 
-        self.log_list = []
-
     def connect(self):
         self.socket = create_connection('ws://localhost:3001')
 
