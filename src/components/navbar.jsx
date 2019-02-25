@@ -20,13 +20,15 @@ export default class NavBar extends Component {
 		});
 
 		return (
-			<nav className='navbar bg-light'>
+			<nav className='header bg-light'>
 
-				<form className='form-inline'>
-					<button className="btn btn-outline-dark" onClick={ this.toggleSidebar }>
-						<i className={ burgerIconClass } />
-					</button>
-				</form>
+				{ false && // this is the button to hide sidebar
+					<form class='form-inline'>
+						<button className="btn btn-outline-dark" onClick={ this.toggleSidebar }>
+							<i class={ burgerIconClass } />
+						</button>
+					</form>
+				}
 
 				<Location />
 

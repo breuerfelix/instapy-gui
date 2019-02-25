@@ -26,6 +26,8 @@ def threaded(fn):
         return thread
     return wrapper
 
+
+
 class my_handler(logging.Handler):
     def init(self):
         self.setLevel(logging.DEBUG)
@@ -52,7 +54,6 @@ class my_handler(logging.Handler):
             self.disconnect()
         except:
             pass
-
 
 
 log_handler = my_handler()
@@ -104,7 +105,7 @@ def start_bot(namespace):
     jobs.sort(key = lambda job: int(job['position']))
     
     # convert list to actual arrays
-    # TODO remove this if we have a proper list view
+    # TODO remove until line if we have a proper list view
     actions = action_table.all()
 
 
@@ -118,8 +119,7 @@ def start_bot(namespace):
             
             # convert to list
             param['value'] = param['value'].split(';')
-
-
+    # ---------------------------------------------------------------------------
 
     # login credentials
     insta_username = user['username']
