@@ -15,7 +15,7 @@ class NamespacesCard extends Component {
 		const namespaces = ConfigService.fetchNamespaces()
 			.then(namespaces => {
 				this.setState({ namespaces });
-				this.props.history.push(`/configuration/namespaces/${namespaces[0].ident}`);
+				this.props.history.replace(`/configuration/namespaces/${namespaces[0].ident}`);
 			});
 	}
 
@@ -48,7 +48,7 @@ class NamespacesCard extends Component {
 
 		this.setState({ namespaces });
 		ConfigService.deleteNamespace(namespace);
-		this.props.history.push(`/configuration/namespaces/${namespaces[0].ident}`);
+		this.props.history.replace(`/configuration/namespaces/${namespaces[0].ident}`);
 	}
 
 	addNamespace = async namespace => {
