@@ -9,7 +9,7 @@ class StartBot extends Component {
 		namespaces: [],
 		namespace: null,
 		running: false,
-		status: 'stopped'
+		status: 'exited'
 	}
 
 	toggleBot = e => {
@@ -98,9 +98,9 @@ class StartBot extends Component {
 		const statusText = 'status_' + status;
 		const statusBadge = classNames({
 			'badge': true,
-			'badge-danger': status == 'stopped' || status == 'exited',
+			'badge-danger': status == 'exited',
 			'badge-success': status == 'running',
-			'badge-info': status == 'loading'
+			'badge-primary': status == 'loading'
 		});
 
 		return (
@@ -124,8 +124,17 @@ class StartBot extends Component {
 						{ translate('status') }:<span className={ statusBadge } style={{ marginLeft: '7px' }}>{ translate(statusText) }</span>
 					</div>
 					<div className='col' style={{ textAlign: 'right' }}>
-						<button onClick={ this.toggleBot } className='btn btn-outline-dark'>
-							{ translate(buttonText) }
+						<button onClick={ this.toggleBot } className='btn btn-outline-dark' disabled={ status == 'loading' }>
+							{ status == 'loading' &&
+								<span
+									className='spinner-border spinner-border-sm'
+									role='status'
+									aira-hidden='true'
+								/>
+							}
+							{ status != 'loading' &&
+								translate(buttonText)
+							}
 						</button>
 					</div>
 				</div>
