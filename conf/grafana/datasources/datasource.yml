@@ -3,9 +3,9 @@ datasources:
   - name: InfluxDB
     type: influxdb
     access: proxy
-    database: "$INFLUXDB_DB"
-    user: "$INFLUXDB_USER"
-    password: "$INFLUXDB_PASSWORD"
-    url: "$INFLUXDB_URL"
+    database: instapy
+    user: instapy
+    password: instapysecret
+    url: http://influxdb:8086
     isDefault: true
     editable: true

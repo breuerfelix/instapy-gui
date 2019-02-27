@@ -4,9 +4,9 @@ providers:
   folder: ''
   type: file
   access: "proxy"
-  user: "$INFLUXDB_USER"
-  password: "$INFLUXDB_PASSWORD"
-  database: "$INFLUXDB_DB"
+  user: instapy
+  password: instapysecret
+  database: instapy
   basicAuth: false
   disableDeletion: false
   editable: true
