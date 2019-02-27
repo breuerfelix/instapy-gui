@@ -1,8 +1,9 @@
+from os import getenv
 import os
 # docker.for.mac.localhost -> dev on mac
 # docker.for.windows.localhost -> dev on windows
 # instapy-socket -> production
-socket_endpoint = os.environ['SOCKET_HOST'] or 'docker.for.mac.localhost'
+socket_endpoint = getenv('SOCKET_HOST') or 'docker.for.mac.localhost'
 
 from websocket import create_connection
 import json
@@ -95,11 +96,11 @@ insta_username = user['username']
 insta_password = user['password']
 
 # influx db credentials
-user_influxdb = os.environ['INFLUXDB_USER'] or 'instapy'
-password_influxdb = os.environ['INFLUXDB_PASSWORD'] or 'instapysecret'
-db_influxdb = os.environ['INFLUXDB_DB'] or 'instapy'
-host_influxdb = os.environ['INFLUXDB_HOST'] or 'localhost'
-port_influxdb = os.environ['INFLUXDB_PORT'] or 8086
+user_influxdb = getenv('INFLUXDB_USER') or 'instapy'
+password_influxdb = getenv('INFLUXDB_PASSWORD') or 'instapysecret'
+db_influxdb = getenv('INFLUXDB_DB') or 'instapy'
+host_influxdb = getenv('INFLUXDB_HOST') or 'localhost'
+port_influxdb = getenv('INFLUXDB_PORT') or 8086
 port_influxdb = int(port_influxdb)
 
 # set assets folder as a workspace
@@ -112,11 +113,11 @@ session = InstaPy(username = insta_username,
                   show_logs = True,
                   log_handler = log_handler,
                   browser_binary_path = '/usr/bin/chromedriver',
-                  user_influx = 'instapy',
-                  password_influx = 'instapysecret',
-                  db_influx = 'instapy',
-                  host_influx = 'localhost',
-                  port_influx = 8086)
+                  user_influx = user_influxdb,
+                  password_influx = password_influxdb,
+                  db_influx = db_influxdb,
+                  host_influx = host_influxdb,
+                  port_influx = port_influxdb)
 
 # function that will be executed before sig kill, to the browser window closes
 def exit_browser(*args):
