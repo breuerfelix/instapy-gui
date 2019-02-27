@@ -80,7 +80,7 @@ class LoginCard extends Component {
 
 						<div className="input-group">
 							<div className="input-group-prepend">
-								<i className="input-group-text fas fa-key"></i>
+								<i className="input-group-text fas fa-lock"></i>
 							</div>
 							<input
 								className={ passwordClass }
