@@ -2,7 +2,16 @@
 
 # start
 
-* `docker-compose -d up` in current directory
+## requirements
+
+* install [docker](https://www.docker.com/get-started)
+* install [docker-compose](https://docs.docker.com/compose/install)
+
+## run instapy-gui
+
+* download [docker-compose file](https://github.com/breuerfelix/instapy-gui/blob/master/docker-compose.yml) from this repository
+* navigate in your console to the downloaded file
+* run `docker-compose -d up`
 * open `http://localhost` to view the gui
 
 __note__:  change environment varibales in `docker-compose.yml` if needed
@@ -25,8 +34,3 @@ __note__:  change environment varibales in `docker-compose.yml` if needed
 
 * `npm start`
 * open `localhost:8080`
-
-# docker
-
-* `docker-compose -d up` in current directory
-* open `http://localhost` to view the gui
