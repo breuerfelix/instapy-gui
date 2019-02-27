@@ -3,3 +3,4 @@ docker push felixbreuer/instapy-webserver:latest
 docker push felixbreuer/instapy-service-config:latest
 docker push felixbreuer/instapy-service-socket:latest
 docker push felixbreuer/instapy:latest
+docker push felixbreuer/instapy-grafana:latest
