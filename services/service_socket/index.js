@@ -27,7 +27,7 @@ class bot_handler {
 		console.error('container could not be found');
 	}
 
-	messagesRecieved(message) {
+	messageReceived(message) {
 		this.messages.push(message.message);
 
 		// delete first 50 elements
@@ -57,10 +57,6 @@ class bot_handler {
 
 		this.statusChanged();
 		const container = docker.getContainer(this.containerID);
-		this.startContainer(container);
-	}
-
-	startContainer(container) {
 		container.start().then(() => {
 			this.running = true;
 			this.status = 'running';
@@ -88,10 +84,6 @@ class bot_handler {
 		this.namespace = '';
 
 		const container = docker.getContainer(this.containerID);
-		this.stopContainer(container);
-	}
-
-	stopContainer(container) {
 		container.stop({ t: 10 }).then(() => {
 			this.status = 'stopped';
 			this.running = false;
@@ -169,8 +161,7 @@ function namespaceHandler(data, socket) {
 }
 
 function instapyHandler(data, socket) {
-	console.log(data);
-	botHandler.messagesRecieved(data);
+	botHandler.messageReceived(data);
 }
 
 wss.on('connection', function connection(ws) {
