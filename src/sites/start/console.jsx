@@ -18,7 +18,7 @@ export default class Console extends Component {
 
 		if (data.action == 'multiple') {
 			let { logList } = this.state;
-			logList = [ ...data.message, ...logList ];
+			logList = [ ...data.message.reverse(), ...logList ];
 			this.setState({ logList });
 			return;
 		}
