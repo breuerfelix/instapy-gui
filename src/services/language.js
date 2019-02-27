@@ -50,6 +50,7 @@ class Language {
 		status_stopped: 'stopped',
 		status_done: 'done',
 		status_error: 'error',
+		status_exited: 'exited',
 
 		login_username: 'username',
 		login_password: 'password',

@@ -85,7 +85,7 @@ export default class StartBot extends Component {
 		const statusText = 'status_' + status;
 		const statusBadge = classNames({
 			'badge': true,
-			'badge-danger': status == 'stopped',
+			'badge-danger': status == 'stopped' || status == 'exited',
 			'badge-success': status == 'running',
 			'badge-info': status == 'loading'
 		});
