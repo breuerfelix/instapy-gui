@@ -1,4 +1,8 @@
-socket_endpoint = 'docker.for.mac.localhost'
+import os
+# docker.for.mac.localhost -> dev on mac
+# docker.for.windows.localhost -> dev on windows
+# instapy-socket -> production
+socket_endpoint = os.environ['SOCKET_HOST'] or 'docker.for.mac.localhost'
 
 from websocket import create_connection
 import json
@@ -89,6 +93,14 @@ for job in jobs:
 # login credentials
 insta_username = user['username']
 insta_password = user['password']
+
+# influx db credentials
+user_influxdb = os.environ['INFLUXDB_USER'] or 'instapy'
+password_influxdb = os.environ['INFLUXDB_PASSWORD'] or 'instapysecret'
+db_influxdb = os.environ['INFLUXDB_DB'] or 'instapy'
+host_influxdb = os.environ['INFLUXDB_HOST'] or 'localhost'
+port_influxdb = os.environ['INFLUXDB_PORT'] or 8086
+port_influxdb = int(port_influxdb)
 
 # set assets folder as a workspace
 set_workspace(ASSETS)
