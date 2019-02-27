@@ -25,6 +25,7 @@ class bot_handler {
 		}
 
 		console.error('container could not be found');
+		process.exit(1);
 	}
 
 	messageReceived(message) {
