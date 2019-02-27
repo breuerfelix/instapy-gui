@@ -13,6 +13,29 @@ class bot_handler {
 		this.namespace = '';
 
 		const containers = docker.listContainers({ all: true }).then(this.findContainer.bind(this));
+		setInterval(this.checkContainerStatus.bind(this), 2000);
+	}
+
+	checkContainerStatus() {
+		if (!this.containerID) return;
+
+		const container = docker.getContainer(this.containerID);
+		container.inspect().then(con => {
+			const state = con.State;
+
+			let changed = false;
+			if (this.running != state.Running) {
+				this.running = state.Running;
+				changed = true;
+			}
+
+			if (this.status != state.Status) {
+				this.status = state.Status;
+				changed = true;
+			}
+
+			if (changed) this.statusChanged();
+		});
 	}
 
 	findContainer(containers) {
@@ -42,6 +65,8 @@ class bot_handler {
 
 		const stringLog = JSON.stringify(log);
 
+		console.log(message.message)
+		console.log(USERS.length)
 		for (let user of USERS) {
 			user.send(stringLog);
 		}
@@ -50,7 +75,7 @@ class bot_handler {
 	start(namespace) {
 		if (this.running) return;
 		if (!this.containerID) return;
-		if (this.status != 'stopped') return;
+		if (this.status != 'stopped' && this.status != 'exited') return;
 
 		this.status = 'loading';
 		this.running = true;
