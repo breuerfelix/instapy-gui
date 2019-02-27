@@ -1,4 +1,3 @@
 tinydb
-websockets
 websocket-client
 https://github.com/timgrossmann/InstaPy/zipball/gui-features

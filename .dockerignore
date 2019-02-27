@@ -6,3 +6,5 @@ package-lock.json
 __pycache__
 *.pyc
 src
+services/service_socket/node_modules
+services/service_socket/package-lock.json

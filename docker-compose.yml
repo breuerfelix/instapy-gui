@@ -1,5 +1,16 @@
 version: "3"
 services:
+  instapy:
+    image: felixbreuer/instapy:latest
+    container_name: instapy
+    volumes:
+      - instapy-data:/usr/instapy/assets
+    environment:
+      - INFLUXDB_DB=${INFLUX_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+    networks:
+      - instapy-net
   webserver:
     image: felixbreuer/instapy-webserver:latest
     container_name: instapy-webserver
@@ -22,8 +33,40 @@ services:
     restart: unless-stopped
     volumes:
       - instapy-data:/usr/instapy/assets
+      - /var/run/docker.sock/:/var/run/docker.sock
     networks:
       - instapy-net
+  influxdb:
+    image: influxdb:alpine
+    container_name: instapy-influxdb
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+    volumes:
+      - instapy-influxdb:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=${INFLUX_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+    networks:
+      - instapy-net
+  chronograf:
+    image: chronograf:alpine
+    container_name: instapy-chronograf
+    restart: unless-stopped
+    ports:
+      - 8888:8888
+    depends_on:
+      - influxdb
+    volumes:
+      - instapy-chronograf:/var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
+      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
+    networks:
+      - instapy-net
+
 
 networks:
   instapy-net:
@@ -31,3 +74,5 @@ networks:
 
 volumes:
   instapy-data:
+  instapy-influxdb:
+  instapy-chronograf:
