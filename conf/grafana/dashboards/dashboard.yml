@@ -1,0 +1,14 @@
+apiVersion: 1
+providers:
+- name: InfluxDB
+  folder: ''
+  type: file
+  access: "proxy"
+  user: "$INFLUXDB_USER"
+  password: "$INFLUXDB_PASSWORD"
+  database: "$INFLUXDB_DB"
+  basicAuth: false
+  disableDeletion: false
+  editable: true
+  options:
+    path: /etc/grafana/provisioning/dashboards
