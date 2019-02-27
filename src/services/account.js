@@ -7,7 +7,7 @@ class AccountService {
 	}
 
 	async setLoginCredentials(username, password) {
-		console.log('logging in ...');
+		console.log('set login credentials ...');
 		const data = {
 			username,
 			password
