@@ -7,7 +7,7 @@ export default class StartBot extends Component {
 		namespaces: [],
 		namespace: null,
 		running: false,
-		status: 'loading'
+		status: 'stopped'
 	}
 
 	toggleBot = e => {
@@ -21,6 +21,7 @@ export default class StartBot extends Component {
 			namespace: namespace.ident
 		});
 
+		// todo disable button
 		this.setState({ running: !running, status: 'loading' });
 
 		SocketService.send({
@@ -60,8 +61,6 @@ export default class StartBot extends Component {
 				// set first namespace if there is one
 				if (namespaces) this.setState({ namespace: namespaces[0] });
 			});
-
-		this.botInterval = setInterval(this.getBotState, 2000);
 	}
 
 	getBotState = () => {
@@ -74,10 +73,6 @@ export default class StartBot extends Component {
 
 	componentWillUnmount() {
 		SocketService.unregister(this);
-
-		if (this.botInterval) {
-			clearInterval(this.botInterval);
-		}
 	}
 
 	render(props, { namespaces, namespace, running, status }) {
@@ -90,7 +85,7 @@ export default class StartBot extends Component {
 		const statusText = 'status_' + status;
 		const statusBadge = classNames({
 			'badge': true,
-			'badge-danger': status == 'stopped',
+			'badge-danger': status == 'stopped' || status == 'exited',
 			'badge-success': status == 'running',
 			'badge-info': status == 'loading'
 		});
