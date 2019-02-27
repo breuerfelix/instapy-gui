@@ -13,6 +13,13 @@ class SocketService {
 		this.open();
 	}
 
+	ping() {
+		this.send({
+			handler: 'pint',
+			action: 'set'
+		});
+	}
+
 	async check() {
 		// wait until it is connected, to not open 2 connections at once
 		while (this.isConnecting) await sleep(100);
@@ -39,6 +46,8 @@ class SocketService {
 			this.isConnecting = false;
 			this.socket = websocket;
 			console.log('connected so websocket');
+
+			this.pingInterval = setInterval(this.ping.bind(this), 3000);
 		} catch {
 			this.connected = false;
 			this.socket = null;
@@ -51,6 +60,7 @@ class SocketService {
 
 		try {
 			this.socket.close();
+			clearInterval(this.pingInterval);
 		} finally {
 			this.connected = false;
 			this.socket = null;
