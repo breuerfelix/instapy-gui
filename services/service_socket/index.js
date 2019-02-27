@@ -14,6 +14,20 @@ class bot_handler {
 
 		const containers = docker.listContainers({ all: true }).then(this.findContainer.bind(this));
 		setInterval(this.checkContainerStatus.bind(this), 2000);
+		setInterval(this.ping.bind(this), 3000);
+	}
+
+	ping() {
+		const ping = {
+			handler: 'ping',
+			action: 'send'
+		};
+
+		const stringPing = JSON.stringify(ping);
+
+		for (let user of USERS) {
+			user.send(stringPing);
+		}
 	}
 
 	checkContainerStatus() {
@@ -65,8 +79,6 @@ class bot_handler {
 
 		const stringLog = JSON.stringify(log);
 
-		console.log(message.message)
-		console.log(USERS.length)
 		for (let user of USERS) {
 			user.send(stringLog);
 		}
