@@ -13,7 +13,20 @@ class LoginCard extends Component {
 		errorPassword: false
 	}
 
-	save = e => {
+	componentWillMount() {
+		const { username } = this.props;
+		this.setState({ username });
+	}
+
+	logout = e => {
+		const { setUsername, history } = this.props;
+
+		AccountService.setLoginCredentials('', '');
+		setUsername('');
+		history.push('/');
+	}
+
+	login = e => {
 		e.preventDefault();
 
 		const { username, password } = this.state;
@@ -79,14 +92,22 @@ class LoginCard extends Component {
 						</div>
 
 					</div>
-					<div className="card-footer" style={{ textAlign: 'right' }}>
-						<button type='submit' onClick={ this.save } className="btn btn-outline-dark">
-							{ translate('button_save') }
-						</button>
+					<div className='card-footer row align-items-center' >
+						<div className='col'>
+							<button onClick={ this.logout } className='btn btn-outline-dark'>
+								{ translate('button_logout') }
+							</button>
+						</div>
+						<div style={{ textAlign: 'right' }}>
+							<button type='submit' onClick={ this.login } className='btn btn-outline-dark'>
+								{ translate('button_login') }
+							</button>
+						</div>
 					</div>
 				</form>
 			</div>
 		);
 	}
 }
-export default withRouter(connect()(LoginCard));
+
+export default withRouter(connect('username')(LoginCard));
