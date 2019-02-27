@@ -10,7 +10,7 @@ import { Provider } from 'unistore/preact';
 
 import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
-import { Account, Configuration, Start } from 'sites';
+import { Account, Configuration, Start, Dashboard } from 'sites';
 
 import { MOCK_DATA } from 'config';
 
@@ -51,6 +51,10 @@ class App extends Component {
 								<Route
 									path='/start'
 									component={ Start }
+								/>
+								<Route
+									path='/dashboard'
+									component={ Dashboard }
 								/>
 								<Footer />
 							</div>

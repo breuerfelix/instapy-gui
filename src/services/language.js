@@ -32,11 +32,13 @@ class Language {
 		sidebar_links: 'LINKS',
 		sidebar_start: 'Start',
 		sidebar_other: 'Other',
+		sidebar_dashboard: 'Dashboard',
 
 		link_donate: 'Donate',
 		link_instapy: 'InstaPy',
 		link_instapy_gui: 'InstaPy-GUI',
-		link_submit_issue: 'Found a Bug ?',
+		link_submit_issue: 'Found a bug ?',
+		link_need_help: 'Need help ?',
 
 		button_save: 'save',
 		button_cancel: 'cancel',
@@ -50,6 +52,7 @@ class Language {
 		status_stopped: 'stopped',
 		status_done: 'done',
 		status_error: 'error',
+		status_exited: 'exited',
 
 		login_username: 'username',
 		login_password: 'password',

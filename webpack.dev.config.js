@@ -28,7 +28,10 @@ module.exports = merge(common, {
 				target: 'http://localhost:3001',
 				pathRewrite: { '^/socket': '' },
 				ws: true
-			}
+			},
+			'/grafana': {
+				target: 'http://localhost/grafana'
+			},
 		}
 	}
 });

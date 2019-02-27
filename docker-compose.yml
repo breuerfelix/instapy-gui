@@ -1,5 +1,18 @@
 version: "3"
 services:
+  instapy:
+    image: felixbreuer/instapy:latest
+    container_name: instapy
+    volumes:
+      - instapy-data:/usr/instapy/assets
+    environment:
+      - INFLUXDB_DB=instapy
+      - INFLUXDB_USER=instapy
+      - INFLUXDB_PASSWORD=instapysecret
+      - INFLUXDB_HOST=influxdb
+      - SOCKET_HOST=instapy-socket
+    networks:
+      - instapy-net
   webserver:
     image: felixbreuer/instapy-webserver:latest
     container_name: instapy-webserver
@@ -22,8 +35,57 @@ services:
     restart: unless-stopped
     volumes:
       - instapy-data:/usr/instapy/assets
+      - /var/run/docker.sock/:/var/run/docker.sock
     networks:
       - instapy-net
+  influxdb:
+    image: influxdb:alpine
+    container_name: instapy-influxdb
+    restart: unless-stopped
+    volumes:
+      - instapy-influxdb:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=instapy
+      - INFLUXDB_ADMIN_USER=instapy
+      - INFLUXDB_ADMIN_PASSWORD=instapysecret
+    networks:
+      - instapy-net
+  chronograf:
+    image: chronograf:alpine
+    container_name: instapy-chronograf
+    restart: unless-stopped
+    ports:
+      - 8888:8888
+    depends_on:
+      - influxdb
+    volumes:
+      - instapy-chronograf:/var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=instapy
+      - INFLUXDB_PASSWORD=instapysecret
+    networks:
+      - instapy-net
+  grafana:
+    image: felixbreuer/instapy-grafana:latest
+    container_name: instapy-grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - influxdb
+    volumes:
+      - instapy-grafana:/var/lib/grafana
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=instapy
+      - INFLUXDB_PASSWORD=instapysecret
+      - INFLUXDB_DB=instapy
+      - GF_SECURITY_ADMIN_USER=instapy
+      - GF_SECURITY_ADMIN_PASSWORD=instapysecret
+    networks:
+      - instapy-net
+
 
 networks:
   instapy-net:
@@ -31,3 +93,6 @@ networks:
 
 volumes:
   instapy-data:
+  instapy-influxdb:
+  instapy-chronograf:
+  instapy-grafana:

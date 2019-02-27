@@ -1,0 +1,14 @@
+apiVersion: 1
+providers:
+- name: InfluxDB
+  folder: ''
+  type: file
+  access: "proxy"
+  user: instapy
+  password: instapysecret
+  database: instapy
+  basicAuth: false
+  disableDeletion: false
+  editable: true
+  options:
+    path: /etc/grafana/provisioning/dashboards
