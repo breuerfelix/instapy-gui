@@ -97,7 +97,7 @@ class bot_handler {
 		const container = docker.getContainer(this.containerID);
 		container.start().then(() => {
 			this.running = true;
-			this.status = 'running';
+			this.status = 'loading';
 			this.statusChanged();
 		});
 	}
@@ -117,13 +117,13 @@ class bot_handler {
 	}
 
 	stop() {
-		this.running = false;
+		this.running = true;
 		this.status = 'loading';
 		this.namespace = '';
 
 		const container = docker.getContainer(this.containerID);
 		container.stop({ t: 10 }).then(() => {
-			this.status = 'stopped';
+			this.status = 'loading';
 			this.running = false;
 			this.namespace = '';
 			this.statusChanged();
