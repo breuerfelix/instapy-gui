@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd services
-cd service_socket_node
+cd service_socket
 node index.js
