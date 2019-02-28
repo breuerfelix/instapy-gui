@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { translate } from 'services';
 
 const DescriptionCard = ({ namespace }) => (
-	<div className="card" style='height: 200px;'>
+	<div className="card" style={{ height: '200px' }}>
 
 		<div className="card-header">
 			{ translate('namespaces_description') }
