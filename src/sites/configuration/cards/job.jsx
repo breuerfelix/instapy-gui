@@ -138,7 +138,7 @@ export default class JobCard extends Component {
 
 const IconButton = ({ icon, onclick }) => (
 	<button
-		className="btn btn-outline-dark"
+		className='btn btn-outline-dark'
 		type='button'
 		style={{ borderWidth: 0 }}
 		onClick={ onclick }
