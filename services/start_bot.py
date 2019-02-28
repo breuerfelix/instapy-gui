@@ -86,9 +86,10 @@ for job in jobs:
         act_param = next(act_param for act_param in action['params'] if act_param['name'] == param['name'])
 
         if act_param['type'] != 'list': continue
+        if type(param['value']) is not str: continue
         
         # convert to list
-        param['value'] = param['value'].split(';')
+        param['value'] = param['value'].split(',')
 # ---------------------------------------------------------------------------
 
 # login credentials
