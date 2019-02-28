@@ -17,8 +17,8 @@ export default class Console extends Component {
 		}
 
 		if (data.action == 'multiple') {
-			let { logList } = this.state;
-			logList = [ ...data.message.reverse(), ...logList ];
+			// overwrite logs from server logs
+			const logList = [ ...data.message.reverse() ];
 			this.setState({ logList });
 			return;
 		}
