@@ -14,7 +14,7 @@ export default class Dashboard extends Component {
 								`http://${location.host}` +
 								'/grafana/d-solo/iRL_jxrmz/stats-1h-group-by-1m?orgId=1&refresh=10s&var-Time=1m&panelId=2'
 							}
-							title='Follower Stats 1h'
+							title='Bot activity past hour'
 						/>
 					</div>
 
@@ -24,7 +24,7 @@ export default class Dashboard extends Component {
 								`http://${location.host}` +
 								'/grafana/d-solo/I5CAML9mz/stats-24h-group-by-10m?refresh=10s&orgId=1&panelId=2'
 							}
-							title='Follower Stats 24h'
+							title='Bot activity past 24h'
 						/>
 					</div>
 
