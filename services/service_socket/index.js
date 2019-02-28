@@ -97,6 +97,8 @@ class bot_handler {
 		this.clicked = true;
 		this.running = false;
 		this.namespace = namespace;
+		// clear logs
+		this.messages = [];
 
 		this.statusChanged();
 		const container = docker.getContainer(this.containerID);
