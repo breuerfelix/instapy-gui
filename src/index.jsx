@@ -39,7 +39,7 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								<Route exact path='/' render={() => <Redirect to='/start' /> } />
+								<Route exact path='/' render={() => <Redirect to='/dashboard' /> } />
 								<Route
 									path='/account'
 									component={ Account }
