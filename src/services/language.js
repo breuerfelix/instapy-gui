@@ -45,6 +45,8 @@ class Language {
 		button_add: 'add',
 		button_start: 'start',
 		button_stop: 'stop',
+		button_login: 'login',
+		button_logout: 'logout',
 
 		status: 'Status',
 		status_loading: 'loading',

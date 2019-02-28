@@ -1,8 +1,10 @@
 import { h, render, Component } from 'preact';
 import { SocketService, ConfigService, translate } from 'services';
 import classNames from 'classnames';
+import { connect } from 'store';
+import { withRouter } from 'react-router-dom';
 
-export default class StartBot extends Component {
+class StartBot extends Component {
 	state = {
 		namespaces: [],
 		namespace: null,
@@ -13,6 +15,17 @@ export default class StartBot extends Component {
 	toggleBot = e => {
 		e.preventDefault();
 		const { namespace, running } = this.state;
+
+		if (!running) {
+			// that means, bot will be started
+			const { username, history } = this.props;
+
+			// redirect to login page if not logged in
+			if (!username) {
+				history.push('/account/login');
+				return;
+			}
+		}
 
 		SocketService.send({
 			handler: 'bot_state',
@@ -129,3 +142,5 @@ export default class StartBot extends Component {
 		);
 	}
 }
+
+export default withRouter(connect('username')(StartBot));
