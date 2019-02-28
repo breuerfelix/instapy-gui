@@ -41,6 +41,12 @@ class StartBot extends Component {
 			handler: 'bot_state',
 			action: 'get'
 		});
+
+		// refresh logs, since they get deleted on start
+		SocketService.send({
+			handler: 'logger',
+			action: 'get'
+		});
 	}
 
 	namespaceChanged = e => {
