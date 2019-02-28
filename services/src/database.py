@@ -36,7 +36,7 @@ def init_quickstart_hashtag():
     namespace_table.insert({
         'ident': 'quickstart-basics',
         'name': 'Quickstart for Starters',
-        'description': 'Use this template if you want to follow users based on a given hashtag.'
+        'description': 'This template likes, comments and follows people which are following therock and barackobama.'
     })
 
     job_table.insert({
@@ -204,7 +204,7 @@ def init_quickstart_hashtag():
             {
                 'position': 0,
                 'name': 'usernames',
-                'value': 'therock;barackobama'
+                'value': 'therock,barackobama'
             },
             {
                 'position': 1,

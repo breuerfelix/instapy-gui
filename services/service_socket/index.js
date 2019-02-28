@@ -8,9 +8,11 @@ class bot_handler {
 	constructor() {
 		this.messages = [];
 		this.running = false;
-		this.status = 'stopped';
+		// exited, loading, running
+		this.status = 'exited';
 		this.containerID = null;
 		this.namespace = '';
+		this.clicked = false;
 
 		const containers = docker.listContainers({ all: true }).then(this.findContainer.bind(this));
 		setInterval(this.checkContainerStatus.bind(this), 2000);
@@ -32,6 +34,7 @@ class bot_handler {
 
 	checkContainerStatus() {
 		if (!this.containerID) return;
+		if (this.clicked) return;
 
 		const container = docker.getContainer(this.containerID);
 		container.inspect().then(con => {
@@ -86,18 +89,24 @@ class bot_handler {
 
 	start(namespace) {
 		if (this.running) return;
+		if (this.clicked) return;
 		if (!this.containerID) return;
-		if (this.status != 'stopped' && this.status != 'exited') return;
+		if (this.status != 'exited') return;
 
 		this.status = 'loading';
-		this.running = true;
+		this.clicked = true;
+		this.running = false;
 		this.namespace = namespace;
+		// clear logs
+		this.messages = [];
 
 		this.statusChanged();
 		const container = docker.getContainer(this.containerID);
 		container.start().then(() => {
-			this.running = true;
+			this.running = false;
 			this.status = 'loading';
+			// wait for the next status update to get new status
+			this.clicked = false;
 			this.statusChanged();
 		});
 	}
@@ -119,13 +128,16 @@ class bot_handler {
 	stop() {
 		this.running = true;
 		this.status = 'loading';
+		this.clicked = true;
 		this.namespace = '';
 
 		const container = docker.getContainer(this.containerID);
 		container.stop({ t: 10 }).then(() => {
 			this.status = 'loading';
-			this.running = false;
+			this.running = true;
 			this.namespace = '';
+			// wait for next status update to get new status
+			this.clicked = false;
 			this.statusChanged();
 		});
 	}
