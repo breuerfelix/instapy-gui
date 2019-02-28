@@ -38,13 +38,6 @@ export default class SideBar extends Component {
 					</div>
 
 					<MenuItem
-						label='sidebar_start'
-						icon='fas fa-play'
-						link='/start'
-						level='top'
-					/>
-
-					<MenuItem
 						label='sidebar_dashboard'
 						icon='fas fa-chart-line'
 						link='/dashboard'
@@ -55,6 +48,13 @@ export default class SideBar extends Component {
 						label='sidebar_configuration'
 						icon='fas fa-sliders-h'
 						link='/configuration/namespaces'
+						level='top'
+					/>
+
+					<MenuItem
+						label='sidebar_start'
+						icon='fas fa-play'
+						link='/start'
 						level='top'
 					/>
 

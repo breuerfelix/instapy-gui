@@ -86,7 +86,6 @@ services:
     networks:
       - instapy-net
 
-
 networks:
   instapy-net:
     driver: bridge
