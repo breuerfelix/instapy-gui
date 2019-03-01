@@ -1,6 +1,17 @@
-var path = require('path');
+// TODO split this service up in different files
 var Docker = require('dockerode');
-var docker = new Docker({ socketPath: '/var/run/docker.sock' });
+var docker = null;
+var filesystem = process.env.FILESYSTEM;
+
+if	(filesystem && filesystem == 'windows') {
+	docker = new Docker({
+		host: 'host.docker.internal',
+		port: 2375,
+		protocol: 'https'
+	});
+} else {
+	docker = new Docker({ socketPath: '/var/run/docker.sock' });
+}
 
 const USERS = [];
 
@@ -162,7 +173,7 @@ class bot_handler {
 const botHandler = new bot_handler();
 
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 3001 });
+const wss = new WebSocket.Server({ port: 80 });
 
 function botStateHandler(data, socket) {
 	if (data.action == 'get') {
