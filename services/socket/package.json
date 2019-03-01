@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Felix Breuer",
@@ -13,5 +14,8 @@
   "dependencies": {
     "dockerode": "^2.5.8",
     "ws": "^6.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }

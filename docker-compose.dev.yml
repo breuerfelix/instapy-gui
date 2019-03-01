@@ -1,0 +1,25 @@
+version: '3'
+services:
+  instapy:
+    volumes:
+      - ./services/instapy:/usr/instapy/services/instapy
+      - ./services/python_shared:/usr/instapy/services/python_shared
+  config:
+    volumes:
+      - ./services/config:/usr/instapy/services/config
+      - ./services/python_shared:/usr/instapy/services/python_shared
+    environment:
+      - MODE=development
+    ports:
+      - 3002:80
+  socket:
+    command: ['npm', 'run', 'dev']
+    volumes:
+      - ./services/socket:/usr/instapy
+    ports:
+      - 3001:80
+  grafana:
+    volumes:
+      - ./conf/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./conf/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./conf/grafana/dashboards:/etc/grafana/provisioning/dashboards
