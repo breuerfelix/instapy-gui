@@ -55,8 +55,10 @@ def get_actions():
 
     return actions
 
+import sys
+sys.path.append('../')
 
-from src import action_table, db
+from python_shared import action_table, db
 from tinydb import where
 
 if __name__ == '__main__':

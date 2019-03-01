@@ -3,13 +3,15 @@ import os
 # docker.for.mac.localhost -> dev on mac
 # docker.for.windows.localhost -> dev on windows
 # instapy-socket -> production
-socket_endpoint = getenv('SOCKET_HOST') or 'docker.for.mac.localhost'
+# host.docker.internal -> dev 
+socket_endpoint = getenv('SOCKET_HOST') or 'instapy-socket'
+socket_port = getenv('SOCKET_PORT') or 80
 
 from websocket import create_connection
 import json
 import sys
 
-socket = create_connection(f'ws://{socket_endpoint}:3001')
+socket = create_connection(f'ws://{socket_endpoint}:{socket_port}')
 message = {
     'handler': 'namespace',
     'action': 'get'
@@ -33,8 +35,11 @@ from tinydb import where
 
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
-from src import db, account_table, job_table, action_table
-from src import ASSETS
+
+import sys
+sys.path.append('../')
+from python_shared import db, account_table, job_table, action_table
+from python_shared import ASSETS
 
 
 class my_handler(logging.Handler):
@@ -46,7 +51,7 @@ class my_handler(logging.Handler):
         self.setFormatter(logger_formatter)
 
     def connect(self):
-        self.socket = create_connection(f'ws://{socket_endpoint}:3001')
+        self.socket = create_connection(f'ws://{socket_endpoint}:{socket_port}')
 
     def disconnect(self):
         self.socket.close()
@@ -97,12 +102,15 @@ insta_username = user['username']
 insta_password = user['password']
 
 # influx db credentials
-user_influxdb = getenv('INFLUXDB_USER') or 'instapy'
-password_influxdb = getenv('INFLUXDB_PASSWORD') or 'instapysecret'
-db_influxdb = getenv('INFLUXDB_DB') or 'instapy'
-host_influxdb = getenv('INFLUXDB_HOST') or 'localhost'
-port_influxdb = getenv('INFLUXDB_PORT') or 8086
-port_influxdb = int(port_influxdb)
+influx_port = getenv('INFLUXDB_PORT') or 8086
+influx_port = int(influx_port)
+influxdb_options = {
+    'user': getenv('INFLUXDB_USER') or 'instapy',
+    'password': getenv('INFLUXDB_PASSWORD') or 'instapysecret',
+    'database': getenv('INFLUXDB_DB') or 'instapy',
+    'host': getenv('INFLUXDB_HOST') or 'localhost',
+    'port': influx_port
+}
 
 # set assets folder as a workspace
 set_workspace(ASSETS)
@@ -114,11 +122,7 @@ session = InstaPy(username = insta_username,
                   show_logs = True,
                   log_handler = log_handler,
                   browser_binary_path = '/usr/bin/chromedriver',
-                  user_influx = user_influxdb,
-                  password_influx = password_influxdb,
-                  db_influx = db_influxdb,
-                  host_influx = host_influxdb,
-                  port_influx = port_influxdb)
+                  influxdb = influxdb_options)
 
 # function that will be executed before sig kill, to the browser window closes
 def exit_browser(*args):

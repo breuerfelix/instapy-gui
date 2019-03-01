@@ -1,10 +1,8 @@
 assets
-.git
-node_modules
-package-lock.json
-.DS_Store
-__pycache__
-*.pyc
 src
-services/service_socket/node_modules
-services/service_socket/package-lock.json
+.git
+**/node_modules
+**/package-lock.json
+**/.DS_Store
+**/__pycache__
+**/*.pyc

@@ -1,0 +1,17 @@
+{
+  "name": "instapy-service-socket",
+  "version": "1.0.0",
+  "description": "service which starts and stops instapy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Felix Breuer",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "dockerode": "^2.5.8",
+    "ws": "^6.1.4"
+  }
+}
