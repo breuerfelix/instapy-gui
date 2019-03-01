@@ -15,10 +15,14 @@ services:
     build:
       context: .
       dockerfile: services/config/Dockerfile
+    ports:
+      - 3002:80
   socket:
     build: ./services/socket
     environment:
       - FILESYSTEM=unix
+    ports:
+      - 3001:80
     volumes:
       - /var/run/docker.sock/:/var/run/docker.sock
   chronograf:
