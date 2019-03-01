@@ -8,6 +8,7 @@
 		"test": "npm run lint",
 		"start": "webpack-dev-server --open --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
+		"dev": "docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.dev.yml up -d",
 		"build:electron": "webpack --config webpack.electron.config.js",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
 		"lint:fix": "eslint --fix --config .eslintrc.yml --ext jsx --ext js src"
