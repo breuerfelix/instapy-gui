@@ -2,7 +2,9 @@ import json
 from flask import Blueprint, request
 from tinydb import where
 
-from src import namespace_table, job_table
+import sys
+sys.path.append('../')
+from python_shared import namespace_table, job_table
 
 namespaces = Blueprint('namespaces', __name__)
 

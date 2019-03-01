@@ -1,0 +1,48 @@
+version: '3'
+services:
+  instapy:
+    build:
+      context: .
+      dockerfile: services/instapy/Dockerfile
+    # environment:
+      # - SOCKET_HOST=host.docker.internal
+      # - SOCKET_PORT=3001
+  webserver:
+    build:
+      context: .
+      dockerfile: conf/webserver.Dockerfile
+  config:
+    build:
+      context: .
+      dockerfile: services/config/Dockerfile
+  socket:
+    build: ./services/socket
+    environment:
+      - FILESYSTEM=unix
+    volumes:
+      - /var/run/docker.sock/:/var/run/docker.sock
+  chronograf:
+    image: chronograf:alpine
+    container_name: instapy-chronograf
+    restart: unless-stopped
+    ports:
+      - 8888:8888
+    depends_on:
+      - influxdb
+    volumes:
+      - instapy-chronograf:/var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=instapy
+      - INFLUXDB_PASSWORD=instapysecret
+    networks:
+      - instapy-net
+  grafana:
+    build:
+      context: .
+      dockerfile: conf/grafana.Dockerfile
+    ports:
+      - 3000:3000
+
+volumes:
+  instapy-chronograf:

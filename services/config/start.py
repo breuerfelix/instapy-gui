@@ -7,10 +7,15 @@ import eventlet.wsgi
 from flask import Flask, request
 from flask_cors import CORS
 
-from src import db, init_db
-from service_config import actions, account, namespaces
+import sys
+sys.path.append('../')
+from python_shared import db, init_db
 
-PORT = 3000
+from account import account
+from actions import actions
+from namespaces import namespaces
+
+PORT = 80
 
 app = Flask(__name__)
 app.register_blueprint(actions)

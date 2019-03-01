@@ -2,7 +2,9 @@ import json
 from flask import Blueprint
 from tinydb import where
 
-from src import action_table as db
+import sys
+sys.path.append('../')
+from python_shared import action_table as db
 
 actions = Blueprint('actions', __name__)
 
