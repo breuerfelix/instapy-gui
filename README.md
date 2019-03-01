@@ -18,20 +18,15 @@ __note__:  change environment varibales in `docker-compose.yml` if needed
 
 # how to start developing
 
-## develop frontend
-
-* `docker-compose up -d`
+* `npm install`
+* `npm run dev` to start all containers
+	* all files from the repository will be mounted
+	* live reloading inside containers is activated
+	* you can start editing files and see the results instantly
 * `npm start`
-* open `localhost:8080`
+* open `localhost:8080` to see live reloading website which connects to docker backend
+* open `localhost/grafana` to see the admin grafana dashboard
+* open `localhost:8888` to see influxdb admin panel
 
-the frontend will connect to your docker backend.
+* `docker-compose down` to stop all docker containers
 
-## develop backend
-
-* run `docker-compose up -d` to start all services
-* once you changed one service run
-	* run `docker-compose build <service-name>`
-	* service names: config, socket, webserver, instapy, grafana
-	* instapy service takes long time to build, avoid rebuilding this one
-* run `docker-compose up -d` which will reload all new built containers
-* test your changes !
