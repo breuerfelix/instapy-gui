@@ -18,19 +18,20 @@ __note__:  change environment varibales in `docker-compose.yml` if needed
 
 # how to start developing
 
-## backend
+## develop frontend
 
-* `cd services`
-* `pip3 install -r req_config.txt`
-* `pip3 install -r req_instapy.txt`
-* run `python3 get_actions.py`
-* run `python3 config_service.py`
-* open another terminal tab
-* `cd services/service_socket`
-* run `npm install`
-* run `node index.js`
-
-## frontend
-
+* `docker-compose up -d`
 * `npm start`
 * open `localhost:8080`
+
+the frontend will connect to your docker backend.
+
+## develop backend
+
+* run `docker-compose up -d` to start all services
+* once you changed one service run
+	* run `docker-compose build <service-name>`
+	* service names: config, socket, webserver, instapy, grafana
+	* instapy service takes long time to build, avoid rebuilding this one
+* run `docker-compose up -d` which will reload all new built containers
+* test your changes !
