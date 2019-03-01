@@ -3,8 +3,6 @@ from tinydb import TinyDB, where
 
 from .settings import DATABASE
 
-print('using database: ' + DATABASE)
-
 db = TinyDB(DATABASE)
 
 # tables
