@@ -50,7 +50,7 @@ export default class EditJob extends Component {
 		});
 
 		return (
-			<form>
+			<form style={{ marginTop: '1rem' }}>
 				{ configs }
 			</form>
 		);

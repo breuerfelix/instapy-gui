@@ -68,7 +68,8 @@ class bot_handler {
 
 	findContainer(containers) {
 		for (let container of containers) {
-			if (container.Image != 'felixbreuer/instapy' && container.Image != 'felixbreuer/instapy:latest') continue;
+			if (container.Image != 'felixbreuer/instapy' &&
+				container.Image != 'felixbreuer/instapy:latest') continue;
 
 			this.containerID = container.Id;
 			console.log('container found!');
