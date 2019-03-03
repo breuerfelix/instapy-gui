@@ -19,6 +19,7 @@ __note__:  change environment varibales in `docker-compose.yml` if needed
 # how to start developing
 
 * `npm install`
+* `npm run build`
 * `npm run dev` to start all containers
 	* all files from the repository will be mounted
 	* live reloading inside containers is activated
