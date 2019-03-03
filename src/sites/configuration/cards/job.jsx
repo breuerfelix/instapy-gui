@@ -3,6 +3,7 @@ import { translate } from 'services';
 import { connect } from 'store';
 import $ from 'jquery';
 import { EditJob } from '../components';
+import Markup from 'preact-markup';
 
 @connect('actions')
 export default class JobCard extends Component {
@@ -126,7 +127,9 @@ export default class JobCard extends Component {
 
 					<div className="collapse" ref={ body => this.body = body }>
 						<div className='card-body' style={{ padding: '5px 5px 5px 5px' }}>
-							<InfoArea action={ action } />
+							{ action.description &&
+								<InfoArea action={ action } />
+							}
 							<EditJob ref={ edit => this.editJob = edit } job={ job } action={ action } />
 						</div>
 					</div>
@@ -167,14 +170,17 @@ class InfoArea extends Component {
 
 	render({ action }, { expanded }) {
 		const infoText = expanded ? 'job_hide_info' : 'job_show_info';
+		// replace newline with br so render html
+		// add other conversions here
+		const content = action.description.replace('\n', '<br />');
 
 		return (
-			<div style={{ margin: '5px 15px 10px 15px' }}>
+			<div style={{ margin: '5px 15px 0 15px' }}>
 
 				<div className='collapse' ref={ body => this.body = body }>
 					<div style={{ padding: '10px 0' }}>
 						<div className='alert alert-primary' style={{ margin: 0 }}>
-							{ action.description }
+							<Markup markup={ content } />
 						</div>
 					</div>
 				</div>
