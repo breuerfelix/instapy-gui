@@ -69,6 +69,9 @@ class Language {
 		namespace_description_label: 'Description',
 		namespace_description_placeholder: 'i need to buy milk',
 
+		job_show_info: 'show info',
+		job_hide_info: 'hide info',
+
 		actions_title: 'Add Action',
 		input_search_placeholder: 'search ...',
 		actions_tab_set: 'set',
