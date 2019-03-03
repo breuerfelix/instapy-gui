@@ -14,7 +14,7 @@ export default class JobCard extends Component {
 
 	componentWillMount() {
 		const { job } = this.props;
-		this.setState({ job });
+		this.setState({ job, expanded: false });
 		$(this.body).collapse('hide');
 	}
 
@@ -125,7 +125,8 @@ export default class JobCard extends Component {
 					</div>
 
 					<div className="collapse" ref={ body => this.body = body }>
-						<div className="card-body">
+						<div className='card-body' style={{ padding: '5px 5px 5px 5px' }}>
+							<InfoArea action={ action } />
 							<EditJob ref={ edit => this.editJob = edit } job={ job } action={ action } />
 						</div>
 					</div>
@@ -147,3 +148,48 @@ const IconButton = ({ icon, onclick }) => (
 		</i>
 	</button>
 );
+
+class InfoArea extends Component {
+	state = {
+		expanded: false
+	}
+
+	toggleInfo = e => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		// do nothing if currentlu opening or closing
+		if ($(this.body).hasClass('collapsing')) return;
+
+		this.setState({ expanded: !this.state.expanded });
+		$(this.body).collapse('toggle');
+	}
+
+	render({ action }, { expanded }) {
+		const infoText = expanded ? 'job_hide_info' : 'job_show_info';
+
+		return (
+			<div style={{ margin: '5px 15px 10px 15px' }}>
+
+				<div className='collapse' ref={ body => this.body = body }>
+					<div style={{ padding: '10px 0' }}>
+						<div className='alert alert-primary' style={{ margin: 0 }}>
+							{ action.description }
+						</div>
+					</div>
+				</div>
+
+				<div className='row align-items-center' style={{ fontSize: '80%' }}>
+					<div class='col'><hr /></div>
+					<div class='col-auto'>
+						<a onClick={ this.toggleInfo } href='#' style={{ color: 'black' }}>
+							{ translate(infoText) }
+						</a>
+					</div>
+					<div class='col'><hr /></div>
+				</div>
+
+			</div>
+		);
+	}
+}
