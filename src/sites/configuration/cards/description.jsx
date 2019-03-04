@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { translate } from 'services';
+import Markup from 'preact-markup';
 
 const DescriptionCard = ({ namespace, height = '200px' }) => (
 	<div className='card' style={{ height }}>
@@ -9,7 +10,7 @@ const DescriptionCard = ({ namespace, height = '200px' }) => (
 		</div>
 
 		<div className='card-body'>
-			{ namespace.description }
+			<Markup markup={ namespace.description } />
 		</div>
 
 	</div>
