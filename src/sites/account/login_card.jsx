@@ -19,6 +19,8 @@ class LoginCard extends Component {
 	}
 
 	logout = e => {
+		e.preventDefault();
+
 		const { setUsername, history } = this.props;
 
 		AccountService.setLoginCredentials('', '');
@@ -27,6 +29,7 @@ class LoginCard extends Component {
 	}
 
 	login = e => {
+		// TODO handle this when pressing enter key
 		e.preventDefault();
 
 		const { username, password } = this.state;
@@ -58,9 +61,9 @@ class LoginCard extends Component {
 		});
 
 		return (
-			<div className="card">
-				<form>
-					<div className="card-header">
+			<div className='card'>
+				<form onSubmit={ this.login }>
+					<div className='card-header'>
 						{ translate('login_title') }
 					</div>
 					<div className="card-body">
@@ -99,7 +102,7 @@ class LoginCard extends Component {
 							</button>
 						</div>
 						<div style={{ textAlign: 'right' }}>
-							<button type='submit' onClick={ this.login } className='btn btn-outline-dark'>
+							<button type='submit' className='btn btn-outline-dark'>
 								{ translate('button_login') }
 							</button>
 						</div>
