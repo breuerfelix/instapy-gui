@@ -105,17 +105,19 @@ export default class JobCard extends Component {
 										icon='fas fa-cog'
 										onclick={ this.toggleCard }
 									/>
-									<a
-										className='btn btn-outline-dark fas fa-info noselect'
-										style={{ borderWidth : 0 }}
-										tabindex='0'
-										data-container='body'
-										data-trigger='focus'
-										data-toggle='popover'
-										data-placement='top'
-										data-content={ action.description }
-										onClick={ e => e.stopPropagation() }
-									/>
+									{ false && // popover info icon for the description
+										<a
+											className='btn btn-outline-dark fas fa-info noselect'
+											style={{ borderWidth : 0 }}
+											tabindex='0'
+											data-container='body'
+											data-trigger='focus'
+											data-toggle='popover'
+											data-placement='top'
+											data-content={ action.description }
+											onClick={ e => e.stopPropagation() }
+										/>
+									}
 									<IconButton
 										icon='fas fa-trash-alt'
 										onclick={ e => { e.stopPropagation(); deleteJob(job); } }
