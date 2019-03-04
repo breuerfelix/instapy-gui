@@ -10,7 +10,7 @@ export default class Start extends Component {
 	}
 
 	render(props, { namespace }) {
-		const firstRowHeight = '250px';
+		const firstRowHeight = '230px';
 		return (
 			<div>
 				<div className='row'>
