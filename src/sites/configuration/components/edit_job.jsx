@@ -6,21 +6,18 @@ import $ from 'jquery';
 
 export default class EditJob extends Component {
 	validate = () => {
-		// TODO remove this, just for debug until we know when its optional
-		return true;
-		/*
 		if (!this.configs) return false;
 
-		var oneFail = false;
+		let oneFail = false;
 		for (let config of this.configs) {
 			if (config.validate()) continue;
 
 			oneFail = true;
+			// dont break so all configs are able to validate
 			continue;
 		}
 
 		return !oneFail;
-		*/
 	}
 
 	render({ job, action }) {
@@ -93,6 +90,9 @@ class ConfigItem extends Component {
 		else if (param.type.startsWith('list')) {
 			// TODO make a proper list view
 			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
+		} else if (param.type.startsWith('tuple')) {
+			// TODO make a proper tuple view
+			valueInput = <InputBox ref={ inp => this.valueInput = inp } param={ param } values={ values } />;
 		}
 
 		return (
@@ -114,9 +114,9 @@ class InputBox extends Component {
 	}
 
 	validate = () => {
-		const { type = 'text', values } = this.props;
+		const { type = 'text', values, param } = this.props;
 
-		// TODO maybe not test if paramter is optional or just test type
+		if (param.optional) return true;
 
 		if (type == 'text') {
 			let error = false;
@@ -164,7 +164,9 @@ class BooleanBox extends Component {
 	}
 
 	validate = () => {
-		const { values } = this.props;
+		const { values, param } = this.props;
+
+		if (param.optional) return true;
 
 		this.setState({
 			error: values.value == null || values.value == undefined

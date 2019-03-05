@@ -40,6 +40,7 @@ export default class JobCard extends Component {
 	updateJob = e => {
 		e.stopPropagation();
 
+		console.log(this.state.action)
 		// return if validation is not true
 		if (!this.editJob.validate()) {
 			// open card if error occured
@@ -60,7 +61,7 @@ export default class JobCard extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// do nothing if currentlu opening or closing
+		// do nothing if opening or closing
 		if ($(this.body).hasClass('collapsing')) return;
 
 		this.setState({ expanded: !this.state.expanded });
