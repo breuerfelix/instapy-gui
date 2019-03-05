@@ -42,8 +42,14 @@ def get_actions():
             param['position'] = index - 1
             param['name'] = str(para)
 
-            # TODO someone please fix this condition
-            param['defaultValue'] = None if str(actual_param.default) == '<class \'inspect._empty\'>' else actual_param.default
+            # TODO someone please fix these condition
+            if str(actual_param.default) == '<class \'inspect._empty\'>':
+                param['defaultValue'] = None
+                param['optional'] = False
+            else:
+                param['defaultValue'] = actual_param.default
+                param['optional'] = True
+
             # save type of the annotation
             param['type'] = None if str(actual_param.annotation) == '<class \'inspect._empty\'>' else actual_param.annotation.__name__
 
