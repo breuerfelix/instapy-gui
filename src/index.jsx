@@ -39,7 +39,7 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								<Route exact path='/' render={() => <Redirect to='/dashboard' /> } />
+								<Route exact path='/' render={ () => <Redirect to='/dashboard' /> } />
 								<Route
 									path='/account'
 									component={ Account }
@@ -68,6 +68,6 @@ class App extends Component {
 }
 
 render(
-	<Provider store={store}>
+	<Provider store={ store }>
 		<App />
 	</Provider>, document.body);

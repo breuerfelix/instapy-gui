@@ -38,8 +38,17 @@ class bot_handler {
 
 		const stringPing = JSON.stringify(ping);
 
+		this.sendAll(stringPing);
+	}
+
+	sendAll(message) {
 		for (let user of USERS) {
-			user.send(stringPing);
+			try {
+				user.send(message);
+			} catch (e) {
+				console.error('sending message to websocket');
+				console.error(e);
+			}
 		}
 	}
 
@@ -93,10 +102,7 @@ class bot_handler {
 		};
 
 		const stringLog = JSON.stringify(log);
-
-		for (let user of USERS) {
-			user.send(stringLog);
-		}
+		this.sendAll(stringLog);
 	}
 
 	start(namespace) {
@@ -130,11 +136,9 @@ class bot_handler {
 			running: this.running,
 			status: this.status
 		};
-		const stringStatus = JSON.stringify(status);
 
-		for (let user of USERS) {
-			user.send(stringStatus);
-		}
+		const stringStatus = JSON.stringify(status);
+		this.sendAll(stringStatus);
 	}
 
 	stop() {

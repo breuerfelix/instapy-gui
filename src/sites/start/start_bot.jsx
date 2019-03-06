@@ -53,6 +53,9 @@ class StartBot extends Component {
 		const { namespaces } = this.state;
 		const namespace = namespaces.find(x => x.ident == e.target.value);
 		this.setState({ namespace });
+
+		const { namespaceChanged } = this.props;
+		namespaceChanged(namespace);
 	}
 
 	recieveSocketData = data => {
@@ -78,7 +81,11 @@ class StartBot extends Component {
 				this.setState({ namespaces });
 
 				// set first namespace if there is one
-				if (namespaces) this.setState({ namespace: namespaces[0] });
+				if (namespaces) {
+					this.setState({ namespace: namespaces[0] });
+					const { namespaceChanged } = this.props;
+					namespaceChanged(namespaces[0]);
+				}
 			});
 	}
 
@@ -94,7 +101,7 @@ class StartBot extends Component {
 		SocketService.unregister(this);
 	}
 
-	render(props, { namespaces, namespace, running, status }) {
+	render({ height }, { namespaces, namespace, running, status }) {
 		const namespaceOptions = namespaces.map(namespace =>
 			<option value={ namespace.ident }>{ namespace.name }</option>
 		);
@@ -110,7 +117,7 @@ class StartBot extends Component {
 		});
 
 		return (
-			<div className='card'>
+			<div className='card' style={{ height }}>
 				<div className='card-header'>
 					{ translate('startbot_title') }
 				</div>
@@ -127,10 +134,20 @@ class StartBot extends Component {
 				</div>
 				<div className='card-footer row align-items-center'>
 					<div className='col'>
-						{ translate('status') }:<span className={ statusBadge } style={{ marginLeft: '7px' }}>{ translate(statusText) }</span>
+						{ translate('status') }:
+						<span
+							className={ statusBadge }
+							style={{ marginLeft: '7px' }}
+						>
+							{ translate(statusText) }
+						</span>
 					</div>
 					<div className='col' style={{ textAlign: 'right' }}>
-						<button onClick={ this.toggleBot } className='btn btn-outline-dark' disabled={ status == 'loading' }>
+						<button
+							onClick={ this.toggleBot }
+							className='btn btn-outline-dark'
+							disabled={ status == 'loading' }
+						>
 							{ status == 'loading' &&
 								<span
 									className='spinner-border spinner-border-sm'
