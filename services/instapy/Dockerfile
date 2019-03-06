@@ -2,9 +2,8 @@ FROM python:3-alpine
 
 WORKDIR /usr/instapy
 
-COPY services/instapy /usr/instapy/services/instapy
-COPY services/python_shared /usr/instapy/services/python_shared
+COPY . .
 
-RUN sh services/instapy/setup.sh
+RUN sh setup.sh
 
-CMD ["sh", "services/instapy/start.sh"]
+CMD ["sh", "start.sh"]

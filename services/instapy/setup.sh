@@ -8,5 +8,5 @@ apk add chromium
 apk add chromium-chromedriver
 
 # python packages
-pip3 install -r services/instapy/requirements.txt
+pip3 install -r requirements.txt
 pip3 uninstall -y instapy-chromedriver
