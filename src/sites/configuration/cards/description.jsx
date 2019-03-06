@@ -1,15 +1,16 @@
 import { h } from 'preact';
 import { translate } from 'services';
+import Markup from 'preact-markup';
 
-const DescriptionCard = ({ namespace }) => (
-	<div className="card" style={{ height: '200px' }}>
+const DescriptionCard = ({ namespace, height = '200px' }) => (
+	<div className='card' style={{ height }}>
 
-		<div className="card-header">
+		<div className='card-header'>
 			{ translate('namespaces_description') }
 		</div>
 
-		<div className="card-body">
-			{ namespace.description }
+		<div className='card-body'>
+			<Markup markup={ namespace.description } />
 		</div>
 
 	</div>

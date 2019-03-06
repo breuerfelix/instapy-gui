@@ -17,7 +17,7 @@ services:
     environment:
       - FILESYSTEM=unix
     volumes:
-      - /var/run/docker.sock/:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
   chronograf:
     image: chronograf:alpine
     container_name: instapy-chronograf

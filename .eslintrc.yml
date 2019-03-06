@@ -2,6 +2,8 @@ env:
   node: true
   es6: true
   browser: true
+plugins:
+  - 'react'
 extends:
   - 'eslint:recommended'
 parser: 'babel-eslint'
@@ -12,28 +14,33 @@ parserOptions:
     jsx: true
     legacyDecorators: true
 rules:
-  indent:
+  'indent':
     - error
     - tab
     - SwitchCase: 1
-  linebreak-style:
+  'linebreak-style':
     - error
     - unix
-  quotes:
+  'quotes':
     - error
     - single
-  semi:
+  'semi':
     - error
     - always
-  "no-unused-vars":
+  'no-unused-vars':
     - 0
-  "no-console": 0
-  "keyword-spacing":
+  'no-console': 0
+  'keyword-spacing':
     - error
-  "no-mixed-spaces-and-tabs":
+  'no-mixed-spaces-and-tabs':
     - error
-  "object-curly-spacing":
+  'object-curly-spacing':
     - error
     - always
-  "no-trailing-spaces":
+  'no-trailing-spaces':
     - error
+  'react/jsx-curly-spacing':
+    - 2
+    - when: 'always'
+      spacing:
+        objectLiterals: 'never'

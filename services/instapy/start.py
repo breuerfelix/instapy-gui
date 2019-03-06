@@ -90,11 +90,13 @@ for job in jobs:
     for param in job['params']:
         act_param = next(act_param for act_param in action['params'] if act_param['name'] == param['name'])
 
-        if act_param['type'] != 'list': continue
         if type(param['value']) is not str: continue
-        
-        # convert to list
-        param['value'] = param['value'].split(',')
+
+        if act_param['type'] == 'list' or act_param['type'] == 'tuple':
+            param['value'] = param['value'].split(',')
+
+        if act_param['type'] == 'tuple':
+            param['value'] = tuple(param['value'])
 # ---------------------------------------------------------------------------
 
 # login credentials
