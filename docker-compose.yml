@@ -72,6 +72,17 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=instapysecret
     networks:
       - instapy-net
+  mongo:
+    image: mongo:latest
+    container_name: instapy-mongo
+    restart: unless-stopped
+    volumes:
+      - instapy-mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=instapy
+      - MONGO_INITDB_ROOT_PASSWORD=instapysecret
+    networks:
+      - instapy-net
 
 networks:
   instapy-net:
@@ -81,3 +92,4 @@ volumes:
   instapy-data:
   instapy-influxdb:
   instapy-grafana:
+  instapy-mongo:

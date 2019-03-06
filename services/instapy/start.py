@@ -17,6 +17,7 @@ message = {
     'action': 'get'
 }
 
+# if this throws an exception, service will shut down -> thats okay!
 socket.send(json.dumps(message))
 res = socket.recv()
 socket.close()
@@ -31,16 +32,13 @@ if not namespace: sys.exit(0)
 # start the bot
 import logging
 from signal import signal, SIGUSR1, SIGINT
-from tinydb import where
 
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
 
 import sys
-sys.path.append('../')
-from python_shared import db, account_table, job_table, action_table
-from python_shared import ASSETS
 
+ASSETS = os.path.dirname(os.path.abspath(__file__))
 
 class my_handler(logging.Handler):
     def init(self):
@@ -73,15 +71,21 @@ class my_handler(logging.Handler):
 log_handler = my_handler()
 log_handler.init()
 
-user = account_table.get(where('type') == 'account')
-jobs = job_table.search(where('namespace') == namespace)
+# get data from db
+from database import client
+
+db_name = getenv('MONGO_USER_DB') or 'user'
+db = client[db_name]
+
+user = db.account.find_one()
+jobs = db.namespaces.find({ 'ident': namespace }).jobs
 
 # sort the position of jobs
 jobs.sort(key = lambda job: int(job['position']))
 
 # convert list to actual arrays
 # TODO remove until line if we have a proper list view
-actions = action_table.all()
+actions = client.general.actions.find()
 
 
 for job in jobs:
@@ -98,6 +102,7 @@ for job in jobs:
         if act_param['type'] == 'tuple':
             param['value'] = tuple(param['value'])
 # ---------------------------------------------------------------------------
+client.close()
 
 # login credentials
 insta_username = user['username']
@@ -110,7 +115,7 @@ influxdb_options = {
     'user': getenv('INFLUXDB_USER') or 'instapy',
     'password': getenv('INFLUXDB_PASSWORD') or 'instapysecret',
     'database': getenv('INFLUXDB_DB') or 'instapy',
-    'host': getenv('INFLUXDB_HOST') or 'localhost',
+    'host': getenv('INFLUXDB_HOST') or 'localhost', # TODO change to influxdb
     'port': influx_port
 }
 
