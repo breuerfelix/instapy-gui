@@ -79,6 +79,7 @@ db = client[db_name]
 
 user = db.account.find_one()
 res_jobs = db.namespaces.find_one({ 'ident': namespace })['jobs']
+res_jobs = list(res_jobs)
 
 # sort out non active jobs
 jobs = []
