@@ -12,8 +12,8 @@ export default class IframeCard extends Component {
 					<iframe
 						className="embed-responsive-item"
 						src={ link }
-						frameborder="0"
-						allowfullscreen
+						frameBorder="0"
+						allowFullScreen
 					/>
 				</div>
 			</div>

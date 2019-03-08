@@ -137,7 +137,7 @@ export default class JobCard extends Component {
 										<a
 											className='btn btn-outline-dark fas fa-info noselect'
 											style={{ borderWidth : 0 }}
-											tabindex='0'
+											tabIndex='0'
 											data-container='body'
 											data-trigger='focus'
 											data-toggle='popover'
@@ -216,13 +216,13 @@ class InfoArea extends Component {
 				</div>
 
 				<div className='row align-items-center' style={{ fontSize: '80%' }}>
-					<div class='col'><hr /></div>
-					<div class='col-auto'>
+					<div className='col'><hr /></div>
+					<div className='col-auto'>
 						<a onClick={ this.toggleInfo } href='#' style={{ color: 'black' }}>
 							{ translate(infoText) }
 						</a>
 					</div>
-					<div class='col'><hr /></div>
+					<div className='col'><hr /></div>
 				</div>
 
 			</div>
