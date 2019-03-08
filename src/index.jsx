@@ -11,13 +11,16 @@ import { Provider } from 'unistore/preact';
 import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
 import { Account, Configuration, Start, Dashboard } from 'sites';
+import { setToken } from 'core';
 
-import { MOCK_DATA } from 'config';
+import { MOCK_DATA, PREMIUM } from 'config';
 
 if (MOCK_DATA) {
 	const mocks = require('mocks').default;
 	mocks.apply();
 }
+
+if (!PREMIUM) setToken();
 
 @connect('showSidebar')
 class App extends Component {

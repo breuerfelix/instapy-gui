@@ -1,8 +1,6 @@
 const config = {
 	socketEndpoint: '/socket',
 	apiEndpoint: '/api'
-	//socketEndpoint: 'ws://localhost:3001',
-	//apiEndpoint: 'http://localhost:3000'
 };
 
 const MOCK_DATA = false;

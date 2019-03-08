@@ -2,11 +2,14 @@ FROM python:3-alpine
 
 WORKDIR /usr/instapy
 
-COPY services/config /usr/instapy/services/config
-COPY services/python_shared /usr/instapy/services/python_shared
+COPY . .
 
-RUN sh services/config/setup.sh
+RUN apk add --update --no-cache --virtual .build-dependencies \
+	gcc \
+	musl-dev \
+  && pip3 install -r requirements.txt \
+  && apk del .build-dependencies
 
 EXPOSE 80
 
-CMD ["sh", "services/config/start.sh"]
+CMD ["python3", "start.py"]

@@ -2,12 +2,10 @@ version: '3'
 services:
   instapy:
     volumes:
-      - ./services/instapy:/usr/instapy/services/instapy
-      - ./services/python_shared:/usr/instapy/services/python_shared
+      - ./services/instapy:/usr/instapy
   config:
     volumes:
-      - ./services/config:/usr/instapy/services/config
-      - ./services/python_shared:/usr/instapy/services/python_shared
+      - ./services/config:/usr/instapy
     environment:
       - MODE=development
     ports:

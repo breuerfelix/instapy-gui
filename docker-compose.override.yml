@@ -7,9 +7,7 @@ services:
       context: .
       dockerfile: conf/webserver.Dockerfile
   config:
-    build:
-      context: .
-      dockerfile: services/config/Dockerfile
+    build: ./services/config
   socket:
     build: ./services/socket
     environment:

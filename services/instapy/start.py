@@ -78,14 +78,18 @@ db_name = getenv('MONGO_USER_DB') or 'user'
 db = client[db_name]
 
 user = db.account.find_one()
-jobs = db.namespaces.find({ 'ident': namespace }).jobs
+res_jobs = db.namespaces.find_one({ 'ident': namespace })['jobs']
 
-# sort the position of jobs
-jobs.sort(key = lambda job: int(job['position']))
+# sort out non active jobs
+jobs = []
+for job in res_jobs:
+    if job['active'] == False: continue
+    jobs.append(job)
 
 # convert list to actual arrays
 # TODO remove until line if we have a proper list view
 actions = client.general.actions.find()
+actions = list(actions)
 
 
 for job in jobs:
@@ -115,7 +119,7 @@ influxdb_options = {
     'user': getenv('INFLUXDB_USER') or 'instapy',
     'password': getenv('INFLUXDB_PASSWORD') or 'instapysecret',
     'database': getenv('INFLUXDB_DB') or 'instapy',
-    'host': getenv('INFLUXDB_HOST') or 'localhost', # TODO change to influxdb
+    'host': getenv('INFLUXDB_HOST') or 'influxdb',
     'port': influx_port
 }
 

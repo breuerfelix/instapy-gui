@@ -39,7 +39,6 @@ def get_actions():
             param = dict()
 
             # substract 1 since 0 is the self parameter
-            param['position'] = index - 1
             param['name'] = str(para)
 
             # TODO someone please fix these condition
