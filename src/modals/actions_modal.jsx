@@ -20,6 +20,7 @@ export default class ActionsModal extends Component {
 	render({ actions }, { inputSearch }) {
 		const setActions = actions.filter(action => action.functionName.startsWith('set'));
 		const followActions = actions.filter(action => action.functionName.startsWith('follow'));
+		const likeActions = actions.filter(action => action.functionName.startsWith('like'));
 		const interactActions = actions.filter(action => action.functionName.startsWith('interact'));
 
 		return (
@@ -57,11 +58,13 @@ export default class ActionsModal extends Component {
 							<ul className="nav nav-tabs nav-justified" id="actions-tab" role="tablist">
 								<TabHeader name='set' active={ true } />
 								<TabHeader name='follow' />
+								<TabHeader name='like' />
 								<TabHeader name='interact' />
 							</ul>
 							<div className="tab-content">
 								<TabContent name='set' actions={ setActions } add={ this.addAction } active={ true } />
 								<TabContent name='follow' actions={ followActions } add={ this.addAction } />
+								<TabContent name='like' actions={ likeActions } add={ this.addAction } />
 								<TabContent name='interact' actions={ interactActions } add={ this.addAction } />
 							</div>
 

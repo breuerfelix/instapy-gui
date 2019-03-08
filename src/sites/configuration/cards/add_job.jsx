@@ -8,12 +8,12 @@ const AddJobCard = () => {
 		<div className="col-padding col">
 			<div className="card">
 
-				<div className="card-body row">
+				<div className="card-body" style={{ textAlign: 'center' }}>
 					<a
-						className='fas fa-plus fa-3x col-auto align-self-center'
+						className='fas fa-plus fa-3x'
 						data-toggle='modal'
 						data-target='#actions-modal'
-					></a>
+					/>
 				</div>
 
 			</div>
