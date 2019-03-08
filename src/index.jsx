@@ -13,12 +13,7 @@ import { NavBar, SideBar, Footer } from 'components';
 import { Account, Configuration, Start, Dashboard } from 'sites';
 import { setToken } from 'core';
 
-import { MOCK_DATA, PREMIUM } from 'config';
-
-if (MOCK_DATA) {
-	const mocks = require('mocks').default;
-	mocks.apply();
-}
+import { PREMIUM } from 'config';
 
 if (!PREMIUM) setToken();
 
