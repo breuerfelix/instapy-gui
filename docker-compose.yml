@@ -10,6 +10,8 @@ services:
       - INFLUXDB_USER=instapy
       - INFLUXDB_PASSWORD=instapysecret
       - INFLUXDB_HOST=influxdb
+    depends_on:
+      - mongo
     networks:
       - instapy-net
   webserver:
@@ -21,6 +23,7 @@ services:
       - socket
       - influxdb
       - grafana
+      - mongo
     ports:
       - 80:80
     networks:
@@ -29,6 +32,8 @@ services:
     image: felixbreuer/instapy-config:latest
     container_name: instapy-config
     restart: unless-stopped
+    depends_on:
+      - mongo
     volumes:
       - instapy-data:/usr/instapy/assets
     networks:
@@ -61,6 +66,7 @@ services:
     restart: unless-stopped
     depends_on:
       - influxdb
+      - mongo
     volumes:
       - instapy-grafana:/var/lib/grafana
     environment:

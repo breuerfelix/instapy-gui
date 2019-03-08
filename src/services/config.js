@@ -55,7 +55,7 @@ class ConfigService {
 			jobs
 		};
 
-		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job.uuid}`, data);
+		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job._id.$oid}`, data);
 	}
 
 	async updateJob(job) {
@@ -65,7 +65,7 @@ class ConfigService {
 			job
 		};
 
-		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job.uuid}`, data);
+		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs/${job._id.$oid}`, data);
 	}
 
 	async addJob(job) {

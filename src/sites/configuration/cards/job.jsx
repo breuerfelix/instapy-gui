@@ -33,12 +33,16 @@ export default class JobCard extends Component {
 		if (!newAction) return false;
 
 		this.setState({ action: newAction });
-		// return false so it rerenders cause of set State and return true afterwards
+
+		// return false so it rerenders cause of setState and return true afterwards
 		return false;
 	}
 
 	updateJob = e => {
 		e.stopPropagation();
+
+		// in the validate function all params get set !
+		// never forget calling this, otherwise params wont be updated
 
 		// return if validation is not true
 		if (!this.editJob.validate()) {
