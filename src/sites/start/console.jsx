@@ -50,8 +50,8 @@ export default class Console extends Component {
 				<div className='card-header'>
 					{ translate('console_title') }
 				</div>
-				<div className='card-body'>
-					<ul id='console_window'>
+				<div className='card-body overflow-auto'>
+					<ul>
 						{ logs }
 					</ul>
 				</div>

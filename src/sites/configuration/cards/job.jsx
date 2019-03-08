@@ -1,9 +1,10 @@
 import { h, render, Component } from 'preact';
-import { translate } from 'services';
+import { translate, ConfigService } from 'services';
 import { connect } from 'store';
 import $ from 'jquery';
 import { EditJob } from '../components';
 import Markup from 'preact-markup';
+import classNames from 'classnames';
 
 @connect('actions')
 export default class JobCard extends Component {
@@ -71,6 +72,20 @@ export default class JobCard extends Component {
 		$(this.body).collapse('toggle');
 	}
 
+	toggleActive = async e => {
+		e.preventDefault();
+		e.stopPropagation();
+
+
+		const { job } = this.state;
+		job.active = !job.active;
+		this.setState({ job });
+
+		const response = await ConfigService.updateJob(job);
+		const updatedJob = response.find(j => j._id.$oid == job._id.$oid);
+		this.setState({ job: updatedJob });
+	}
+
 	render({ moveJob, deleteJob, updateJob }, { action, expanded, job }) {
 		// dont render if the action is not loaded yet
 		if (!this.setAction()) return;
@@ -81,6 +96,12 @@ export default class JobCard extends Component {
 		$('[data-toggle="popover"]').popover();
 
 		const headerStyle = expanded ? null : 'border-bottom: 0;';
+		const badgeClass = classNames({
+			'badge': true,
+			'badge-success': job.active,
+			'badge-secondary': !job.active
+		});
+		const badgeString = job.active ? 'badge_enabled' : 'badge_disabled';
 
 		return (
 			<div className="col-padding col">
@@ -92,6 +113,9 @@ export default class JobCard extends Component {
 								{ translate(action.functionName) }
 							</div>
 							<div style={{ textAlign: 'right' }} className='col-md align-self-center'>
+								<a href="#" onClick={ this.toggleActive } className={ badgeClass } style={{ marginRight: '10px' }}>
+									{ translate(badgeString) }
+								</a>
 								<div className="iconnav btn-group" role='group'>
 									<IconButton
 										icon='fas fa-save'
