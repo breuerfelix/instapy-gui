@@ -151,7 +151,7 @@ class InputBox extends Box {
 		// value is default value
 		if (!value) return true;
 
-		const { param, type } = this.props;
+		const { param, type = 'text' } = this.props;
 		if (param.optional) return true;
 
 		if (type == 'text') {
@@ -167,7 +167,7 @@ class InputBox extends Box {
 				this.setState({ error: true });
 			} else {
 				value.value = parseInt(value.value);
-				this.setState({ error: false });
+				this.setState({ error: false, input: value.value });
 			}
 		}
 
