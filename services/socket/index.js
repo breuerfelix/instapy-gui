@@ -148,14 +148,22 @@ class bot_handler {
 		this.namespace = '';
 
 		const container = docker.getContainer(this.containerID);
-		container.stop({ t: 10 }).then(() => {
-			this.status = 'loading';
-			this.running = true;
+		try {
+			container.stop({ t: 10 }).then(() => {
+				this.status = 'loading';
+				this.running = true;
+				this.namespace = '';
+				// wait for next status update to get new status
+				this.clicked = false;
+				this.statusChanged();
+			});
+		} catch (e) {
+			this.status = 'error';
+			this.running = false;
 			this.namespace = '';
-			// wait for next status update to get new status
 			this.clicked = false;
 			this.statusChanged();
-		});
+		}
 	}
 
 	getStatus() {
