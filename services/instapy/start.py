@@ -44,7 +44,7 @@ class my_handler(logging.Handler):
     def init(self):
         self.setLevel(logging.DEBUG)
         logger_formatter = logging.Formatter(
-            '%(levelname)s [%(asctime)s] [%(username)s]  %(message)s',
+            '%(levelname)s [%(asctime)s] %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S')
         self.setFormatter(logger_formatter)
 
