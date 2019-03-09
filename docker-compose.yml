@@ -4,7 +4,7 @@ services:
     image: felixbreuer/instapy:latest
     container_name: instapy
     volumes:
-      - instapy-data:/usr/instapy/assets
+      - instapy-data:/usr/instapy/InstaPy
     environment:
       - INFLUXDB_DB=instapy
       - INFLUXDB_USER=instapy
