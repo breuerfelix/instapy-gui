@@ -4,7 +4,8 @@ import $ from 'jquery';
 
 export default class Console extends Component {
 	state = {
-		logList: []
+		logList: [],
+		scrolled: false
 	}
 
 	recieveSocketData = data => {
@@ -16,7 +17,6 @@ export default class Console extends Component {
 			// remove description cause they crash the UI
 			// TODO fix display of description
 			// TODO render emojis
-			if (data.message.includes('Description')) return;
 
 			logList.push(data.message);
 			this.setState({ logList });
@@ -25,9 +25,12 @@ export default class Console extends Component {
 		if (data.action == 'multiple') {
 			// overwrite logs from server logs
 			// why filter ? read above
-			const logList = [ ...data.message.filter(x => !x.includes('Description')) ];
+			const logList = [ ...data.message ];
 			this.setState({ logList });
 		}
+
+		const { scrolled } = this.state;
+		if (scrolled) return;
 
 		// timeout to the new items are rendered
 		setTimeout(() => {
@@ -36,7 +39,7 @@ export default class Console extends Component {
 			body.animate({
 				scrollTop: body.prop('scrollHeight') - body.prop('clientHeight')
 			}, 1000);
-		}, 250);
+		}, 200);
 	}
 
 	componentWillMount() {
@@ -47,7 +50,22 @@ export default class Console extends Component {
 			handler: 'logger',
 			action: 'get'
 		});
+	}
 
+	componentDidMount() {
+		let enableScroll = null;
+		$(this.body).bind('DOMMouseScroll mousewheel touchmove mousemove', () => {
+			this.setState({ scrolled: true });
+
+			// reset timeout
+			if (enableScroll) {
+				clearTimeout(enableScroll);
+				enableScroll = null;
+			}
+
+			// reenable scrolling after 5 seconds
+			enableScroll = setTimeout(() => this.setState({ scrolled: false }), 5000);
+		});
 	}
 
 	componentWillUnmount() {
@@ -66,11 +84,12 @@ export default class Console extends Component {
 					{ translate('console_title') }
 				</div>
 				<div
-					className='card-body overflow-auto'
-					ref={ body => this.body = body }
-					style={{ whiteSpace: 'nowrap' }}
+					className='card-body'
 				>
-					<ul>
+					<ul
+						className='overflow-auto'
+						ref={ body => this.body = body }
+					>
 						{ logs }
 					</ul>
 				</div>
