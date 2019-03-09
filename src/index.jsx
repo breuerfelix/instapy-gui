@@ -23,7 +23,7 @@ class App extends Component {
 		return (
 			<Router>
 				<div className='container-fluid'>
-					<div className="row no-gutters">
+					<div className='row no-gutters'>
 
 						{ showSidebar &&
 							<div id='sidebar' className='col'>
