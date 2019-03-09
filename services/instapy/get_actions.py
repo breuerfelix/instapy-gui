@@ -65,8 +65,8 @@ def get_actions():
 from database import client
 
 if __name__ == '__main__':
-    # TODO create unique index on functionName
     table = client.general.actions
+    table.create_index('functionName', unique = True, background = True)
 
     for action in get_actions():
         table.replace_one({ 'functionName': action['functionName'] }, action, upsert = True)

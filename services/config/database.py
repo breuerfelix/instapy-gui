@@ -18,6 +18,9 @@ def init_db():
     # return if there are already namespaces
     if count > 0: return
 
+    # create index
+    db.namespaces.create_index('ident', unique = True, background = True)
+
     # delete all
     db.namespaces.delete_many({})
 
