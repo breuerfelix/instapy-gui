@@ -15,7 +15,7 @@ export default class SideBar extends Component {
 		const labelLogin = username ? username : 'sidebar_login';
 
 		return (
-			<div className="sidebar noselect">
+			<div className="sidebar noselect sticky-top">
 				<div className="header">
 					<h3>INSTAPY</h3>
 				</div>
