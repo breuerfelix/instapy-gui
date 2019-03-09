@@ -48,6 +48,9 @@ class Language {
 		button_login: 'login',
 		button_logout: 'logout',
 
+		badge_enabled: 'enabled',
+		badge_disabled: 'disabled',
+
 		status: 'Status',
 		status_loading: 'loading',
 		status_running: 'running',

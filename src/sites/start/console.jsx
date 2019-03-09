@@ -1,9 +1,11 @@
 import { h, render, Component } from 'preact';
 import { SocketService, translate } from 'services';
+import $ from 'jquery';
 
 export default class Console extends Component {
 	state = {
-		logList: []
+		logList: [],
+		scrolled: false
 	}
 
 	recieveSocketData = data => {
@@ -11,17 +13,33 @@ export default class Console extends Component {
 
 		if (data.action == 'single') {
 			const { logList } = this.state;
-			logList.splice(0, 0, data.message);
+
+			// remove description cause they crash the UI
+			// TODO fix display of description
+			// TODO render emojis
+
+			logList.push(data.message);
 			this.setState({ logList });
-			return;
 		}
 
 		if (data.action == 'multiple') {
 			// overwrite logs from server logs
-			const logList = [ ...data.message.reverse() ];
+			// why filter ? read above
+			const logList = [ ...data.message ];
 			this.setState({ logList });
-			return;
 		}
+
+		const { scrolled } = this.state;
+		if (scrolled) return;
+
+		// timeout to the new items are rendered
+		setTimeout(() => {
+			const body = $(this.body);
+			// scroll to bottom
+			body.animate({
+				scrollTop: body.prop('scrollHeight') - body.prop('clientHeight')
+			}, 1000);
+		}, 200);
 	}
 
 	componentWillMount() {
@@ -32,7 +50,22 @@ export default class Console extends Component {
 			handler: 'logger',
 			action: 'get'
 		});
+	}
 
+	componentDidMount() {
+		let enableScroll = null;
+		$(this.body).bind('DOMMouseScroll mousewheel touchmove mousemove', () => {
+			this.setState({ scrolled: true });
+
+			// reset timeout
+			if (enableScroll) {
+				clearTimeout(enableScroll);
+				enableScroll = null;
+			}
+
+			// reenable scrolling after 5 seconds
+			enableScroll = setTimeout(() => this.setState({ scrolled: false }), 5000);
+		});
 	}
 
 	componentWillUnmount() {
@@ -50,8 +83,13 @@ export default class Console extends Component {
 				<div className='card-header'>
 					{ translate('console_title') }
 				</div>
-				<div className='card-body'>
-					<ul id='console_window'>
+				<div
+					className='card-body'
+				>
+					<ul
+						className='overflow-auto'
+						ref={ body => this.body = body }
+					>
 						{ logs }
 					</ul>
 				</div>

@@ -1,132 +1,150 @@
 import json
 from flask import Blueprint, request
-from tinydb import where
-
-import sys
-sys.path.append('../')
-from python_shared import namespace_table, job_table
+from database import client
+from auth import to_json, jwt_req
+from pymongo import ReturnDocument
+from bson.objectid import ObjectId
+from bson.json_util import loads
 
 namespaces = Blueprint('namespaces', __name__)
 
 
+def get_db(payload):
+    return client[payload['database']]
+
+
 @namespaces.route('/namespaces', methods=['GET'])
-def get_namespaces():
-    result = namespace_table.all()
-    return json.dumps(result)
+@jwt_req
+def get_namespaces(payload):
+    db = get_db(payload)
+    namespaces = db.namespaces.find()
+    namespaces = list(namespaces)
+
+    for namespace in namespaces:
+        del namespace['jobs']
+
+    return to_json(namespaces)
 
 
 
 @namespaces.route('/namespaces', methods=['POST'])
-def update_namespaces():
+@jwt_req
+def update_namespaces(payload):
     body = json.loads(request.data)
     namespace = body['namespace']
+
     if body['action'] == 'add':
-        result = namespace_table.search(where('ident') == namespace['ident'])
+        db = get_db(payload)
+        result = db.namespaces.find_one({ 'ident': namespace })
 
         if result:
-            return {
-                'error': 'Ident already used!'
-            }
+            return to_json({
+                'error': 'ident already used!'
+            })
 
-        namespace_table.insert({
+        db.namespaces.insert_one({
             'ident': namespace['ident'],
             'name': namespace['name'],
-            'description': namespace['description']
+            'description': namespace['description'],
+            'jobs': []
         })
 
-    return json.dumps(namespace)
+    # return the given namespace to approve
+    return to_json(namespace)
 
 
 
 @namespaces.route('/namespaces/<namespace>', methods=['POST'])
-def update_namespace(namespace):
+@jwt_req
+def update_namespace(payload, namespace):
     body = json.loads(request.data)
 
     if body['action'] == 'delete':
-        namespace_table.remove(where('ident') == namespace)
-        # delete all jobs connected to this namespace
-        job_table.remove(where('namespace') == namespace)
+        db = get_db(payload)
+        db.namespaces.delete_one({ 'ident': namespace })
 
-        return json.dumps({ 'done': True })
+        return to_json({ 'done': True })
+
+    return to_json({ 'error': 'action not found' })
 
 
 
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['GET'])
-def get_jobs(namespace):
-    result = job_table.search(where('namespace') == namespace)
-    return json.dumps(result)
+@jwt_req
+def get_jobs(payload, namespace):
+    db = get_db(payload)
+    result = db.namespaces.find_one({ 'ident': namespace })
+
+    return to_json(result['jobs'])
 
 
 
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['POST'])
-def update_jobs(namespace):
-    body = json.loads(request.data)
+@jwt_req
+def update_jobs(payload, namespace):
+    body = loads(request.data)
 
     if body['action'] == 'update':
         new_jobs = body['jobs']
-        for new_job in new_jobs:
-            job_table.update(new_job,
-                (where('namespace') == namespace) &
-                (where('uuid') == new_job['uuid'])
-            )
 
-        # return all saved jobs
-        result = job_table.search(where('namespace') == namespace)
-        return json.dumps(result)
+        db = get_db(payload)
+        result = db.namespaces \
+            .find_one_and_update({ 'ident': namespace },
+                                 {
+                                     '$set': { 'jobs': new_jobs }
+                                 }, return_document = ReturnDocument.AFTER)
+
+        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
+
+        return to_json(result)
 
     if body['action'] == 'add':
         new_job = body['job']
-        old_job = job_table.get(where('uuid') == new_job['uuid'])
+        new_job['_id'] = ObjectId()
 
-        if old_job:
-            return json.dumps({ 'error': 'uuid already in use!' })
+        db = get_db(payload)
+        result = db.namespaces \
+            .find_one_and_update({ 'ident': namespace },
+                                 {
+                                     '$push': { 'jobs': new_job }
+                                 }, return_document = ReturnDocument.AFTER)
 
+        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
+        return to_json(result)
 
-        job_table.insert(new_job)
-
-        # return all saved jobs
-        result = job_table.search(where('namespace') == namespace)
-
-        return json.dumps(result)
-
-    return json.dumps({ 'error': 'Could not find matching action!' })
+    return to_json({ 'error': 'could not find matching action!' })
 
 
 
 @namespaces.route('/namespaces/<namespace>/jobs/<uuid>', methods=['POST'])
-def update_job(namespace, uuid):
-    body = json.loads(request.data)
+@jwt_req
+def update_job(payload, namespace, uuid):
+    body = loads(request.data)
+    uuid = ObjectId(uuid)
 
     if body['action'] == 'delete':
-        # remove single job
-        job_table.remove(
-            (where('namespace') == namespace) &
-            (where('uuid') == uuid)
-        )
+        db = get_db(payload)
+        result = db.namespaces \
+            .find_one_and_update({ 'ident': namespace },
+                                 {
+                                     '$pull': { 'jobs': { '_id': uuid } }
+                                 }, return_document = ReturnDocument.AFTER)
 
-        # update all jobs, because of their new position
-        new_jobs = body['jobs']
-        for new_job in new_jobs:
-            job_table.update(new_job,
-                (where('namespace') == namespace) &
-                (where('uuid') == new_job['uuid'])
-            )
-
-        # return all saved jobs
-        result = job_table.search(where('namespace') == namespace)
-        return json.dumps(result)
+        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
+        return to_json(result)
 
     if body['action'] == 'update':
         new_job = body['job']
-        job_table.update(new_job,
-            (where('namespace') == namespace) &
-            (where('uuid') == uuid)
-        )
 
-        # return all saved jobs
-        result = job_table.search(where('namespace') == namespace)
-        return json.dumps(result)
+        db = get_db(payload)
+        result = db.namespaces \
+            .find_one_and_update({ 'ident': namespace, 'jobs._id': uuid },
+                                 {
+                                     '$set': { 'jobs.$': new_job }
+                                 }, return_document = ReturnDocument.AFTER)
 
+        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
+        return to_json(result)
 
-    return json.dumps({ 'error': 'Could not find matching action!' })
+    return json.dumps({ 'error': 'could not find matching action!' })
 

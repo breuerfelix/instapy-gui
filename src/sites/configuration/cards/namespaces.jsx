@@ -15,6 +15,12 @@ class NamespacesCard extends Component {
 		const namespaces = ConfigService.fetchNamespaces()
 			.then(namespaces => {
 				this.setState({ namespaces });
+				if (namespaces.length < 1) return;
+
+				// only redirect if not already on a namespace
+				const paths = this.props.location.pathname.split('/');
+				if (paths.length > paths.indexOf('namespaces') + 1) return;
+
 				this.props.history.replace(`/configuration/namespaces/${namespaces[0].ident}`);
 			});
 	}
