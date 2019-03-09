@@ -1,31 +1,26 @@
-import json
 from flask import Blueprint, request
-from tinydb import where
-
-import sys
-sys.path.append('../')
-from python_shared import account_table
+from auth import to_json, jwt_req
+from database import client
+import json
 
 account = Blueprint('account', __name__)
 
-# TODO remove type account when we have more than one account
-
 @account.route('/login', methods=['GET'])
-def get_credentials():
-    result = account_table.get(where('type') == 'account')
-    username = None
+@jwt_req
+def get_credentials(payload):
+    result = client[payload['database']].account.find_one()
 
-    if result:
-        username = result['username']
-
-    return json.dumps({ 'username': username })
+    return to_json({ 'username': result['username'] if result else None })
 
 
 
 @account.route('/login', methods=['POST'])
-def set_credentials():
+@jwt_req
+def set_credentials(payload):
     body = json.loads(request.data)
-    body['type'] = 'account'
 
-    result = account_table.upsert(body, where('type') == 'account')
-    return json.dumps({ 'done': True })
+    table = client[payload['database']].account
+    table.delete_one({})
+    table.insert_one(body)
+
+    return to_json({ 'done': True })

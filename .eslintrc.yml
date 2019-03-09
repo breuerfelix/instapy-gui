@@ -6,7 +6,11 @@ plugins:
   - 'react'
 extends:
   - 'eslint:recommended'
+  - 'plugin:react/recommended'
 parser: 'babel-eslint'
+settings:
+  react:
+    pragma: h
 parserOptions:
   ecmaVersion: 2018
   sourceType: module
@@ -27,9 +31,8 @@ rules:
   'semi':
     - error
     - always
-  'no-unused-vars':
-    - 0
-  'no-console': 0
+  'no-unused-vars': off
+  'no-console': off
   'keyword-spacing':
     - error
   'no-mixed-spaces-and-tabs':
@@ -44,3 +47,6 @@ rules:
     - when: 'always'
       spacing:
         objectLiterals: 'never'
+  'react/prop-types': off
+  'react/no-deprecated': off
+  'react/jsx-key': warn

@@ -71,7 +71,7 @@ export default class AddNamespaceModal extends Component {
 				ref={ modal => this.modal = modal }
 				id="add-namespace-modal"
 				className='modal fade'
-				tabindex='-1'
+				tabIndex='-1'
 				role='dialog'
 				aria-hidden='true'
 				arial-labelledby='add-namespace-modal-title'

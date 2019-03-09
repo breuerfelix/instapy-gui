@@ -17,6 +17,7 @@ message = {
     'action': 'get'
 }
 
+# if this throws an exception, service will shut down -> thats okay!
 socket.send(json.dumps(message))
 res = socket.recv()
 socket.close()
@@ -31,22 +32,19 @@ if not namespace: sys.exit(0)
 # start the bot
 import logging
 from signal import signal, SIGUSR1, SIGINT
-from tinydb import where
 
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
 
 import sys
-sys.path.append('../')
-from python_shared import db, account_table, job_table, action_table
-from python_shared import ASSETS
 
+ASSETS = os.path.dirname(os.path.abspath(__file__))
 
 class my_handler(logging.Handler):
     def init(self):
         self.setLevel(logging.DEBUG)
         logger_formatter = logging.Formatter(
-            '%(levelname)s [%(asctime)s] [%(username)s]  %(message)s',
+            '%(levelname)s [%(asctime)s] %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S')
         self.setFormatter(logger_formatter)
 
@@ -73,15 +71,26 @@ class my_handler(logging.Handler):
 log_handler = my_handler()
 log_handler.init()
 
-user = account_table.get(where('type') == 'account')
-jobs = job_table.search(where('namespace') == namespace)
+# get data from db
+from database import client
 
-# sort the position of jobs
-jobs.sort(key = lambda job: int(job['position']))
+db_name = getenv('MONGO_USER_DB') or 'user'
+db = client[db_name]
+
+user = db.account.find_one()
+res_jobs = db.namespaces.find_one({ 'ident': namespace })['jobs']
+res_jobs = list(res_jobs)
+
+# sort out non active jobs
+jobs = []
+for job in res_jobs:
+    if job['active'] == False: continue
+    jobs.append(job)
 
 # convert list to actual arrays
 # TODO remove until line if we have a proper list view
-actions = action_table.all()
+actions = client.general.actions.find()
+actions = list(actions)
 
 
 for job in jobs:
@@ -98,6 +107,7 @@ for job in jobs:
         if act_param['type'] == 'tuple':
             param['value'] = tuple(param['value'])
 # ---------------------------------------------------------------------------
+client.close()
 
 # login credentials
 insta_username = user['username']
@@ -110,7 +120,7 @@ influxdb_options = {
     'user': getenv('INFLUXDB_USER') or 'instapy',
     'password': getenv('INFLUXDB_PASSWORD') or 'instapysecret',
     'database': getenv('INFLUXDB_DB') or 'instapy',
-    'host': getenv('INFLUXDB_HOST') or 'localhost',
+    'host': getenv('INFLUXDB_HOST') or 'influxdb',
     'port': influx_port
 }
 

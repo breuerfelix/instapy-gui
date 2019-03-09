@@ -28,7 +28,7 @@ export default class ActionsModal extends Component {
 				ref={ modal => this.modal = modal }
 				id="actions-modal"
 				className='modal fade'
-				tabindex='-1'
+				tabIndex='-1'
 				role='dialog'
 				aria-hidden='true'
 				arial-labelledby='actions-modal-title'
@@ -151,7 +151,7 @@ const ActionTable = ({ actions, add }) => {
 			<td>{ action.functionName }</td>
 			<td>
 				<a
-					tabindex='0'
+					tabIndex='0'
 					style={ css }
 					className='fas fa-info noselect'
 					data-container='body'

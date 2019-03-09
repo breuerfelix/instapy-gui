@@ -1,5 +1,4 @@
 import { h, render, Component } from 'preact';
-import uuid from 'uuid/v1';
 import { ConfigService, translate } from 'services';
 import arrayMove from 'array-move';
 import JobCard from './job';
@@ -15,10 +14,7 @@ export default class JobsCard extends Component {
 	setJobs = jobs => {
 		if (!jobs) return;
 
-		// sort array and set as jobs
-		this.setState({
-			jobs: jobs.sort((a, b) => Number(a.position) - Number(b.position))
-		});
+		this.setState({ jobs });
 	}
 
 	loadJobs = namespace => {
@@ -36,40 +32,27 @@ export default class JobsCard extends Component {
 
 		// initialize param list
 		const params = [];
-		for (let param of action.params) {
-			const para = {
-				position: param.position,
-				name: param.name,
-				value: param.defaultValue
-			};
-
-			// TODO remove this when we have a proper list view
-			// joins default list params togehter
-			if (param.type && param.type.startsWith('list')) {
-				if (param.defaulValue) {
-					para.value = param.defaultValue.join(';');
-				}
-			}
-
-			params.push(para);
-		}
 
 		// initialize job object
 		const job = {
-			uuid: uuid(),
 			functionName: action.functionName,
-			position: jobs.length,
 			namespace: activeNamespace,
-			active: true,
+			active: false,
 			params
 		};
+
+		let result = ConfigService.addJob(job);
+
+		// set temp id for rendering
+		job._id = { $oid: 'tempid' };
 
 		// push new job to state temporarly
 		jobs.push(job);
 		this.setJobs(jobs);
 
-		// recieves all jobs and set them as jobs
-		const result = await ConfigService.addJob(job);
+		// wait for actual result
+		// let them override current jobs
+		result = await result;
 		this.setJobs(result);
 	}
 
@@ -84,7 +67,7 @@ export default class JobsCard extends Component {
 		// TODO or make a new endpoint which only moves the job, and does only change the pos
 
 		const { jobs } = this.state;
-		const idx = jobs.findIndex(x => x.uuid == job.uuid);
+		const idx = jobs.findIndex(x => x._id.$oid == job._id.$oid);
 
 		if (idx == -1) {
 			console.error('could not locate job: ' + job);
@@ -92,11 +75,6 @@ export default class JobsCard extends Component {
 		}
 
 		arrayMove.mut(jobs, idx, idx + direction);
-
-		// set new position according to order
-		for (const [i, value] of jobs.entries())
-			value.position = i;
-
 		this.setState({ jobs });
 
 		// update all jobs since positioning changed
@@ -106,7 +84,7 @@ export default class JobsCard extends Component {
 
 	deleteJob = async job => {
 		const { jobs } = this.state;
-		const idx = jobs.findIndex(x => x.uuid == job.uuid);
+		const idx = jobs.findIndex(x => x._id.$oid == job._id.$oid);
 
 		if (idx == -1) {
 			console.error('could not locate job!');
@@ -114,11 +92,6 @@ export default class JobsCard extends Component {
 		}
 
 		jobs.splice(idx, 1);
-
-		// set new position according to order
-		for (const [i, value] of jobs.entries())
-			value.position = i;
-
 		this.setState({ jobs });
 
 		const updated_jobs = await ConfigService.deleteJob(job, jobs);
@@ -132,7 +105,7 @@ export default class JobsCard extends Component {
 		// no job card will be rendered if job is not loaded
 		const jobList = jobs.map(job =>
 			<JobCard
-				key={ job.uuid }
+				key={ job._id.$oid }
 				job={ job }
 				moveJob={ this.moveJob }
 				deleteJob={ this.deleteJob }

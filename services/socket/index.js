@@ -92,8 +92,8 @@ class bot_handler {
 	messageReceived(message) {
 		this.messages.push(message.message);
 
-		// delete first 50 elements
-		if (this.messages.length > 300) this.messages.slice(-50);
+		// delete first 100 elements if too many messages
+		if (this.messages.length > 1000) this.messages = this.messages.slice(-900);
 
 		const log = {
 			handler: 'logger',
@@ -148,14 +148,22 @@ class bot_handler {
 		this.namespace = '';
 
 		const container = docker.getContainer(this.containerID);
-		container.stop({ t: 10 }).then(() => {
-			this.status = 'loading';
-			this.running = true;
+		try {
+			container.stop({ t: 10 }).then(() => {
+				this.status = 'loading';
+				this.running = true;
+				this.namespace = '';
+				// wait for next status update to get new status
+				this.clicked = false;
+				this.statusChanged();
+			});
+		} catch (e) {
+			this.status = 'error';
+			this.running = false;
 			this.namespace = '';
-			// wait for next status update to get new status
 			this.clicked = false;
 			this.statusChanged();
-		});
+		}
 	}
 
 	getStatus() {

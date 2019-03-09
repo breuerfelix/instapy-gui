@@ -11,13 +11,11 @@ import { Provider } from 'unistore/preact';
 import store, { connect } from 'store';
 import { NavBar, SideBar, Footer } from 'components';
 import { Account, Configuration, Start, Dashboard } from 'sites';
+import { setToken } from 'core';
 
-import { MOCK_DATA } from 'config';
+import { PREMIUM } from 'config';
 
-if (MOCK_DATA) {
-	const mocks = require('mocks').default;
-	mocks.apply();
-}
+if (!PREMIUM) setToken();
 
 @connect('showSidebar')
 class App extends Component {
@@ -25,7 +23,7 @@ class App extends Component {
 		return (
 			<Router>
 				<div className='container-fluid'>
-					<div className="row no-gutters">
+					<div className='row no-gutters'>
 
 						{ showSidebar &&
 							<div id='sidebar' className='col'>

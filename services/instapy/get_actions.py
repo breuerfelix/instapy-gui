@@ -40,7 +40,6 @@ def get_actions():
             param = dict()
 
             # substract 1 since 0 is the self parameter
-            param['position'] = index - 1
             param['name'] = str(para)
 
             # TODO someone please fix these condition
@@ -62,18 +61,15 @@ def get_actions():
 
     return actions
 
-import sys
-sys.path.append('../')
 
-from python_shared import action_table, db
-from tinydb import where
+from database import client
 
 if __name__ == '__main__':
-    action_table.purge()
-    print('deleting actions table done')
+    table = client.general.actions
+    table.create_index('functionName', unique = True, background = True)
 
-    actions = get_actions()
-    action_table.insert_multiple(actions)
-    print('inserted actions to table')
+    for action in get_actions():
+        table.replace_one({ 'functionName': action['functionName'] }, action, upsert = True)
 
-    db.close()
+    client.close()
+    print('added actions to mongodb')

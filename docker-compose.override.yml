@@ -1,17 +1,13 @@
 version: '3'
 services:
   instapy:
-    build:
-      context: .
-      dockerfile: services/instapy/Dockerfile
+    build: ./services/instapy
   webserver:
     build:
       context: .
       dockerfile: conf/webserver.Dockerfile
   config:
-    build:
-      context: .
-      dockerfile: services/config/Dockerfile
+    build: ./services/config
   socket:
     build: ./services/socket
     environment:
@@ -40,6 +36,9 @@ services:
       dockerfile: conf/grafana.Dockerfile
     ports:
       - 3000:3000
+  mongo:
+    ports:
+      - 27017:27017
 
 volumes:
   instapy-chronograf:

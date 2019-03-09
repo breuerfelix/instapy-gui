@@ -2,9 +2,19 @@ FROM python:3-alpine
 
 WORKDIR /usr/instapy
 
-COPY services/instapy /usr/instapy/services/instapy
-COPY services/python_shared /usr/instapy/services/python_shared
+COPY . .
 
-RUN sh services/instapy/setup.sh
+RUN apk --update --no-cache add \
+  chromium \
+  chromium-chromedriver
 
-CMD ["sh", "services/instapy/start.sh"]
+RUN apk add --update --no-cache --virtual .build-dependencies \
+	python3-dev \
+	gcc \
+	musl-dev \
+	g++ \
+  && pip3 install -r requirements.txt \
+  && pip3 uninstall -y instapy-chromedriver \
+  && apk del .build-dependencies
+
+CMD ["sh", "start.sh"]
