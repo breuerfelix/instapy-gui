@@ -1,5 +1,6 @@
 import { h, render, Component } from 'preact';
 import { SocketService, translate } from 'services';
+import $ from 'jquery';
 
 export default class Console extends Component {
 	state = {
@@ -11,17 +12,31 @@ export default class Console extends Component {
 
 		if (data.action == 'single') {
 			const { logList } = this.state;
-			logList.splice(0, 0, data.message);
+
+			// remove description cause they crash the UI
+			// TODO fix display of description
+			// TODO render emojis
+			if (data.message.includes('Description')) return;
+
+			logList.push(data.message);
 			this.setState({ logList });
-			return;
 		}
 
 		if (data.action == 'multiple') {
 			// overwrite logs from server logs
-			const logList = [ ...data.message.reverse() ];
+			// why filter ? read above
+			const logList = [ ...data.message.filter(x => !x.includes('Description')) ];
 			this.setState({ logList });
-			return;
 		}
+
+		// timeout to the new items are rendered
+		setTimeout(() => {
+			const body = $(this.body);
+			// scroll to bottom
+			body.animate({
+				scrollTop: body.prop('scrollHeight') - body.prop('clientHeight')
+			}, 1000);
+		}, 250);
 	}
 
 	componentWillMount() {
@@ -50,7 +65,11 @@ export default class Console extends Component {
 				<div className='card-header'>
 					{ translate('console_title') }
 				</div>
-				<div className='card-body overflow-auto'>
+				<div
+					className='card-body overflow-auto'
+					ref={ body => this.body = body }
+					style={{ whiteSpace: 'nowrap' }}
+				>
 					<ul>
 						{ logs }
 					</ul>
