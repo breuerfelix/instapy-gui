@@ -20,7 +20,7 @@ def to_json(obj, status = 200):
 def jwt_req(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        token = request.headers['Authorization']
+        token = request.headers.get('Authorization', None)
         if not token:
             print('error: no token provided')
             return to_json({ 'error': 'no token provided' }, 400)
