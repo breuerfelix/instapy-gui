@@ -21,7 +21,6 @@ class MenuItem extends Component {
 		const { location: { pathname }, link, linkMatch } = this.props;
 
 		// TODO linkMatch also have to get matched, maybe handle opening and closing also on our own ?
-
 		return pathname.startsWith(link);
 	}
 
@@ -76,7 +75,7 @@ class MenuItem extends Component {
 				{ !link &&
 						<a
 							data-toggle='collapse'
-							data-target='.collapse-target'
+							data-target={ `#${label}` }
 							aria-expanded='false'
 							aria-controls={ label }
 						>

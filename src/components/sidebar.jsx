@@ -15,14 +15,14 @@ export default class SideBar extends Component {
 		const labelLogin = username ? username : 'sidebar_login';
 
 		return (
-			<div className="sidebar noselect sticky-top">
-				<div className="header">
+			<div className='sidebar noselect sticky-top'>
+				<div className='header'>
 					<h3>INSTAPY</h3>
 				</div>
 
 				<ul className='toplevel-list list-unstyled'>
 
-					<div className="headline">
+					<div className='headline'>
 						{ translate('sidebar_account') }
 					</div>
 
@@ -33,7 +33,7 @@ export default class SideBar extends Component {
 						level='top'
 					/>
 
-					<div className="headline">
+					<div className='headline'>
 						{ translate('sidebar_features') }
 					</div>
 
@@ -47,9 +47,17 @@ export default class SideBar extends Component {
 					<MenuItem
 						label='sidebar_configuration'
 						icon='fas fa-sliders-h'
-						link='/configuration/namespaces'
 						level='top'
-					/>
+					>
+						<MenuItem
+							label='sidebar_namespaces'
+							link='/configuration/namespaces'
+						/>
+						<MenuItem
+							label='sidebar_proxy'
+							link='/configuration/proxy'
+						/>
+					</MenuItem>
 
 					<MenuItem
 						label='sidebar_start'
@@ -58,7 +66,7 @@ export default class SideBar extends Component {
 						level='top'
 					/>
 
-					<div className="headline">
+					<div className='headline'>
 						{ translate('sidebar_links') }
 					</div>
 
@@ -80,7 +88,7 @@ export default class SideBar extends Component {
 							link='http://github.com/timgrossmann/instapy'
 							external={ true }
 						/>
-						{ false &&
+						{ false && // TODO uncomment when instapy-gui is public
 							<div>
 								<MenuItem
 									label='link_instapy_gui'
