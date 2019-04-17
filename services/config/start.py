@@ -11,6 +11,7 @@ from os import getenv
 from account import account
 from actions import actions
 from namespaces import namespaces
+from proxy import proxy
 
 from database import client, init_db
 
@@ -20,6 +21,7 @@ app = Flask(__name__)
 app.register_blueprint(actions)
 app.register_blueprint(namespaces)
 app.register_blueprint(account)
+app.register_blueprint(proxy)
 
 CORS(app)
 

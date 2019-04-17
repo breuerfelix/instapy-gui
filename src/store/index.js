@@ -5,7 +5,7 @@ import actions from './actions';
 const initialState = {
 	showSidebar: true,
 	username: null,
-	actions: [],
+	actions: []
 };
 
 const store = createStore(initialState);

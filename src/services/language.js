@@ -33,6 +33,7 @@ class Language {
 		sidebar_start: 'Start',
 		sidebar_other: 'Other',
 		sidebar_dashboard: 'Dashboard',
+		sidebar_proxy: 'Proxy',
 
 		link_donate: 'Donate',
 		link_instapy: 'InstaPy',
@@ -47,6 +48,7 @@ class Language {
 		button_stop: 'stop',
 		button_login: 'login',
 		button_logout: 'logout',
+		button_reset: 'reset',
 
 		badge_enabled: 'enabled',
 		badge_disabled: 'disabled',
@@ -86,7 +88,13 @@ class Language {
 		startbot_title: 'Start InstaPy',
 		startbot_select_namespace: 'Select Template',
 
-		console_title: 'Console'
+		console_title: 'Console',
+
+		proxy_title: 'Proxy Configuration',
+		proxy_host: 'hostname',
+		proxy_port: 'port',
+		proxy_username: 'username (optional)',
+		proxy_password: 'password (optional)'
 	};
 }
 
