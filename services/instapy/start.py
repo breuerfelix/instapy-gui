@@ -77,6 +77,15 @@ db = client[db_name]
 
 user = db.account.find_one()
 proxy = db.proxy.find_one()
+if not proxy:
+    # set proxy default values
+    proxy = {
+        'host': None,
+        'port': None,
+        'username': None,
+        'password': None
+    }
+
 res_jobs = db.namespaces.find_one({ 'ident': namespace })['jobs']
 res_jobs = list(res_jobs)
 
