@@ -12,4 +12,4 @@ RUN apk add --update --no-cache --virtual .build-dependencies \
 
 EXPOSE 80
 
-CMD ["python3", "start.py"]
+CMD ["python3", "-u", "start.py"]

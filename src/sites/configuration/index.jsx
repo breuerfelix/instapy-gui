@@ -1,14 +1,17 @@
 import { h, render, Component } from 'preact';
-import { NamespacesCard, JobsCard } from './cards';
+import { NamespacesCard, JobsCard, ProxyCard } from './cards';
 import { connect } from 'store';
 import { Route } from 'react-router-dom';
 import { ConfigService, translate } from 'services';
 
-@connect()
+@connect('actions')
 export default class Configuration extends Component {
 	componentWillMount() {
-		const actionsProm = ConfigService.fetchActions()
-			.then(actions => this.props.setActions(actions));
+		if (!this.props.actions.length) {
+			// fetch actions
+			const actionsProm = ConfigService.fetchActions()
+				.then(actions => this.props.setActions(actions));
+		}
 	}
 
 	render({ match }) {
@@ -21,6 +24,10 @@ export default class Configuration extends Component {
 				<Route
 					path={ `${match.url}/namespaces/:namespace` }
 					component={ JobsCard }
+				/>
+				<Route
+					path={ `${match.url}/proxy` }
+					component={ ProxyCard }
 				/>
 			</div>
 		);
