@@ -17,7 +17,6 @@ class ProxyCard extends Component {
 
 	componentWillMount() {
 		ConfigService.getProxy().then(res => {
-			console.log(res)
 			this.setState({
 				inputHost: res.host,
 				inputPort: res.port,
