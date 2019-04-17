@@ -18,15 +18,10 @@ export default class ActionsModal extends Component {
 	}
 
 	render({ actions }, { inputSearch }) {
-		const setActions = actions.filter(action => action.functionName.startsWith('set'));
-		const followActions = actions.filter(action => action.functionName.startsWith('follow'));
-		const likeActions = actions.filter(action => action.functionName.startsWith('like'));
-		const interactActions = actions.filter(action => action.functionName.startsWith('interact'));
-
 		return (
 			<div
 				ref={ modal => this.modal = modal }
-				id="actions-modal"
+				id='actions-modal'
 				className='modal fade'
 				tabIndex='-1'
 				role='dialog'
@@ -34,16 +29,16 @@ export default class ActionsModal extends Component {
 				arial-labelledby='actions-modal-title'
 			>
 				<div className='modal-dialog' role='document'>
-					<div className="modal-content">
-						<div className="modal-header">
-							<h5 id='actions-modal-title' className="modal-title">{ translate('actions_title') }</h5>
-							<button className="close" type='button' data-dismiss='modal' aria-label='Close'>
+					<div className='modal-content'>
+						<div className='modal-header'>
+							<h5 id='actions-modal-title' className='modal-title'>{ translate('actions_title') }</h5>
+							<button className='close' type='button' data-dismiss='modal' aria-label='Close'>
 								<span aria-hidden='true'>&times;</span>
 							</button>
 						</div>
-						<div className="modal-body">
-							<div className="form-group">
-								<div className="input-group">
+						<div className='modal-body'>
+							<div className='form-group'>
+								<div className='input-group'>
 									<input
 										className='form-control'
 										type='text'
@@ -55,34 +50,36 @@ export default class ActionsModal extends Component {
 								</div>
 							</div>
 
-							<ul className="nav nav-tabs nav-justified" id="actions-tab" role="tablist">
+							<ul className='nav nav-tabs nav-justified' id='actions-tab' role='tablist'>
 								<TabHeader name='set' active={ true } />
 								<TabHeader name='follow' />
 								<TabHeader name='like' />
 								<TabHeader name='interact' />
+								<TabHeader name='unfollow' />
 							</ul>
 							<div className="tab-content">
-								<TabContent name='set' actions={ setActions } add={ this.addAction } active={ true } />
-								<TabContent name='follow' actions={ followActions } add={ this.addAction } />
-								<TabContent name='like' actions={ likeActions } add={ this.addAction } />
-								<TabContent name='interact' actions={ interactActions } add={ this.addAction } />
+								<TabContent name='set' actions={ actions } add={ this.addAction } active={ true } />
+								<TabContent name='follow' actions={ actions } add={ this.addAction } />
+								<TabContent name='like' actions={ actions } add={ this.addAction } />
+								<TabContent name='interact' actions={ actions } add={ this.addAction } />
+								<TabContent name='unfollow' actions={ actions } add={ this.addAction } />
 							</div>
 
 						</div>
 
 						{ false &&
-							<div className="modal-footer">
+							<div className='modal-footer'>
 								<button
-									className="btn btn-outline-dark"
+									className='btn btn-outline-dark'
 									data-dismiss='modal'
-									type="button"
+									type='button'
 								>
 									{ translate('button_cancel') }
 								</button>
 								<button
-									className="btn btn-outline-dark"
+									className='btn btn-outline-dark'
 									onClick={ this.addAction }
-									type="button"
+									type='button'
 								>
 									{ translate('button_add') }
 								</button>
@@ -102,15 +99,15 @@ const TabHeader = ({ name, active = false }) => {
 	});
 
 	return (
-		<li className="nav-item">
+		<li className='nav-item'>
 			<a
 				className={ classes }
 				id={ `${name}-tab` }
-				data-toggle="tab"
+				data-toggle='tab'
 				href={ `#${name}` }
-				role="tab"
+				role='tab'
 				aria-controls={ name }
-				aria-selected="true"
+				aria-selected='true'
 			>
 				{ translate(`actions_tab_${name}`) }
 			</a>
@@ -119,6 +116,8 @@ const TabHeader = ({ name, active = false }) => {
 };
 
 const TabContent = ({ name, actions, add, active = false }) => {
+	// filter out specific actions based on name
+	const specificActions = actions.filter(action => action.functionName.startsWith(name));
 	const classes = classNames({
 		'tab-pane': true,
 		'fade': true,
@@ -130,10 +129,10 @@ const TabContent = ({ name, actions, add, active = false }) => {
 		<div
 			className={ classes }
 			id={ name }
-			role="tabpanel"
+			role='tabpanel'
 			aria-labelledby={ `${name}-tab` }
 		>
-			<ActionTable actions={ actions } add={ add } />
+			<ActionTable actions={ specificActions } add={ add } />
 		</div>
 	);
 };
@@ -175,7 +174,7 @@ const ActionTable = ({ actions, add }) => {
 	$('[data-toggle="popover"]').popover();
 
 	return (
-		<table className="table table-hover">
+		<table className='table table-hover'>
 			<tbody>
 				{ rows }
 			</tbody>
