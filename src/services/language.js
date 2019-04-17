@@ -79,6 +79,7 @@ class Language {
 		input_search_placeholder: 'search ...',
 		actions_tab_set: 'set',
 		actions_tab_follow: 'follow',
+		actions_tab_unfollow: 'unfollow',
 		actions_tab_like: 'like',
 		actions_tab_interact: 'interact',
 
