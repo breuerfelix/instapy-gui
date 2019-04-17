@@ -66,28 +66,28 @@ class LoginCard extends Component {
 					<div className='card-header'>
 						{ translate('login_title') }
 					</div>
-					<div className="card-body">
+					<div className='card-body'>
 
-						<div className="input-group">
-							<div className="input-group-prepend">
-								<i className="input-group-text fas fa-user"></i>
+						<div className='input-group'>
+							<div className='input-group-prepend'>
+								<i className='input-group-text fas fa-user' />
 							</div>
 							<input
 								className={ usernameClass }
-								type="text"
+								type='text'
 								placeholder={ translate('login_username') }
 								value={ username }
 								onInput={ linkState(this, 'username') }
 							/>
 						</div>
 
-						<div className="input-group">
-							<div className="input-group-prepend">
-								<i className="input-group-text fas fa-lock"></i>
+						<div className='input-group'>
+							<div className='input-group-prepend'>
+								<i className='input-group-text fas fa-lock' />
 							</div>
 							<input
 								className={ passwordClass }
-								type="password"
+								type='password'
 								placeholder={ translate('login_password') }
 								value={ password }
 								onInput={ linkState(this, 'password') }
@@ -95,15 +95,15 @@ class LoginCard extends Component {
 						</div>
 
 					</div>
-					<div className='card-footer row align-items-center' >
+					<div className='card-footer row align-items-center'>
 						<div className='col'>
-							<button onClick={ this.logout } className='btn btn-outline-dark'>
-								{ translate('button_logout') }
+							<button type='submit' className='btn btn-outline-dark'>
+								{ translate('button_login') }
 							</button>
 						</div>
 						<div style={{ textAlign: 'right' }}>
-							<button type='submit' className='btn btn-outline-dark'>
-								{ translate('button_login') }
+							<button onClick={ this.logout } className='btn btn-outline-dark'>
+								{ translate('button_logout') }
 							</button>
 						</div>
 					</div>

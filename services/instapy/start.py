@@ -1,7 +1,5 @@
 from os import getenv
 import os
-# docker.for.mac.localhost -> dev on mac
-# docker.for.windows.localhost -> dev on windows
 # instapy-socket -> production
 # host.docker.internal -> dev 
 socket_endpoint = getenv('SOCKET_HOST') or 'instapy-socket'
@@ -78,6 +76,7 @@ db_name = getenv('MONGO_USER_DB') or 'user'
 db = client[db_name]
 
 user = db.account.find_one()
+proxy = db.proxy.find_one()
 res_jobs = db.namespaces.find_one({ 'ident': namespace })['jobs']
 res_jobs = list(res_jobs)
 
@@ -87,11 +86,10 @@ for job in res_jobs:
     if job['active'] == False: continue
     jobs.append(job)
 
-# convert list to actual arrays
 # TODO remove until line if we have a proper list view
+# convert list to actual arrays
 actions = client.general.actions.find()
 actions = list(actions)
-
 
 for job in jobs:
     action = next(action for action in actions if action['functionName'] == job['functionName'])
@@ -134,7 +132,11 @@ session = InstaPy(username = insta_username,
                   show_logs = True,
                   log_handler = log_handler,
                   browser_binary_path = '/usr/bin/chromedriver',
-                  influxdb = influxdb_options)
+                  influxdb = influxdb_options,
+                  proxy_address = proxy['host'] or None,
+                  proxy_port = int(proxy['port']) if proxy['port'] else None,
+                  proxy_username = proxy['username'] or None,
+                  proxy_password = proxy['password'] or None)
 
 # function that will be executed before sig kill, to the browser window closes
 def exit_browser(*args):
