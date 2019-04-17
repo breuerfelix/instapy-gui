@@ -15,7 +15,8 @@ def get_actions():
                 func.startswith('set') or 
                 func.startswith('follow') or 
                 func.startswith('interact') or
-                func.startswith('like')
+                func.startswith('like') or
+                func.startswith('unfollow')
         ): continue
 
         real_funcs.append(func)
