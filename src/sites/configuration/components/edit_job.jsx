@@ -125,6 +125,18 @@ class Box extends Component {
 		// setting the input to the job
 		const { input } = this.state;
 
+		if ((input == '' || input == null || input == undefined) && param.optional) {
+			if (value) {
+				// remove value from array so it uses default value
+				const index = params.indexOf(value);
+				if (index > -1) {
+					params.splice(index, 1);
+				}
+			}
+
+			return null;
+		}
+
 		if (value) {
 			value.value = input;
 			return value;
@@ -152,16 +164,8 @@ class InputBox extends Box {
 		if (!value) return true;
 
 		const { param, type = 'text' } = this.props;
-		if (param.optional) return true;
 
-		if (type == 'text') {
-			let error = false;
-
-			if (Array.isArray(value.value)) error = value.value.length < 1;
-			else error = !value.value;
-
-			this.setState({ error });
-		} else {
+		if (type == 'number') {
 			// test if input is a number
 			if (!value.value) {
 				this.setState({ error: true });
@@ -169,11 +173,17 @@ class InputBox extends Box {
 				value.value = parseInt(value.value);
 				this.setState({ error: false, input: value.value });
 			}
+		} else {
+			let error = false;
+
+			if (Array.isArray(value.value)) error = value.value.length < 1;
+			else error = !value.value;
+
+			this.setState({ error });
 		}
 
 		const { error } = this.state;
 		return !error;
-
 	}
 
 	render({ param, type = 'text' }, { input, error }) {
@@ -201,9 +211,11 @@ class BooleanBox extends Box {
 		// value is default value
 		if (!value) return true;
 
-		const { param } = this.props;
+		// parse to boolean
+		if (value.value === 'true') value.value = true;
+		else if (value.value === 'false') value.value = false;
 
-		if (param.optional) return true;
+		const { param } = this.props;
 
 		this.setState({
 			error: value.value == null || value.value == undefined
