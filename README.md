@@ -48,11 +48,6 @@
 **[start developing](docs/contributing.md)**
 **[deploy on digital ocean](docs/digital-ocean.md)**
 
-## screenshots
-
-![templates](docs/templates.png)  
-![start](docs/start.png)
-
 ## support
 
 ### do you need help ?
@@ -67,6 +62,11 @@ if you should encounter any issue, please first [search for similar issues](http
 <a href="https://opencollective.com/instapy/donate" target="_blank">
   <img hspace="10" src="https://opencollective.com/instapy/contribute/button@2x.png?color=blue" width=300 />
 </a>
+
+## last but not least: screenshots
+
+![templates](docs/templates.png)  
+![start](docs/start.png)
 
 ---
 
