@@ -45,7 +45,7 @@
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
 
 ### written guides:
-**[start developing](docs/contributing.md)**
+**[start developing](docs/contributing.md)**  
 **[deploy on digital ocean](docs/digital-ocean.md)**
 
 ## screenshots
