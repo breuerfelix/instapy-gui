@@ -2,7 +2,7 @@
 	"name": "instapy-gui",
 	"productName": "InstaPy GUI",
 	"version": "0.0.1",
-	"description": "gui for instapy bot",
+	"description": "GUI for InstaPy automation",
 	"main": "src/index.js",
 	"scripts": {
 		"test": "npm run lint",
