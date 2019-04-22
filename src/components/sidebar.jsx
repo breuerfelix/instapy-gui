@@ -88,26 +88,21 @@ export default class SideBar extends Component {
 							link='http://github.com/timgrossmann/instapy'
 							external={ true }
 						/>
-						{ false && // TODO uncomment when instapy-gui is public
-							<div>
-								<MenuItem
-									label='link_instapy_gui'
-									link='http://github.com/breuerfelix/instapy-gui'
-									external={ true }
-								/>
-								<MenuItem
-									label='link_submit_issue'
-									link='http://github.com/breuerfelix/instapy-gui/issues'
-									external={ true }
-								/>
-							</div>
-						}
+						<MenuItem
+							label='link_instapy_gui'
+							link='http://github.com/breuerfelix/instapy-gui'
+							external={ true }
+						/>
+						<MenuItem
+							label='link_submit_issue'
+							link='http://github.com/breuerfelix/instapy-gui/issues'
+							external={ true }
+						/>
 						<MenuItem
 							label='link_need_help'
 							link='https://discord.gg/FDETsht'
 							external={ true }
 						/>
-
 					</MenuItem>
 				</ul>
 

@@ -45,9 +45,13 @@
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
 
 ### written guides:
-**[start developing](https://github.com/breuerfelix/instapy-gui/blob/master/docs/contributing.md)**
+**[start developing](docs/contributing.md)**
+**[deploy on digital ocean](docs/digital-ocean.md)**
 
-**[deploy on digital ocean](https://github.com/breuerfelix/instapy-gui/blob/master/docs/digital-ocean.md)**
+## screenshots
+
+![templates](docs/templates.png)  
+![start](docs/start.png)
 
 ## support
 
