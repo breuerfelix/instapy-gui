@@ -42,9 +42,11 @@
 ## guides
 
 ### video tutorials:
+
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
 
 ### written guides:
+
 **[start developing](docs/contributing.md)**  
 **[deploy on digital ocean](docs/digital-ocean.md)**
 
@@ -56,6 +58,7 @@
 ## support
 
 ### do you need help ?
+
 if you should encounter any issue, please first [search for similar issues](https://github.com/breuerfelix/instapy-gui/issues) and only if you can't find any, create a new issue or use the [discord channel](https://discord.gg/FDETsht) for help.
 
 <a href='https://discord.gg/FDETsht'>

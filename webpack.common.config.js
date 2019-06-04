@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 
 module.exports = {
 	entry: [
@@ -13,7 +12,7 @@ module.exports = {
 		extensions: [ '.js', '.jsx' ],
 		modules: [ 'node_modules', 'src' ],
 		alias: {
-			'react': 'preact-compat',
+			react: 'preact-compat',
 			'react-dom': 'preact-compat'
 		}
 	},
@@ -39,13 +38,14 @@ module.exports = {
 						[
 							'@babel/env',
 							{
-								'useBuiltIns': 'entry'
+								useBuiltIns: 'entry',
+								corejs: 3
 							}
 						]
 					],
 					plugins: [
 						[ '@babel/plugin-transform-react-jsx', { pragma: 'h' } ],
-						[ '@babel/plugin-proposal-decorators', { 'legacy': true } ],
+						[ '@babel/plugin-proposal-decorators', { legacy: true } ],
 						'@babel/plugin-syntax-dynamic-import',
 						'@babel/plugin-proposal-class-properties'
 					]
