@@ -39,7 +39,7 @@ class Dashboard extends Component {
 								`http://${location.host}` +
 								`/grafana/d-solo/yT2CkfGWz/follower-count?orgId=1&var-username=${username}&refresh=5m&panelId=2`
 							}
-							title='Bot activity past hour'
+							title='Followers count past 30 days'
 						/>
 					</div>
 
