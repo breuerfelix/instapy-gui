@@ -9,17 +9,15 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'unistore/preact';
 
 import store, { connect } from 'store';
-import { NavBar, SideBar, Footer } from 'components';
-import { Account, Configuration, Start, Dashboard } from 'sites';
-import { setToken } from 'core';
+import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
+import { Account, Configuration, Start, Dashboard, Login } from 'sites';
+import { readToken } from 'core';
 
-import { PREMIUM } from 'config';
+readToken();
 
-if (!PREMIUM) setToken();
-
-@connect('showSidebar')
+@connect('showSidebar,token')
 class App extends Component {
-	render({ showSidebar }) {
+	render({ showSidebar, token }) {
 		return (
 			<Router>
 				<div className='container-fluid'>
@@ -37,20 +35,26 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								<Route exact path='/' render={ () => <Redirect to='/dashboard' /> } />
+								<Route exact path='/' render={
+									() => <Redirect to={ token ? '/dashboard' : '/login' } />
+								} />
 								<Route
+									path='/login'
+									component={ Login }
+								/>
+								<PrivateRoute
 									path='/account'
 									component={ Account }
 								/>
-								<Route
+								<PrivateRoute
 									path='/configuration'
 									component={ Configuration }
 								/>
-								<Route
+								<PrivateRoute
 									path='/start'
 									component={ Start }
 								/>
-								<Route
+								<PrivateRoute
 									path='/dashboard'
 									component={ Dashboard }
 								/>

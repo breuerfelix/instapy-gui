@@ -5,7 +5,9 @@ import actions from './actions';
 const initialState = {
 	showSidebar: true,
 	username: null,
-	actions: []
+	actions: [],
+	token: null,
+	usernameInstapy: null
 };
 
 const store = createStore(initialState);

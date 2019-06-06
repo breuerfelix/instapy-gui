@@ -4,6 +4,7 @@ import Footer from './footer';
 import MenuItem from './menu_item';
 import Location from './location';
 import IframeCard from './iframe_card';
+import PrivateRoute from './private_route';
 
 export {
 	NavBar,
@@ -11,5 +12,6 @@ export {
 	Footer,
 	MenuItem,
 	Location,
-	IframeCard
+	IframeCard,
+	PrivateRoute
 };

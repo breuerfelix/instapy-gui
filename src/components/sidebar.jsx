@@ -3,7 +3,7 @@ import { translate, AccountService } from 'services';
 import { MenuItem } from 'components';
 import { connect } from 'store';
 
-@connect('username')
+@connect('username,usernameInstapy')
 export default class SideBar extends Component {
 	componentWillMount() {
 		// retrieve username from server
@@ -11,8 +11,9 @@ export default class SideBar extends Component {
 			.then(res => this.props.setUsername(res.username));
 	}
 
-	render({ location, username }) {
-		const labelLogin = username ? username : 'sidebar_login';
+	render({ location, username, usernameInstapy }) {
+		const labelLoginInstagram = username ? username : 'sidebar_login_instagram';
+		const labelLoginInstapy = usernameInstapy ? usernameInstapy : 'sidebar_login_instapy';
 
 		return (
 			<div className='sidebar noselect sticky-top'>
@@ -27,7 +28,14 @@ export default class SideBar extends Component {
 					</div>
 
 					<MenuItem
-						label={ labelLogin }
+						label={ labelLoginInstapy }
+						icon='fas fa-user'
+						link='/login'
+						level='top'
+					/>
+
+					<MenuItem
+						label={ labelLoginInstagram }
 						icon='fas fa-user'
 						link='/account/login'
 						level='top'
