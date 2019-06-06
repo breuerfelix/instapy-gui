@@ -26,7 +26,8 @@ class Language {
 		sidebar_configuration: 'Configuration',
 		sidebar_namespaces: 'Templates',
 		sidebar_github: 'GitHub',
-		sidebar_login: 'Login',
+		sidebar_login_instagram: 'Login Instagram',
+		sidebar_login_instapy: 'Login InstaPy',
 		sidebar_account: 'ACCOUNT',
 		sidebar_features: 'FEATURES',
 		sidebar_links: 'LINKS',
@@ -47,6 +48,7 @@ class Language {
 		button_start: 'start',
 		button_stop: 'stop',
 		button_login: 'login',
+		button_signup: 'register',
 		button_logout: 'logout',
 		button_reset: 'reset',
 
@@ -62,8 +64,11 @@ class Language {
 		status_exited: 'exited',
 
 		login_username: 'username',
+		login_email: 'email (only for register)',
 		login_password: 'password',
 		login_title: 'Login to Instagram',
+
+		signup_title: 'Login / Register for InstaPy',
 
 		namespaces_title: 'Templates',
 		namespaces_description: 'Description',

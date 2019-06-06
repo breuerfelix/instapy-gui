@@ -1,3 +1,6 @@
+import decode from 'jwt-decode';
+import store from 'store';
+
 const headers = {};
 
 async function fetchGet(url) {
@@ -25,10 +28,12 @@ const sleep = (ms) => {
 	return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-const setToken = () => {
-	// set the auth token, only for free local version
-	const jwt = require('jsonwebtoken');
-	const token = jwt.sign({ database: 'user' }, 'instapysecret');
+const readToken = () => {
+	const token = localStorage.getItem('token');
+	if (!token) return;
+
+	const { displayName } = decode(token);
+	store.setState({ token, usernameInstapy: displayName });
 	headers['Authorization'] = `Bearer ${token}`;
 };
 
@@ -36,5 +41,5 @@ export {
 	fetchGet,
 	fetchPost,
 	sleep,
-	setToken
+	readToken
 };
