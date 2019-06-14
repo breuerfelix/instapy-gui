@@ -21,7 +21,7 @@ class AccountService {
 		const payload = decode(token);
 		return { token, ...payload };
 	}
-	async setLoginInstapyCredentials(username, password) {
+	async loginInstapy(username, password) {
 		const data = {
 			username,
 			password
@@ -45,6 +45,7 @@ class AccountService {
 	}
 
 	async getLoginCredentials() {
+		console.log('getting instapy login credentials...');
 		return await fetchGet(this.endpoint + '/login');
 	}
 }

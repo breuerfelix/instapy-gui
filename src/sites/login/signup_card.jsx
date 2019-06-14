@@ -4,6 +4,7 @@ import linkState from 'linkstate';
 import classNames from 'classnames';
 import { connect } from 'store';
 import { withRouter } from 'react-router-dom';
+import { setToken } from 'core';
 
 class LoginCard extends Component {
 	state = {
@@ -26,6 +27,7 @@ class LoginCard extends Component {
 		const { storeLogoutInstapy, history } = this.props;
 		storeLogoutInstapy();
 		localStorage.removeItem('token');
+		setToken();
 		history.push('/');
 	}
 
@@ -54,6 +56,7 @@ class LoginCard extends Component {
 		if (!error) {
 			storeLoginInstapy(token, usernameInstapy);
 			localStorage.setItem('token', token);
+			setToken(token);
 			history.push('/dashboard');
 			return;
 		}
@@ -82,11 +85,12 @@ class LoginCard extends Component {
 			token,
 			displayName: usernameInstapy,
 			error
-		} = await AccountService.setLoginInstapyCredentials(username, password);
+		} = await AccountService.loginInstapy(username, password);
 
 		if (!error) {
 			storeLoginInstapy(token, usernameInstapy);
 			localStorage.setItem('token', token);
+			setToken(token);
 			history.push('/dashboard');
 			return;
 		}

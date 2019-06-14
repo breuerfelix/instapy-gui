@@ -1,19 +1,19 @@
-require('dotenv').config();
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const crypt = require('bcrypt');
+const crypt = require('bcryptjs');
 const cors = require('cors');
 
+const { MONGO_URL, JWT_SECRET, PORT } = process.env;
+
 const app = express();
-const port = 4001;
+const port = PORT || 80;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const { MONGO_URL, JWT_SECRET } = process.env;
 const SALT_ROUNDS = 10;
 const client = new MongoClient(MONGO_URL, { useNewUrlParser: true });
 let auth, users;
@@ -54,6 +54,7 @@ app.post('/login', async (req, res) => {
 	}
 
 	const token = jwt.sign({ username: dbUsername, displayName, email }, JWT_SECRET);
+	console.log('user logged in:', dbUsername);
 	res.send(JSON.stringify({ token }));
 });
 
@@ -104,6 +105,7 @@ app.post('/signup', async (req, res) => {
 		displayName: username,
 		email
 	}, JWT_SECRET);
+	console.log('new user sign up:', lowerUsername);
 	res.send(JSON.stringify({ token }));
 });
 
@@ -113,9 +115,10 @@ client.connect(err => {
 		return;
 	}
 
+	process.on('exit', () => client.close());
+
 	auth = client.db('auth');
 	users = auth.collection('users');
 
 	app.listen(port, () => console.log(`auth service listening on port ${port}!`));
-	//client.close();
 });

@@ -6,9 +6,10 @@ import { connect } from 'store';
 @connect('username,usernameInstapy')
 export default class SideBar extends Component {
 	componentWillMount() {
+		const { setUsername } = this.props;
 		// retrieve username from server
 		AccountService.getLoginCredentials()
-			.then(res => this.props.setUsername(res.username));
+			.then(res => setUsername(res.username || ''));
 	}
 
 	render({ location, username, usernameInstapy }) {

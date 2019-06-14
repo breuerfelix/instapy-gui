@@ -1,16 +1,28 @@
-from flask import Blueprint, request
-from auth import to_json, jwt_req
-from database import client
 import json
+from os import getenv
+from flask import Blueprint, request
+from auth import to_json, jwt_req, encode, decode
+from database import client
 
+CIPHER_SECRET = getenv('CIPHER_SECRET') or 'instapysecret'
 account = Blueprint('account', __name__)
 
 @account.route('/login', methods=['GET'])
 @jwt_req
 def get_credentials(payload):
-    result = client[payload['database']].account.find_one()
+    username = payload['username']
+    result = client.auth.instagram.find_one({ 'username': username })
 
-    return to_json({ 'username': result['username'] if result else None })
+    if not result:
+        return to_json({ 'username': None })
+
+    instagram_username = None
+    try:
+        instagram_username = decode(result['instagram_username'], CIPHER_SECRET)
+    except:
+        instagram_username = None
+
+    return to_json({ 'username': instagram_username })
 
 
 
@@ -18,9 +30,14 @@ def get_credentials(payload):
 @jwt_req
 def set_credentials(payload):
     body = json.loads(request.data)
+    username = payload['username']
 
-    table = client[payload['database']].account
-    table.delete_one({})
-    table.insert_one(body)
+    table = client.auth.instagram
+    table.delete_one({ 'username': username })
+    table.insert_one({
+        'username': username,
+        'instagram_username': encode(body['username'], CIPHER_SECRET),
+        'password': encode(body['password'], CIPHER_SECRET)
+    })
 
     return to_json({ 'done': True })

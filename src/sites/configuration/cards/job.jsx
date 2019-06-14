@@ -76,7 +76,6 @@ export default class JobCard extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-
 		const { job } = this.state;
 		job.active = !job.active;
 		this.setState({ job });
@@ -86,7 +85,7 @@ export default class JobCard extends Component {
 		this.setState({ job: updatedJob });
 	}
 
-	render({ moveJob, deleteJob, updateJob }, { action, expanded, job }) {
+	render({ moveJob, deleteJob }, { action, expanded, job }) {
 		// dont render if the action is not loaded yet
 		if (!this.setAction()) return;
 

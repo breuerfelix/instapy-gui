@@ -67,7 +67,7 @@ export default class ActionsModal extends Component {
 
 						</div>
 
-						{ false &&
+						{ false && // cancel and add button, TODO maybe remove ? since we have the plus icon now
 							<div className='modal-footer'>
 								<button
 									className='btn btn-outline-dark'
@@ -146,7 +146,7 @@ const ActionTable = ({ actions, add }) => {
 	};
 
 	const rows = actions.map(action =>
-		<tr>
+		<tr key={ action.functionName }>
 			<td>{ action.functionName }</td>
 			<td>
 				<a

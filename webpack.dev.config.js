@@ -20,10 +20,6 @@ module.exports = merge(common, {
 		compress: true,
 		historyApiFallback: true,
 		proxy: {
-			'/api': {
-				target: 'http://localhost:3002',
-				pathRewrite: { '^/api': '' }
-			},
 			'/socket': {
 				target: 'http://localhost:3001',
 				pathRewrite: { '^/socket': '' },

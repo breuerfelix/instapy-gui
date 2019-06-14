@@ -1,0 +1,21 @@
+version: '3'
+services:
+  chronograf:
+    image: chronograf:alpine
+    container_name: instapy-chronograf
+    restart: unless-stopped
+    ports:
+      - 8888:8888
+    depends_on:
+      - influxdb
+    volumes:
+      - instapy-chronograf:/var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=instapy
+      - INFLUXDB_PASSWORD=instapysecret
+    networks:
+      - instapy-net
+
+volumes:
+  instapy-chronograf:

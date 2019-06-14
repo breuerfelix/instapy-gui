@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from dotenv import load_dotenv
+load_dotenv()
 
 from instapy import InstaPy
 from inspect import signature, getdoc, Parameter
@@ -66,8 +68,8 @@ def get_actions():
 from database import client
 
 if __name__ == '__main__':
-    table = client.general.actions
-    table.create_index('functionName', unique = True, background = True)
+    table = client.configuration.actions
+    # table.create_index('functionName', unique = True, background = True)
 
     for action in get_actions():
         table.replace_one({ 'functionName': action['functionName'] }, action, upsert = True)

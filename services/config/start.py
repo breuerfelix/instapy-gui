@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import eventlet
 import eventlet.wsgi
 
@@ -13,9 +12,7 @@ from actions import actions
 from namespaces import namespaces
 from proxy import proxy
 
-from database import client, init_db
-
-PORT = 80
+from database import client
 
 app = Flask(__name__)
 app.register_blueprint(actions)
@@ -28,13 +25,13 @@ CORS(app)
 if __name__ == '__main__':
     print('starting config server....')
 
-    init_db()
-
+    PORT = getenv('PORT') or 80
+    PORT = int(PORT)
     mode = getenv('MODE') or 'production'
+
     if mode == 'development':
         app.run(debug=True, host='0.0.0.0', port=PORT)
     else:
         eventlet.wsgi.server(eventlet.listen(('', PORT)), app)
 
     client.close()
-

@@ -17,4 +17,4 @@ RUN apk --update --no-cache add \
   chromium \
   chromium-chromedriver
 
-CMD ["sh", "start.sh"]
+CMD ["python3", "-u", "start.py"]

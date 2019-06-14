@@ -16,7 +16,7 @@ install:
 script:
   - npm run test
   - npm run build
-  - docker-compose build
+  - docker-compose -f docker-compose.travis.yml build
 deploy:
   skip_cleanup: true
   provider: script
