@@ -53,6 +53,7 @@ app.post('/login', async (req, res) => {
 		return;
 	}
 
+	// TODO add exp date
 	const token = jwt.sign({ username: dbUsername, displayName, email }, JWT_SECRET);
 	console.log('user logged in:', dbUsername);
 	res.send(JSON.stringify({ token }));
@@ -62,17 +63,17 @@ app.post('/signup', async (req, res) => {
 	const { email, username, password } = req.body;
 
 	if (!email || email === '') {
-		res.send(JSON.stringify({ error: 'Missing email.' }));
+		res.send(JSON.stringify({ error: 'Email required.' }));
 		return;
 	}
 
 	if (!username || username === '') {
-		res.send(JSON.stringify({ error: 'Missing username.' }));
+		res.send(JSON.stringify({ error: 'Username required.' }));
 		return;
 	}
 
 	if (!password || password === '') {
-		res.send(JSON.stringify({ error: 'Missing password.' }));
+		res.send(JSON.stringify({ error: 'Password required.' }));
 		return;
 	}
 
@@ -100,6 +101,7 @@ app.post('/signup', async (req, res) => {
 		password: hash
 	});
 
+	// TODO add exp date
 	const token = jwt.sign({
 		username: lowerUsername,
 		displayName: username,
