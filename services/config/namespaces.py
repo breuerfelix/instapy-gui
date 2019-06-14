@@ -9,15 +9,14 @@ from bson.json_util import loads
 namespaces = Blueprint('namespaces', __name__)
 
 
-def get_db(payload):
-    return client[payload['database']]
-
 
 @namespaces.route('/namespaces', methods=['GET'])
 @jwt_req
 def get_namespaces(payload):
-    db = get_db(payload)
-    namespaces = db.namespaces.find()
+    db = client.configuration
+
+    # TODO do aggregation with project without 'jobs'
+    namespaces = db.namespaces.find({ 'username': payload['username'] })
     namespaces = list(namespaces)
 
     for namespace in namespaces:
@@ -30,12 +29,13 @@ def get_namespaces(payload):
 @namespaces.route('/namespaces', methods=['POST'])
 @jwt_req
 def update_namespaces(payload):
+    username = payload['username']
     body = json.loads(request.data)
     namespace = body['namespace']
 
     if body['action'] == 'add':
-        db = get_db(payload)
-        result = db.namespaces.find_one({ 'ident': namespace })
+        db = client.configuration
+        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })
 
         if result:
             return to_json({
@@ -44,6 +44,7 @@ def update_namespaces(payload):
 
         db.namespaces.insert_one({
             'ident': namespace['ident'],
+            'username': username,
             'name': namespace['name'],
             'description': namespace['description'],
             'jobs': []
@@ -57,11 +58,12 @@ def update_namespaces(payload):
 @namespaces.route('/namespaces/<namespace>', methods=['POST'])
 @jwt_req
 def update_namespace(payload, namespace):
+    username = payload['username']
     body = json.loads(request.data)
 
     if body['action'] == 'delete':
-        db = get_db(payload)
-        db.namespaces.delete_one({ 'ident': namespace })
+        db = client.configuration
+        db.namespaces.delete_one({ 'ident': namespace, 'username': username })
 
         return to_json({ 'done': True })
 
@@ -72,8 +74,10 @@ def update_namespace(payload, namespace):
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['GET'])
 @jwt_req
 def get_jobs(payload, namespace):
-    db = get_db(payload)
-    result = db.namespaces.find_one({ 'ident': namespace })
+    username = payload['username']
+    db = client.configuration
+
+    result = db.namespaces.find_one({ 'ident': namespace, 'username': username })
 
     return to_json(result['jobs'])
 
@@ -82,19 +86,22 @@ def get_jobs(payload, namespace):
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['POST'])
 @jwt_req
 def update_jobs(payload, namespace):
+    username = payload['username']
     body = loads(request.data)
 
     if body['action'] == 'update':
         new_jobs = body['jobs']
 
-        db = get_db(payload)
+        db = client.configuration
         result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace },
+            .find_one_and_update({ 'ident': namespace, 'username': username },
                                  {
                                      '$set': { 'jobs': new_jobs }
                                  }, return_document = ReturnDocument.AFTER)
 
-        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
+        # TODO change this
+        # refetch all jobs to the gui can update everything
+        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
 
         return to_json(result)
 
@@ -102,14 +109,17 @@ def update_jobs(payload, namespace):
         new_job = body['job']
         new_job['_id'] = ObjectId()
 
-        db = get_db(payload)
+        db = client.configuration
         result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace },
+            .find_one_and_update({ 'ident': namespace, 'username': username },
                                  {
                                      '$push': { 'jobs': new_job }
                                  }, return_document = ReturnDocument.AFTER)
+        
+        # TODO change this
+        # refetch all jobs to the gui can update everything
+        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
 
-        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
         return to_json(result)
 
     return to_json({ 'error': 'could not find matching action!' })
@@ -119,31 +129,38 @@ def update_jobs(payload, namespace):
 @namespaces.route('/namespaces/<namespace>/jobs/<uuid>', methods=['POST'])
 @jwt_req
 def update_job(payload, namespace, uuid):
+    username = payload['username']
     body = loads(request.data)
     uuid = ObjectId(uuid)
 
     if body['action'] == 'delete':
-        db = get_db(payload)
+        db = client.configuration
         result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace },
+            .find_one_and_update({ 'ident': namespace, 'username': username },
                                  {
                                      '$pull': { 'jobs': { '_id': uuid } }
                                  }, return_document = ReturnDocument.AFTER)
 
-        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
+        # TODO change this
+        # refetch all jobs to the gui can update everything
+        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
+
         return to_json(result)
 
     if body['action'] == 'update':
         new_job = body['job']
 
-        db = get_db(payload)
+        db = client.configuration
         result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace, 'jobs._id': uuid },
+            .find_one_and_update({ 'ident': namespace, 'username': username, 'jobs._id': uuid },
                                  {
                                      '$set': { 'jobs.$': new_job }
                                  }, return_document = ReturnDocument.AFTER)
+        
+        # TODO change this
+        # refetch all jobs to the gui can update everything
+        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
 
-        result = db.namespaces.find_one({ 'ident': namespace })['jobs']
         return to_json(result)
 
     return json.dumps({ 'error': 'could not find matching action!' })

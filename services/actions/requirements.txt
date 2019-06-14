@@ -1,0 +1,3 @@
+https://github.com/timgrossmann/InstaPy/zipball/gui-features
+pymongo
+python-dotenv

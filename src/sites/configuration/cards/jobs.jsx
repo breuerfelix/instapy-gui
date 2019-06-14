@@ -41,7 +41,7 @@ export default class JobsCard extends Component {
 			params
 		};
 
-		let result = ConfigService.addJob(job);
+		let result = ConfigService.addJob({ ...job });
 
 		// set temp id for rendering
 		job._id = { $oid: 'tempid' };

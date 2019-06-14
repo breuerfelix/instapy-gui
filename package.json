@@ -8,10 +8,6 @@
 		"test": "npm run lint",
 		"start": "webpack-dev-server --open --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
-		"docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.dev.yml",
-		"dev": "npm run docker:dev -- up",
-		"dev:d": "npm run dev -- -d",
-		"dev:down": "npm run docker:dev -- down",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
 		"lint:fix": "npm run lint -- --fix"
 	},
@@ -47,6 +43,7 @@
 		"babel-loader": "^8.0.6",
 		"clean-webpack-plugin": "^1.0.1",
 		"css-loader": "^2.1.1",
+		"dotenv-webpack": "^1.7.0",
 		"eslint": "^5.16.0",
 		"eslint-plugin-react": "^7.13.0",
 		"html-webpack-plugin": "^3.2.0",

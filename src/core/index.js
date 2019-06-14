@@ -37,9 +37,19 @@ const readToken = () => {
 	headers['Authorization'] = `Bearer ${token}`;
 };
 
+const setToken = (token = null) => {
+	if (!token) {
+		delete headers['Authorization'];
+		return;
+	}
+
+	headers['Authorization'] = `Bearer ${token}`;
+};
+
 export {
 	fetchGet,
 	fetchPost,
 	sleep,
-	readToken
+	readToken,
+	setToken
 };

@@ -9,7 +9,7 @@ export default class Configuration extends Component {
 	componentWillMount() {
 		if (!this.props.actions.length) {
 			// fetch actions
-			const actionsProm = ConfigService.fetchActions()
+			ConfigService.fetchActions()
 				.then(actions => this.props.setActions(actions));
 		}
 	}

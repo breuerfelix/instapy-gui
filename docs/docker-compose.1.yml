@@ -4,12 +4,28 @@ services:
     build: ./services/instapy
     image: felixbreuer/instapy:latest
     volumes:
-      - ./services/instapy:/usr/instapy
+      - instapy-data:/usr/instapy/InstaPy
     environment:
       - INFLUXDB_DB=instapy
       - INFLUXDB_USER=instapy
       - INFLUXDB_PASSWORD=instapysecret
       - INFLUXDB_HOST=influxdb
+    networks:
+      - instapy-net
+  webserver:
+    build:
+      context: .
+      dockerfile: conf/webserver.Dockerfile
+    image: felixbreuer/instapy-webserver:latest
+    restart: unless-stopped
+    depends_on:
+      - config
+      - auth
+      - socket
+      - influxdb
+      - grafana
+    ports:
+      - 80:80
     networks:
       - instapy-net
   config:
@@ -18,10 +34,7 @@ services:
     restart: unless-stopped
     ports:
       - 4002:80
-    volumes:
-      - ./services/config:/usr/instapy
     environment:
-      - MODE=development
       - MONGO_URL
       - JWT_SECRET
       - CIPHER_SECRET
@@ -30,7 +43,6 @@ services:
   auth:
     build: ./services/auth
     image: felixbreuer/instapy-auth:latest
-    command: ['npm', 'run', 'dev']
     restart: unless-stopped
     ports:
       - 4001:80
@@ -42,17 +54,13 @@ services:
   socket:
     build: ./services/socket
     image: felixbreuer/instapy-socket:latest
-    command: ['npm', 'run', 'dev']
     restart: unless-stopped
-    ports:
-      - 4003:80
     depends_on:
       - instapy
     environment:
       - FILESYSTEM=unix
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./services/socket:/usr/instapy
     networks:
       - instapy-net
   influxdb:
@@ -75,9 +83,7 @@ services:
     depends_on:
       - influxdb
     volumes:
-      - ./conf/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./conf/grafana/datasources:/etc/grafana/provisioning/datasources
-      - ./conf/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - instapy-grafana:/var/lib/grafana
     ports:
       - 3000:3000
     environment:
@@ -95,4 +101,6 @@ networks:
     driver: bridge
 
 volumes:
+  instapy-data:
   instapy-influxdb:
+  instapy-grafana:
