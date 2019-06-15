@@ -1,4 +1,5 @@
-websocket-client
 https://github.com/timgrossmann/InstaPy/zipball/gui-features
+websocket-client
 requests
 python-dotenv
+psutil

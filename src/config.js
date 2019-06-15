@@ -1,5 +1,5 @@
 const config = {
-	socketEndpoint: '/socket',
+	socketEndpoint: 'ws://localhost:4005',
 	apiEndpoint: 'http://localhost:4002',
 	authEndpoint: 'http://localhost:4001'
 };

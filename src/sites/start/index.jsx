@@ -6,11 +6,12 @@ import { DescriptionCard } from 'sites/configuration/cards';
 
 export default class Start extends Component {
 	state = {
-		namespace: null
+		namespace: null,
+		bot: null
 	}
 
-	render(props, { namespace }) {
-		const firstRowHeight = '230px';
+	render(props, { namespace, bot }) {
+		const firstRowHeight = '320px';
 		return (
 			<div>
 				<div className='row'>
@@ -19,6 +20,8 @@ export default class Start extends Component {
 						<StartBot
 							namespaceChanged={ namespace => this.setState({ namespace }) }
 							height={ firstRowHeight }
+							bot={ bot }
+							botChanged={ bot => this.setState({ bot }) }
 						/>
 					</div>
 
@@ -33,7 +36,7 @@ export default class Start extends Component {
 				<div className='row'>
 
 					<div className='col-padding col'>
-						<Console />
+						<Console bot={ bot } />
 					</div>
 				</div>
 			</div>
