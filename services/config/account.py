@@ -17,12 +17,14 @@ def get_credentials(payload):
         return to_json({ 'username': None })
 
     instagram_username = None
+    password = None
     try:
         instagram_username = decode(result['instagram_username'], CIPHER_SECRET)
+        password = decode(result['password'], CIPHER_SECRET)
     except:
         instagram_username = None
 
-    return to_json({ 'username': instagram_username })
+    return to_json({ 'username': instagram_username, 'password': password })
 
 
 

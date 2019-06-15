@@ -6,6 +6,7 @@ import { connect } from 'store';
 @connect('username')
 class Dashboard extends Component {
 	render({ username }) {
+		return (<div>tst</div>);
 		return (
 			<div>
 				<div className='row'>

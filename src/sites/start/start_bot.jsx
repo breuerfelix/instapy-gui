@@ -8,13 +8,15 @@ class StartBot extends Component {
 	state = {
 		namespaces: [],
 		namespace: null,
+		bots: [],
 		running: false,
-		status: 'exited'
+		status: 'stopped' // or running
 	}
 
 	toggleBot = e => {
 		e.preventDefault();
 		const { namespace, running } = this.state;
+		const { bot } = this.props;
 
 		if (!running) {
 			// that means, bot will be started
@@ -28,24 +30,25 @@ class StartBot extends Component {
 		}
 
 		SocketService.send({
-			handler: 'bot_state',
-			action: 'toggle',
-			running: !running,
-			namespace: namespace.ident
+			handler: 'bot',
+			start: !running,
+			namespace: namespace.ident,
+			bot
 		});
 
-		// todo disable button
 		this.setState({ running: !running, status: 'loading' });
 
 		SocketService.send({
-			handler: 'bot_state',
-			action: 'get'
+			handler: 'status',
+			action: 'get',
+			ident: bot
 		});
 
 		// refresh logs, since they get deleted on start
 		SocketService.send({
-			handler: 'logger',
-			action: 'get'
+			handler: 'logs',
+			action: 'get',
+			bot
 		});
 	}
 
@@ -58,22 +61,39 @@ class StartBot extends Component {
 		namespaceChanged(namespace);
 	}
 
-	recieveSocketData = data => {
-		if (data.handler != 'bot_state') return;
-
+	updateStatus = data => {
+		const { status } = data;
 		this.setState({
-			running: data.running,
-			status: data.status
+			running: status == 'running',
+			status
 		});
 	}
 
-	componentWillMount() {
-		SocketService.register(this, this.recieveSocketData);
+	botChanged = bot => {
+		const { botChanged } = this.props;
 
-		// event to get current bot state
 		SocketService.send({
-			handler: 'bot_state',
-			action: 'get'
+			handler: 'status',
+			action: 'get',
+			ident: bot
+		});
+
+		botChanged(bot);
+	}
+
+	updateBots = res => {
+		const bots = res.data;
+		this.setState({ bots });
+		if (!bots.length) return;
+		this.botChanged(bots[0]);
+	}
+
+	componentWillMount() {
+		SocketService.register('status', this.updateStatus);
+		SocketService.register('bots', this.updateBots);
+
+		SocketService.send({
+			handler: 'bots'
 		});
 
 		ConfigService.fetchNamespaces()
@@ -89,21 +109,18 @@ class StartBot extends Component {
 			});
 	}
 
-	getBotState = () => {
-		// event to get current bot state
-		SocketService.send({
-			handler: 'bot_state',
-			action: 'get'
-		});
-	}
-
 	componentWillUnmount() {
-		SocketService.unregister(this);
+		SocketService.unregister('status', this.updateStatus);
+		SocketService.unregister('bots', this.updateBots);
 	}
 
-	render({ height }, { namespaces, namespace, running, status }) {
-		const namespaceOptions = namespaces.map(namespace =>
-			<option value={ namespace.ident }>{ namespace.name }</option>
+	render({ height, bot }, { namespaces, namespace, bots, running, status }) {
+		const namespaceOptions = namespaces.map(({ ident, name }) =>
+			<option key={ ident } value={ ident }>{ name }</option>
+		);
+
+		const botOptions = bots.map(bot =>
+			<option key={ bot } value={ bot }>{ bot }</option>
 		);
 
 		const buttonText = running ? 'button_stop' : 'button_start';
@@ -111,7 +128,7 @@ class StartBot extends Component {
 		const statusText = 'status_' + status;
 		const statusBadge = classNames({
 			'badge': true,
-			'badge-danger': status == 'exited',
+			'badge-danger': status == 'stopped',
 			'badge-success': status == 'running',
 			'badge-primary': status == 'loading'
 		});
@@ -122,7 +139,21 @@ class StartBot extends Component {
 					{ translate('startbot_title') }
 				</div>
 				<div className='card-body'>
-					<label>{ translate('startbot_select_namespace') }</label>
+
+					<label>{ translate('startbot_select_bot') }</label>
+					<select
+						value={ bot }
+						className='form-control'
+						onChange={ e => this.botChanged(e.target.value) }
+					>
+						{ botOptions }
+					</select>
+
+					<label
+						style={{ marginTop: '10px' }}
+					>
+						{ translate('startbot_select_namespace') }
+					</label>
 					<select
 						value={ namespace ? namespace.ident : null }
 						className='form-control'

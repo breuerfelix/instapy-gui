@@ -33,6 +33,7 @@ rules:
     - always
   'no-unused-vars': off
   'no-console': off
+  'no-empty': off
   'keyword-spacing':
     - error
   'no-mixed-spaces-and-tabs':

@@ -45,14 +45,11 @@ services:
     command: ['npm', 'run', 'dev']
     restart: unless-stopped
     ports:
-      - 4003:80
-    depends_on:
-      - instapy
-    environment:
-      - FILESYSTEM=unix
+      - 4005:80
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./services/socket:/usr/instapy
+    environment:
+      - JWT_SECRET
     networks:
       - instapy-net
   influxdb:
