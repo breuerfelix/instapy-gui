@@ -8,7 +8,6 @@ from bson.json_util import dumps
 
 SECRET = getenv('JWT_SECRET') or 'instapysecret'
 
-
 def to_json(obj, status = 200):
     return current_app.response_class(
         dumps(obj, indent = None),

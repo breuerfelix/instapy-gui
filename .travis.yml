@@ -18,8 +18,15 @@ script:
   - npm run build
   - docker-compose -f docker-compose.travis.yml build
 deploy:
-  skip_cleanup: true
-  provider: script
-  script: bash scripts/deploy_docker.sh
-  on:
-    branch: master
+  - provider: script
+    skip_cleanup: true
+    script: bash scripts/deploy_docker.sh
+    on:
+      branch: master
+  - deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: dist
+    on:
+      branch: feature/auth-service

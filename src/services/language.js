@@ -92,6 +92,7 @@ class Language {
 
 		startbot_title: 'Start InstaPy',
 		startbot_select_namespace: 'Select Template',
+		startbot_select_bot: 'Select Bot',
 
 		console_title: 'Console',
 
