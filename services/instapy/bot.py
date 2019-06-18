@@ -124,7 +124,7 @@ influxdb_options = {
 }
 
 # set assets folder as a workspace
-ASSETS = os.path.dirname(os.path.abspath(__file__))
+ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
 set_workspace(ASSETS)
 
 # get an InstaPy session!

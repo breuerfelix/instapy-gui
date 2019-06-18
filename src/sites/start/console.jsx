@@ -5,16 +5,14 @@ import $ from 'jquery';
 export default class Console extends Component {
 	state = {
 		logList: [],
-		scrolled: false
+		scrolled: false,
+		bot: null
 	}
 
-	recieveSocketData = data => {
-		if (data.handler != 'logger') return;
-
+	receiveLogs = data => {
 		if (data.action == 'single') {
 			const { logList } = this.state;
 
-			// remove description cause they crash the UI
 			// TODO fix display of description
 			// TODO render emojis
 
@@ -22,10 +20,8 @@ export default class Console extends Component {
 			this.setState({ logList });
 		}
 
-		if (data.action == 'multiple') {
-			// overwrite logs from server logs
-			// why filter ? read above
-			const logList = [ ...data.message ];
+		if (data.action == 'set') {
+			const logList = [ ...data.logs ];
 			this.setState({ logList });
 		}
 
@@ -43,13 +39,9 @@ export default class Console extends Component {
 	}
 
 	componentWillMount() {
-		SocketService.register(this, this.recieveSocketData);
-
-		// event to get all past logs
-		SocketService.send({
-			handler: 'logger',
-			action: 'get'
-		});
+		SocketService.register('logs', this.receiveLogs);
+		const { bot } = this.props;
+		this.setState({ bot });
 	}
 
 	componentDidMount() {
@@ -69,10 +61,19 @@ export default class Console extends Component {
 	}
 
 	componentWillUnmount() {
-		SocketService.unregister(this);
+		SocketService.unregister('logs', this.receiveLogs);
 	}
 
-	render(props, { logList }) {
+	render(props, { logList, bot }) {
+		if (bot != props.bot) {
+			this.setState({ bot: props.bot });
+			SocketService.send({
+				handler: 'logs',
+				action: 'get',
+				bot: props.bot
+			});
+		}
+
 		// TODO pretty print, highlight time / user/ whatever
 		const logs = logList.map(log =>
 			<li>{ log }</li>
@@ -81,7 +82,7 @@ export default class Console extends Component {
 		return (
 			<div className='card console'>
 				<div className='card-header'>
-					{ translate('console_title') }
+					{ `${translate('console_title')}: ${bot}` }
 				</div>
 				<div
 					className='card-body'

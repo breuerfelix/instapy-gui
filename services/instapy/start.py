@@ -69,16 +69,18 @@ def get_token(username, password):
 def kill():
     global PROCESS
     if not PROCESS: return
-    if not PROCESS.poll():
+    if PROCESS.poll() is None:
         print('killing process...')
         os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
+        print('process killed')
 
     PROCESS = None
 
 def check_process():
     global PROCESS
     if not PROCESS: return
-    if PROCESS.poll(): kill()
+    print('polling process: ', PROCESS.poll())
+    if PROCESS.poll() is not None: kill()
 
 # handlers
 def get_status(ws, data):
@@ -129,14 +131,18 @@ if __name__ == '__main__':
     }
 
     while True:
-        ws = websocket.WebSocketApp(
-            SOCKET_ENDPOINT,
-            on_message = on_message,
-            on_error = on_error,
-            on_close = on_close,
-            header = header
-        )
+        try:
+            ws = websocket.WebSocketApp(
+                SOCKET_ENDPOINT,
+                on_message = on_message,
+                on_error = on_error,
+                on_close = on_close,
+                header = header
+            )
 
-        ws.on_open = on_open
-        ws.run_forever(ping_interval = 30)
-        time.sleep(1)
+            ws.on_open = on_open
+            ws.run_forever(ping_interval = 30)
+            time.sleep(1)
+
+        except KeyboardInterrupt:
+            break

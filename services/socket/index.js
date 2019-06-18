@@ -47,7 +47,12 @@ wss.on('connection', (ws, { headers, url }) => {
 			return;
 		}
 
-		HANDLERS[data.handler](ws, user, socket, payload, data);
+		try {
+			HANDLERS[data.handler](ws, user, socket, payload, data);
+		} catch (e) {
+			console.error('exception executing handler:', e);
+			ws.send(json({ error: 'Exception in handler.' }));
+		}
 	});
 
 	ws.on('close', () => {
@@ -112,6 +117,16 @@ HANDLERS['status'] = status;
 function receiveInstapyLog(ws, user, socket, payload, data) {
 	const s = user.sockets.find(x => x.ident == data.ident && x.type == 'instapy');
 	s.logs.push(data.message);
+
+	const apps = user.sockets.filter(x => x.type && x.type == 'app');
+	for (const app of apps) {
+		app.ws.send(json({
+			handler: 'logs',
+			action: 'single',
+			bot,
+			message: data.message
+		}));
+	}
 }
 HANDLERS['instapy_log'] = receiveInstapyLog;
 
@@ -128,8 +143,8 @@ function bot(ws, user, socket, payload, data) {
 	const s = user.sockets
 		.find(x => x.type == 'instapy' && x.ident == data.bot);
 
-	// clear logs
-	s.logs = [];
+	// clear logs on start
+	if (data.start) s.logs = [];
 
 	s.ws.send(json({
 		handler: data.start ? 'start' : 'stop',
@@ -137,3 +152,19 @@ function bot(ws, user, socket, payload, data) {
 	}));
 }
 HANDLERS['bot'] = bot;
+
+function logs(ws, user, socket, payload, data) {
+	const { action, bot } = data;
+	if (action == 'get') {
+		const s = user.sockets
+			.find(x => x.type == 'instapy' && x.ident == bot);
+
+		ws.send(json({
+			handler: 'logs',
+			action: 'set',
+			bot,
+			logs: [ ...s.logs ]
+		}));
+	}
+}
+HANDLERS['logs'] = logs;
