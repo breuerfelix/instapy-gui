@@ -1,13 +1,5 @@
 version: '3'
 services:
-  instapy:
-    build: ./services/instapy
-    image: felixbreuer/instapy:latest
-  webserver:
-    build:
-      context: .
-      dockerfile: conf/webserver.Dockerfile
-    image: felixbreuer/instapy-webserver:latest
   config:
     build: ./services/config
     image: felixbreuer/instapy-config:latest
@@ -17,8 +9,3 @@ services:
   socket:
     build: ./services/socket
     image: felixbreuer/instapy-socket:latest
-  grafana:
-    build:
-      context: .
-      dockerfile: conf/grafana.Dockerfile
-    image: felixbreuer/instapy-grafana:latest
