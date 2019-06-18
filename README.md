@@ -30,6 +30,7 @@
 ### register a bot
 
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
+  * you can copy your old assets folder into this folder to reuse your database / cookies / etc.
 * navigate to the folder in the console
 * run `pip install -r requirements.txt`
   * use `pip3` if you are on linux or mac
