@@ -18,16 +18,6 @@ module.exports = merge(common, {
 		inline: true,
 		progress: true,
 		compress: true,
-		historyApiFallback: true,
-		proxy: {
-			'/socket': {
-				target: 'http://localhost:3001',
-				pathRewrite: { '^/socket': '' },
-				ws: true
-			},
-			'/grafana': {
-				target: 'http://localhost/grafana'
-			},
-		}
+		historyApiFallback: true
 	}
 });
