@@ -1,154 +1,142 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+import psutil
 import os
+import signal
+import subprocess
 import sys
-import logging
-import requests
 import json
-from os import getenv
-from signal import signal, SIGUSR1, SIGINT
-from websocket import create_connection
-from instapy import InstaPy, set_workspace
-from instapy.util import smart_run
+import time
+import websocket
+import requests;
 
-namespace = getenv('NAMESPACE')
-token = getenv('TOKEN')
-ident = getenv('IDENT')
-api_endpoint = getenv('API')
-socket_endpoint = getenv('SOCKET')
+# constants
+AUTH_ENDPOINT = 'http://localhost:4001';
+API_ENDPOINT = 'http://localhost:4002';
+SOCKET_ENDPOINT = 'ws://localhost:4005';
+IDENT = os.getenv('IDENT')
 
-if not namespace or not token: sys.exit(0)
+if not IDENT:
+    print('IDENT not provided')
+    sys.exit(1)
 
-headers = {
-    'Authorization': f'Bearer {token}'
-}
+# globals
+PROCESS = None
+TOKEN = None
+HANDLERS = {}
 
-def get(url):
-    global headers
-    res = requests.get(api_endpoint + url, headers = headers)
-    return res.json()
+# socke stuff
+def on_message(ws, message):
+    print('received message:', message)
+    data = json.loads(message)
+    if data['handler'] not in HANDLERS:
+        print('could not locate handler:', data['handler'])
+        return
+    
+    HANDLERS[data['handler']](ws, data)
 
-def post(url, data):
-    global headers
-    res = requests.post(
-        api_endpoint + url,
-        data = json.dumps(data),
-        headers = headers
-    )
-    return res.json()
+def on_error(ws, error):
+    print('error:', error)
 
-class my_handler(logging.Handler):
-    def init(self):
-        self.setLevel(logging.DEBUG)
-        logger_formatter = logging.Formatter(
-            '%(levelname)s [%(asctime)s] %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S')
-        self.setFormatter(logger_formatter)
+def on_close(ws):
+    print('closed socket')
 
-    def connect(self):
-        global token
-        global headers
-        self.socket = create_connection(socket_endpoint, header = headers)
+def on_open(ws):
+    print('opened socket')
+    global IDENT
+    ws.send(json.dumps({
+        'handler': 'register',
+        'type': 'instapy',
+        'ident': IDENT
+    }))
 
-    def disconnect(self):
-        self.socket.close()
-
-    def emit(self, record):
-        message = self.format(record)
-        global ident
-        
-        try:
-            self.connect()
-            self.socket.send(json.dumps({
-                'handler': 'instapy_log',
-                'message': message,
-                'ident': ident
-            }))
-            self.disconnect()
-        except:
-            pass
-
-
-log_handler = my_handler()
-log_handler.init()
-
-user = get('/login')
-proxy = get('/proxy')
-if not proxy:
-    # set proxy default values
-    proxy = {
-        'host': None,
-        'port': None,
-        'username': None,
-        'password': None
+def get_token(username, password):
+    payload = {
+        'username': username,
+        'password': password
     }
 
-res_jobs = get(f'/namespaces/{namespace}/jobs')
+    response = requests.post(AUTH_ENDPOINT + '/login', data = payload);
+    response = response.json()
+    if 'error' in response:
+        print(response['error'])
+        sys.exit()
+    
+    return response['token']
 
-# sort out non active jobs
-jobs = []
-for job in res_jobs:
-    if job['active'] == False: continue
-    jobs.append(job)
+# utils
+def kill():
+    global PROCESS
+    if not PROCESS: return
+    if not PROCESS.poll():
+        print('killing process...')
+        os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
 
-# TODO remove until line if we have a proper list view
-# convert list to actual arrays
-actions = get('/actions')
+    PROCESS = None
 
-for job in jobs:
-    action = next(action for action in actions if action['functionName'] == job['functionName'])
+def check_process():
+    global PROCESS
+    if not PROCESS: return
+    if PROCESS.poll(): kill()
 
-    for param in job['params']:
-        act_param = next(act_param for act_param in action['params'] if act_param['name'] == param['name'])
+# handlers
+def get_status(ws, data):
+    check_process()
+    global PROCESS
+    status = 'running' if PROCESS else 'stopped'
 
-        if type(param['value']) is not str: continue
+    ws.send(json.dumps({
+        'handler': 'status',
+        'status': status,
+        'action': 'set'
+    }))
+HANDLERS['status'] = get_status
 
-        if act_param['type'] == 'list' or act_param['type'] == 'tuple':
-            param['value'] = param['value'].split(',')
+def start(ws, data):
+    check_process()
+    global PROCESS
+    global TOKEN
+    global IDENT
 
-        if act_param['type'] == 'tuple':
-            param['value'] = tuple(param['value'])
-# ---------------------------------------------------------------------------
+    ienv = os.environ.copy()
+    ienv['TOKEN'] = TOKEN
+    ienv['NAMESPACE'] = data['namespace']
+    ienv['SOCKET'] = SOCKET_ENDPOINT
+    ienv['API'] = API_ENDPOINT
+    ienv['IDENT'] = IDENT
 
-# login credentials
-insta_username = user['username']
-insta_password = user['password']
+    PROCESS = subprocess.Popen(
+        ['python3', 'bot.py'],
+        preexec_fn = os.setsid,
+        env = ienv
+    )
+    get_status(ws, data)
+HANDLERS['start'] = start
 
-# influx db credentials
-influx_port = getenv('INFLUXDB_PORT') or 8086
-influx_port = int(influx_port)
-influxdb_options = {
-    'user': getenv('INFLUXDB_USER') or 'instapy',
-    'password': getenv('INFLUXDB_PASSWORD') or 'instapysecret',
-    'database': getenv('INFLUXDB_DB') or 'instapy',
-    'host': getenv('INFLUXDB_HOST') or 'influxdb',
-    'port': influx_port
-}
+def stop(ws, data):
+    kill()
+    get_status(ws, data)
+HANDLERS['stop'] = stop
 
-# set assets folder as a workspace
-ASSETS = os.path.dirname(os.path.abspath(__file__))
-set_workspace(ASSETS)
+if __name__ == '__main__':
+    username = os.getenv('USERNAME')
+    password = os.getenv('PASSWORD')
 
-# get an InstaPy session!
-session = InstaPy(username = insta_username,
-                  password = insta_password,
-                  headless_browser = False,
-                  show_logs = True,
-                  log_handler = log_handler,
-                  #influxdb = influxdb_options,
-                  proxy_address = proxy['host'] or None,
-                  proxy_port = int(proxy['port']) if proxy['port'] else None,
-                  proxy_username = proxy['username'] or None,
-                  proxy_password = proxy['password'] or None)
+    TOKEN = get_token(username, password)
+    header = {
+        'Authorization': f'Bearer {TOKEN}'
+    }
 
-# function that will be executed before sig kill, to the browser window closes
-def exit_browser(*args):
-    session.browser.quit()
+    while True:
+        ws = websocket.WebSocketApp(
+            SOCKET_ENDPOINT,
+            on_message = on_message,
+            on_error = on_error,
+            on_close = on_close,
+            header = header
+        )
 
-signal(SIGUSR1, exit_browser)
-
-with smart_run(session):
-    for job in jobs:
-        arguments = dict()
-        for param in job['params']:
-            arguments[param['name']] = param['value']
-
-        getattr(session, job['functionName'])(**arguments)
+        ws.on_open = on_open
+        ws.run_forever(ping_interval = 30)
+        time.sleep(1)
