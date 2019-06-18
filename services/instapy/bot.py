@@ -130,7 +130,7 @@ set_workspace(ASSETS)
 # get an InstaPy session!
 session = InstaPy(username = insta_username,
                   password = insta_password,
-                  headless_browser = False,
+                  headless_browser = True,
                   show_logs = True,
                   log_handler = log_handler,
                   #influxdb = influxdb_options,
