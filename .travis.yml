@@ -16,6 +16,7 @@ install:
 script:
   - npm run test
   - npm run build
+  - echo gui.instapy.io >> dist/CNAME
   - docker-compose -f docker-compose.travis.yml build
 deploy:
   - provider: script
