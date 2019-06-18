@@ -8,6 +8,8 @@
 		"test": "npm run lint",
 		"start": "webpack-dev-server --open --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
+		"docker:build": "docker-compose build socket config auth",
+		"docker:host": "docker-compose -f docker-compose.host.yml",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
 		"lint:fix": "npm run lint -- --fix"
 	},
