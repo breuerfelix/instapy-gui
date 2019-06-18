@@ -82,7 +82,7 @@ export default class Console extends Component {
 		return (
 			<div className='card console'>
 				<div className='card-header'>
-					{ `${translate('console_title')}: ${bot}` }
+					{ translate('console_title') + (bot ? `: ${bot}` : '') }
 				</div>
 				<div
 					className='card-body'

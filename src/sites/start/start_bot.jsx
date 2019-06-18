@@ -10,13 +10,18 @@ class StartBot extends Component {
 		namespace: null,
 		bots: [],
 		running: false,
-		status: 'stopped' // or running
+		status: 'stopped', // or running
+		errorNamespace: false,
+		errorBot: false
 	}
 
 	toggleBot = e => {
 		e.preventDefault();
 		const { namespace, running } = this.state;
 		const { bot } = this.props;
+
+		this.setState({ errorBot: !bot });
+		if (this.state.errorBot) return;
 
 		if (!running) {
 			// that means, bot will be started
@@ -27,6 +32,9 @@ class StartBot extends Component {
 				history.push('/account/login');
 				return;
 			}
+
+			this.setState({ errorNamespace: !namespace });
+			if (this.state.errorNamespace) return;
 		}
 
 		SocketService.send({
@@ -114,7 +122,10 @@ class StartBot extends Component {
 		SocketService.unregister('bots', this.updateBots);
 	}
 
-	render({ height, bot }, { namespaces, namespace, bots, running, status }) {
+	render(
+		{ height, bot },
+		{ namespaces, namespace, bots, running, status, errorNamespace, errorBot }
+	) {
 		const namespaceOptions = namespaces.map(({ ident, name }) =>
 			<option key={ ident } value={ ident }>{ name }</option>
 		);
@@ -133,6 +144,16 @@ class StartBot extends Component {
 			'badge-primary': status == 'loading'
 		});
 
+		const botSelectClass = classNames({
+			'form-control': true,
+			'is-invalid': errorBot
+		});
+
+		const namespaceSelectClass = classNames({
+			'form-control': true,
+			'is-invalid': errorNamespace
+		});
+
 		return (
 			<div className='card' style={{ height }}>
 				<div className='card-header'>
@@ -143,7 +164,7 @@ class StartBot extends Component {
 					<label>{ translate('startbot_select_bot') }</label>
 					<select
 						value={ bot }
-						className='form-control'
+						className={ botSelectClass }
 						onChange={ e => this.botChanged(e.target.value) }
 					>
 						{ botOptions }
@@ -156,7 +177,7 @@ class StartBot extends Component {
 					</label>
 					<select
 						value={ namespace ? namespace.ident : null }
-						className='form-control'
+						className={ namespaceSelectClass }
 						onChange={ this.namespaceChanged }
 					>
 						{ namespaceOptions }
