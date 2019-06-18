@@ -24,31 +24,32 @@
 
 ### requirements
 
-* install [docker](https://www.docker.com/get-started)
-* install [docker-compose](https://docs.docker.com/compose/install)
+* install [python 3](https://www.python.org/downloads/)
+* sign up on [gui.instapy.io](http://gui.instapy.io)
 
-### run instapy-gui locally
+### register a bot
 
-* download the docker-compose file
-	* [click here](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/docs/docker-compose.windows.yml) for windows
-	* [click here](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/docs/docker-compose.unix.yml) for mac or linux
-* save as `docker-compose.yml`
-* navigate in your terminal to the downloaded file
-* run `docker-compose up`
-	* first start will take a while
-* open `http://localhost` to view the gui
-* press `ctrl + c` in your terminal to exit the gui
+* download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
+* navigate to the folder in the console
+* run `pip install -r requirements.txt`
+  * use `pip3` if you are on linux or mac
+* create a file named `.env` with the following content
+
+```env
+USERNAME=instapy.io_username
+PASSWORD=instapy.io_password
+IDENT=choose_any_name_to_indentify_this_instance
+```
+
+* run `python start.py`
+  * use `python3` if you are on linux or mac
+* go to [gui.instapy.io](http://gui.instapy.io) and take off!
 
 ## guides
 
 ### video tutorials:
 
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
-
-### written guides:
-
-**[start developing](docs/contributing.md)**  
-**[deploy on digital ocean](docs/digital-ocean.md)**
 
 ## screenshots
 

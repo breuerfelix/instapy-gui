@@ -1,7 +1,7 @@
 const config = {
-	socketEndpoint: 'ws://localhost:4005',
-	apiEndpoint: 'http://localhost:4002',
-	authEndpoint: 'http://localhost:4001'
+	socketEndpoint: process.env.SOCKET_ENDPOINT || 'ws://socket.instapy.io',
+	apiEndpoint: process.env.API_ENDPOINT || 'http://api.instapy.io',
+	authEndpoint: process.env.AUTH_ENDPOINT || 'http://auth.instapy.io'
 };
 
 // TODO will be loaded from backend on startup
