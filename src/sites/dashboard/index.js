@@ -7,6 +7,7 @@ import { connect } from 'store';
 class Dashboard extends Component {
 	render({ username }) {
 		return (<div>Dashboard coming back soon...</div>);
+		/*
 		return (
 			<div>
 				<div className='row'>
@@ -50,6 +51,7 @@ class Dashboard extends Component {
 				</div>
 			</div>
 		);
+		*/
 	}
 }
 

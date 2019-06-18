@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const dotenv = require('dotenv-webpack');
 
 module.exports = {
 	entry: [
@@ -68,7 +67,6 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'InstaPy GUI',
 			template: path.join(__dirname, 'public/index.html')
-		}),
-		new dotenv()
+		})
 	]
 };

@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const SALT_ROUNDS = 10;
+const SALT_ROUNDS = 13;
 const client = new MongoClient(MONGO_URL, { useNewUrlParser: true });
 let auth, users;
 
