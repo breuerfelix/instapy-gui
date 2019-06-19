@@ -17,7 +17,7 @@ script:
   - npm run test
   - npm run build
   - echo gui.instapy.io >> dist/CNAME
-  - docker-compose -f docker-compose.travis.yml build
+  - docker-compose -f docker-compose.travis.yml build --parallel
 deploy:
   - provider: script
     skip_cleanup: true
