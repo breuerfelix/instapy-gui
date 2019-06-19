@@ -4,7 +4,11 @@ import store from 'store';
 const headers = {};
 
 async function fetchGet(url) {
-	const res = await fetch(url, { headers });
+	const res = await fetch(url, {
+		method: 'GET',
+		mode: 'cors',
+		headers
+	});
 	const json = await res.json();
 	return json;
 }
@@ -12,6 +16,7 @@ async function fetchGet(url) {
 async function fetchPost(url, data) {
 	const res = await fetch(url, {
 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		mode: 'cors',
 		headers: {
 			'Content-Type': 'application/json',
 			... headers
