@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-import psutil
 import os
 import signal
 import subprocess
@@ -12,9 +11,9 @@ import websocket
 import requests;
 
 # constants
-AUTH_ENDPOINT = 'http://localhost:4001';
-API_ENDPOINT = 'http://localhost:4002';
-SOCKET_ENDPOINT = 'ws://localhost:4005';
+AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'http://auth.instapy.io')
+API_ENDPOINT = os.getenv('API_ENDPOINT', 'http://api.instapy.io')
+SOCKET_ENDPOINT = os.getenv('SOCKET_ENDPOINT', 'ws://socket.instapy.io')
 IDENT = os.getenv('IDENT')
 
 if not IDENT:
