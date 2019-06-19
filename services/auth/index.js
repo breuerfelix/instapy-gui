@@ -20,6 +20,7 @@ let auth, users;
 
 app.post('/login', async (req, res) => {
 	const { username, password } = req.body;
+	console.log('received login:', req.body);
 
 	if (!username || username === '') {
 		res.send(JSON.stringify({ error: 'Missing username.' }));
@@ -61,6 +62,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/signup', async (req, res) => {
 	const { email, username, password } = req.body;
+	console.log('received signup:', req.body);
 
 	if (!email || email === '') {
 		res.send(JSON.stringify({ error: 'Email required.' }));
