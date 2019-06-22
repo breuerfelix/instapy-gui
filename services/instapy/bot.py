@@ -3,8 +3,9 @@ import sys
 import logging
 import requests
 import json
+import platform
+import signal
 from os import getenv
-from signal import signal, SIGUSR1, SIGINT
 from websocket import create_connection
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
@@ -143,7 +144,8 @@ session = InstaPy(username = insta_username,
 def exit_browser(*args):
     session.browser.quit()
 
-signal(SIGUSR1, exit_browser)
+if platform.system() != 'Windows':
+    signal.signal(signal.SIGUSR1, exit_browser)
 
 with smart_run(session):
     for job in jobs:
