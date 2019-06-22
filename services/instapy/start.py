@@ -121,8 +121,8 @@ def stop(ws, data):
 HANDLERS['stop'] = stop
 
 if __name__ == '__main__':
-    username = os.getenv('USERNAME')
-    password = os.getenv('PASSWORD')
+    username = os.getenv('INSTAPY_USER')
+    password = os.getenv('INSTAPY_PASSWORD')
 
     TOKEN = get_token(username, password)
     header = {

@@ -32,14 +32,14 @@
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
   * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
 * navigate to the folder in the console
-* you should create a new python [virtual environment](https://docs.python.org/3/library/venv.html) because we use a modified InstaPy version
+* you should create a new python [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) because we use a modified InstaPy version
 * run `pip install -r requirements.txt`
   * use `pip3` if you are on linux or mac
 * create a file named `.env` with the following content
 
 ```env
-USERNAME=instapy.io_username
-PASSWORD=instapy.io_password
+INSTAPY_USER=instapy.io_username
+INSTAPY_PASSWORD=instapy.io_password
 IDENT=choose_any_name_to_indentify_this_instance
 ```
 
