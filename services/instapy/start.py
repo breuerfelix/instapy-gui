@@ -8,7 +8,7 @@ import sys
 import json
 import time
 import websocket
-import requests;
+import requests
 
 # constants
 AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'http://auth.instapy.io')

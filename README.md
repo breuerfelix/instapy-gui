@@ -30,11 +30,11 @@
 ### register a bot
 
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
-  * you can copy your old assets folder into this folder to reuse your database / cookies / etc.
+  * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
 * navigate to the folder in the console
+* you should create a new python [virtual environment](https://docs.python.org/3/library/venv.html) because we use a modified InstaPy version
 * run `pip install -r requirements.txt`
   * use `pip3` if you are on linux or mac
-  * you should use a new [virtual environment](https://docs.python.org/3/library/venv.html) because we use a modified InstaPy version
 * create a file named `.env` with the following content
 
 ```env
