@@ -1,5 +1,8 @@
 from dotenv import load_dotenv
-load_dotenv()
+
+load_dotenv('.env')
+load_dotenv('instapy.env')
+
 
 import os
 import signal
