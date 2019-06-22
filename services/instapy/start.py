@@ -7,6 +7,7 @@ load_dotenv('instapy.env')
 import os
 import signal
 import subprocess
+import platform
 import sys
 import json
 import time
@@ -73,7 +74,12 @@ def kill():
     if not PROCESS: return
     if PROCESS.poll() is None:
         print('killing process...')
-        os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
+
+        if platform.system() == 'Windows':
+            PROCESS.send_signal(signal.CTRL_BREAK_EVENT)
+        else:
+            os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
+
         print('process killed')
 
     PROCESS = None
@@ -110,11 +116,20 @@ def start(ws, data):
     ienv['API'] = API_ENDPOINT
     ienv['IDENT'] = IDENT
 
-    PROCESS = subprocess.Popen(
-        ['python3', 'bot.py'],
-        preexec_fn = os.setsid,
-        env = ienv
-    )
+
+    if platform.system() == 'Windows':
+        PROCESS = subprocess.Popen(
+            [sys.executable, 'bot.py'],
+            creationflags = subprocess.CREATE_NEW_PROCESS_GROUP,
+            env = ienv
+        )
+    else:
+        PROCESS = subprocess.Popen(
+            [sys.executable, 'bot.py'],
+            preexec_fn = os.setsid,
+            env = ienv
+        )
+
     get_status(ws, data)
 HANDLERS['start'] = start
 
