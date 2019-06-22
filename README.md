@@ -35,7 +35,7 @@
 * you should create a new python [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) because we use a modified InstaPy version
 * run `pip install -r requirements.txt`
   * use `pip3` if you are on linux or mac
-* create a file named `.env` with the following content
+* create a file named `.env` or `instapy.env` with the following content
 
 ```env
 INSTAPY_USER=instapy.io_username
