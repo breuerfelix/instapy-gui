@@ -3,7 +3,7 @@ import { AccountService, translate } from 'services';
 import linkState from 'linkstate';
 import classNames from 'classnames';
 import { connect } from 'store';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { setToken } from 'core';
 
 class SignupCard extends Component {
@@ -188,6 +188,8 @@ class SignupCard extends Component {
 							/>
 							<div className='invalid-feedback'>{ errorPasswordText }</div>
 						</div>
+
+						<div>With signing up, you accept our <Link to='/login/privacy'>Privacy Policy</Link>.</div>
 
 					</div>
 					<div className='card-footer row align-items-center'>
