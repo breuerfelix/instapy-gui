@@ -111,7 +111,6 @@ class SignupCard extends Component {
 		}
 
 		console.error(error);
-		console.log(type)
 		if (!type) return;
 
 		const capType = type.charAt(0).toUpperCase() + type.slice(1);
