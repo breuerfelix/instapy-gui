@@ -15,8 +15,8 @@ class AccountService {
 			password
 		};
 
-		const { token, error } = await fetchPost(this.authEndpoint + '/signup', data);
-		if (error) return { error };
+		const { token, error, type } = await fetchPost(this.authEndpoint + '/signup', data);
+		if (error) return { error, type };
 
 		const payload = decode(token);
 		return { token, ...payload };
@@ -27,8 +27,8 @@ class AccountService {
 			password
 		};
 
-		const { token, error } = await fetchPost(this.authEndpoint + '/login', data);
-		if (error) return { error };
+		const { token, error, type } = await fetchPost(this.authEndpoint + '/login', data);
+		if (error) return { error, type };
 
 		const payload = decode(token);
 		return { token, ...payload };

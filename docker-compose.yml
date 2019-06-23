@@ -32,6 +32,8 @@ services:
     image: felixbreuer/instapy-auth:latest
     command: ['npm', 'run', 'dev']
     restart: unless-stopped
+    volumes:
+      - ./services/auth:/usr/instapy
     ports:
       - 4001:80
     environment:
