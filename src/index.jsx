@@ -12,7 +12,14 @@ import ReactGA from 'react-ga';
 
 import store, { connect } from 'store';
 import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
-import { Account, Configuration, Start, Dashboard, Login } from 'sites';
+import {
+	Account,
+	Configuration,
+	Start,
+	Dashboard,
+	Login,
+	Privacy
+} from 'sites';
 import { readToken } from 'core';
 import config from 'config';
 
@@ -47,8 +54,14 @@ class App extends Component {
 									() => <Redirect to={ token ? '/dashboard' : '/login' } />
 								} />
 								<Route
+									exact
 									path='/login'
 									component={ Login }
+								/>
+								<Route
+									exact
+									path='/login/privacy'
+									component={ Privacy }
 								/>
 								<PrivateRoute
 									path='/account'

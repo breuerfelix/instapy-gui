@@ -23,12 +23,12 @@ app.post('/login', async (req, res) => {
 	console.log('received login:', req.body);
 
 	if (!username || username === '') {
-		res.send(JSON.stringify({ error: 'Missing username.' }));
+		res.send(JSON.stringify({ error: 'Missing username.', type: 'username' }));
 		return;
 	}
 
 	if (!password || password === '') {
-		res.send(JSON.stringify({ error: 'Missing password.' }));
+		res.send(JSON.stringify({ error: 'Missing password.', type: 'password' }));
 		return;
 	}
 
@@ -36,7 +36,7 @@ app.post('/login', async (req, res) => {
 	const user = await users.findOne({ username: lowerUsername });
 
 	if (!user) {
-		res.send(JSON.stringify({ error: 'User not found.' }));
+		res.send(JSON.stringify({ error: 'Username not found.', type: 'username' }));
 		return;
 	}
 
@@ -50,7 +50,7 @@ app.post('/login', async (req, res) => {
 	const match = await crypt.compare(password, passwordHash);
 
 	if (!match) {
-		res.send(JSON.stringify({ error: 'Passwords do not match.' }));
+		res.send(JSON.stringify({ error: 'Passwords do not match.', type: 'password' }));
 		return;
 	}
 
@@ -65,17 +65,17 @@ app.post('/signup', async (req, res) => {
 	console.log('received signup:', req.body);
 
 	if (!email || email === '') {
-		res.send(JSON.stringify({ error: 'Email required.' }));
+		res.send(JSON.stringify({ error: 'Email required.', type: 'email' }));
 		return;
 	}
 
 	if (!username || username === '') {
-		res.send(JSON.stringify({ error: 'Username required.' }));
+		res.send(JSON.stringify({ error: 'Username required.', type: 'username' }));
 		return;
 	}
 
 	if (!password || password === '') {
-		res.send(JSON.stringify({ error: 'Password required.' }));
+		res.send(JSON.stringify({ error: 'Password required.', type: 'password' }));
 		return;
 	}
 
@@ -84,13 +84,13 @@ app.post('/signup', async (req, res) => {
 	let user = await users.findOne({ email });
 
 	if (user) {
-		res.send(JSON.stringify({ error: 'Email already taken.' }));
+		res.send(JSON.stringify({ error: 'Email already taken.', type: 'email' }));
 		return;
 	}
 
 	user = await users.findOne({ username: lowerUsername });
 	if (user) {
-		res.send(JSON.stringify({ error: 'Username already taken.' }));
+		res.send(JSON.stringify({ error: 'Username already taken.', type:'username' }));
 		return;
 	}
 

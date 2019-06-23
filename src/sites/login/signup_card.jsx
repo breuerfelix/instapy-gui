@@ -6,14 +6,18 @@ import { connect } from 'store';
 import { withRouter } from 'react-router-dom';
 import { setToken } from 'core';
 
-class LoginCard extends Component {
+class SignupCard extends Component {
 	state = {
 		username: null,
 		password: null,
 		email: null,
 		errorUsername: false,
+		errorUsernameText: '',
 		errorPassword: false,
-		errorEmail: false
+		errorPasswordText: '',
+		errorEmail: false,
+		errorEmailText: '',
+		loading: false
 	}
 
 	componentWillMount() {
@@ -47,11 +51,14 @@ class LoginCard extends Component {
 		const { storeLoginInstapy, history } = this.props;
 
 		// save username and password
+		this.setState({ loading: true });
 		const {
 			token,
 			displayName: usernameInstapy,
-			error
+			error,
+			type
 		} = await AccountService.signupInstapy(email, username, password);
+		this.setState({ loading: false });
 
 		if (!error) {
 			storeLoginInstapy(token, usernameInstapy);
@@ -61,8 +68,13 @@ class LoginCard extends Component {
 			return;
 		}
 
-		// TODO handle error
 		console.error(error);
+		if (!type) return;
+
+		const capType = type.charAt(0).toUpperCase() + type.slice(1);
+		const errorState = `error${capType}`;
+		const errorStateText = `${errorState}Text`;
+		this.setState({ [errorState]: true, [errorStateText]: error });
 	}
 
 	login = async e => {
@@ -81,11 +93,14 @@ class LoginCard extends Component {
 		const { storeLoginInstapy, history } = this.props;
 
 		// save username and password
+		this.setState({ loading: true });
 		const {
 			token,
 			displayName: usernameInstapy,
-			error
+			error,
+			type
 		} = await AccountService.loginInstapy(username, password);
+		this.setState({ loading: false });
 
 		if (!error) {
 			storeLoginInstapy(token, usernameInstapy);
@@ -95,23 +110,33 @@ class LoginCard extends Component {
 			return;
 		}
 
-		// TODO handle error
 		console.error(error);
+		console.log(type)
+		if (!type) return;
+
+		const capType = type.charAt(0).toUpperCase() + type.slice(1);
+		const errorState = `error${capType}`;
+		const errorStateText = `${errorState}Text`;
+		this.setState({ [errorState]: true, [errorStateText]: error });
 	}
 
-	render(props, { username, password, email, errorPassword, errorUsername, errorEmail }) {
-		const usernameClass = classNames({
-			'form-control': true,
+	render(
+		props,
+		{
+			username, password, email, loading,
+			errorPassword, errorUsername, errorEmail,
+			errorUsernameText, errorPasswordText, errorEmailText
+		}
+	) {
+		const usernameClass = classNames('form-control', {
 			'is-invalid': errorUsername
 		});
 
-		const emailClass = classNames({
-			'form-control': true,
+		const emailClass = classNames('form-control', {
 			'is-invalid': errorEmail
 		});
 
-		const passwordClass = classNames({
-			'form-control': true,
+		const passwordClass = classNames('form-control', {
 			'is-invalid': errorPassword
 		});
 
@@ -134,6 +159,7 @@ class LoginCard extends Component {
 								value={ email }
 								onInput={ linkState(this, 'email') }
 							/>
+							<div className='invalid-feedback'>{ errorEmailText }</div>
 						</div>
 
 						<div className='input-group'>
@@ -147,6 +173,7 @@ class LoginCard extends Component {
 								value={ username }
 								onInput={ linkState(this, 'username') }
 							/>
+							<div className='invalid-feedback'>{ errorUsernameText }</div>
 						</div>
 
 						<div className='input-group'>
@@ -160,16 +187,22 @@ class LoginCard extends Component {
 								value={ password }
 								onInput={ linkState(this, 'password') }
 							/>
+							<div className='invalid-feedback'>{ errorPasswordText }</div>
 						</div>
 
 					</div>
 					<div className='card-footer row align-items-center'>
 						<div className='col'>
-							<button type='submit' className='btn btn-outline-dark'>
+							<button
+								type='submit'
+								className='btn btn-outline-dark'
+								disabled={ loading }
+							>
 								{ translate('button_login') }
 							</button>
 							<button
 								className='btn btn-outline-dark'
+								disabled={ loading }
 								onClick={ this.signup }
 								style={{ marginLeft: '15px' }}
 							>
@@ -177,7 +210,11 @@ class LoginCard extends Component {
 							</button>
 						</div>
 						<div style={{ textAlign: 'right' }}>
-							<button onClick={ this.logout } className='btn btn-outline-dark'>
+							<button
+								onClick={ this.logout }
+								className='btn btn-outline-dark'
+								disabled={ loading }
+							>
 								{ translate('button_logout') }
 							</button>
 						</div>
@@ -188,4 +225,4 @@ class LoginCard extends Component {
 	}
 }
 
-export default withRouter(connect('usernameInstapy')(LoginCard));
+export default withRouter(connect('usernameInstapy')(SignupCard));
