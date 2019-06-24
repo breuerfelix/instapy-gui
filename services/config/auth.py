@@ -49,9 +49,9 @@ def jwt_req(f):
 
 def encode(string, key):
     encoded_chars = []
-    for i in range(len(string)):
+    for i, char in enumerate(string):
         key_c = key[i % len(key)]
-        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
+        encoded_c = chr(ord(char) + ord(key_c) % 256)
         encoded_chars.append(encoded_c)
     encoded_string = ''.join(encoded_chars)
     encoded_string = encoded_string.encode('latin')
@@ -63,9 +63,9 @@ def decode(string, key):
     string = base64.urlsafe_b64decode(string + b'===')
     string = string.decode('latin')
     encoded_chars = []
-    for i in range(len(string)):
+    for i, char in enumerate(string):
         key_c = key[i % len(key)]
-        encoded_c = chr((ord(string[i]) - ord(key_c) + 256) % 256)
+        encoded_c = chr((ord(char) - ord(key_c) + 256) % 256)
         encoded_chars.append(encoded_c)
     encoded_string = ''.join(encoded_chars)
     return encoded_string
