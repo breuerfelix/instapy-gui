@@ -21,7 +21,7 @@ def get_credentials(payload):
     try:
         instagram_username = decode(result['instagram_username'], CIPHER_SECRET)
         password = decode(result['password'], CIPHER_SECRET)
-    except:
+    except Exception:
         instagram_username = None
 
     return to_json({ 'username': instagram_username, 'password': password })
