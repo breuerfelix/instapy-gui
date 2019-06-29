@@ -12,9 +12,6 @@ services:
       - LETSENCRYPT_HOST=auth.instapy.io
     networks:
       - instapy-net
-    depends_on:
-      - proxy
-      - letsencrypt
   config:
     image: felixbreuer/instapy-config:latest
     restart: unless-stopped
@@ -28,9 +25,6 @@ services:
       - LETSENCRYPT_HOST=api.instapy.io
     networks:
       - instapy-net
-    depends_on:
-      - proxy
-      - letsencrypt
   socket:
     image: felixbreuer/instapy-socket:latest
     restart: unless-stopped
@@ -42,9 +36,6 @@ services:
       - LETSENCRYPT_HOST=socket.instapy.io
     networks:
       - instapy-net
-    depends_on:
-      - proxy
-      - letsencrypt
   webserver:
     image: nginx:alpine
     restart: unless-stopped
@@ -54,24 +45,33 @@ services:
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - instapy-net
-  proxy:
+  nginx-proxy:
     image: jwilder/nginx-proxy:alpine
     restart: unless-stopped
     ports:
       - 80:80
       - 443:443
     volumes:
+      - dhparam:/etc/nginx/dhparam
+      - vhost:/etc/nginx/vhost.d
+      - conf:/etc/nginx/conf.f
+      - html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - certs:/etc/nginx/certs
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     environment:
       - DEFAULT_EMAIL=hi@felixbreuer.me
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - vhost:/etc/nginx/vhost.d
+      - conf:/etc/nginx/conf.f
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - certs:/etc/nginx/certs
     depends_on:
-      - proxy
+      - nginx-proxy
 
 networks:
   instapy-net:
@@ -79,3 +79,7 @@ networks:
 
 volumes:
   certs:
+  dhparam:
+  vhost:
+  conf:
+  html:
