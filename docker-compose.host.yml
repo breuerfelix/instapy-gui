@@ -6,8 +6,15 @@ services:
     environment:
       - MONGO_URL
       - JWT_SECRET
+      - VIRTUAL_HOST=auth.instapy.io
+      - VIRTUAL_PORT=443
+      - VIRTUAL_PROTO=https
+      - LETSENCRYPT_HOST=auth.instapy.io
     networks:
       - instapy-net
+    depends_on:
+      - proxy
+      - letsencrypt
   config:
     image: felixbreuer/instapy-config:latest
     restart: unless-stopped
@@ -15,15 +22,29 @@ services:
       - MONGO_URL
       - JWT_SECRET
       - CIPHER_SECRET
+      - VIRTUAL_HOST=api.instapy.io
+      - VIRTUAL_PORT=443
+      - VIRTUAL_PROTO=https
+      - LETSENCRYPT_HOST=api.instapy.io
     networks:
       - instapy-net
+    depends_on:
+      - proxy
+      - letsencrypt
   socket:
     image: felixbreuer/instapy-socket:latest
     restart: unless-stopped
     environment:
       - JWT_SECRET
+      - VIRTUAL_HOST=socket.instapy.io
+      - VIRTUAL_PORT=443
+      - VIRTUAL_PROTO=https
+      - LETSENCRYPT_HOST=socket.instapy.io
     networks:
       - instapy-net
+    depends_on:
+      - proxy
+      - letsencrypt
   webserver:
     image: nginx:alpine
     restart: unless-stopped
@@ -33,7 +54,28 @@ services:
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - instapy-net
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    environment:
+      - DEFAULT_EMAIL=hi@felixbreuer.me
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+    depends_on:
+      - proxy
 
 networks:
   instapy-net:
     driver: bridge
+
+volumes:
+  certs:
