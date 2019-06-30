@@ -51,6 +51,7 @@ class Language {
 		button_signup: 'register',
 		button_logout: 'logout',
 		button_reset: 'reset',
+		button_save_changes: 'save changes',
 
 		badge_enabled: 'enabled',
 		badge_disabled: 'disabled',

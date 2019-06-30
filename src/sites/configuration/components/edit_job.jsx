@@ -70,9 +70,13 @@ class ConfigItem extends Component {
 		else if (param.type.startsWith('str')) {
 			valueInput = <InputBox { ...props } />;
 		}
-		else if (param.type.startsWith('int') || param.type.startsWith('float')) {
+		else if (param.type.startsWith('int')) {
 			// TODO make a proper float box
-			valueInput = <InputBox { ...props } type='number' />;
+			valueInput = <InputBox { ...props } type='number' step='1' />;
+		}
+		else if (param.type.startsWith('float')) {
+			// TODO make a proper float box
+			valueInput = <InputBox { ...props } type='number' step='0.01' />;
 		}
 		else if (param.type.startsWith('bool')) {
 			valueInput = <BooleanBox { ...props } />;
@@ -163,14 +167,14 @@ class InputBox extends Box {
 		// value is default value
 		if (!value) return true;
 
-		const { param, type = 'text' } = this.props;
+		const { step, type = 'text' } = this.props;
 
 		if (type == 'number') {
 			// test if input is a number
 			if (!value.value) {
 				this.setState({ error: true });
 			} else {
-				value.value = parseInt(value.value);
+				value.value = step == '1' ? parseInt(value.value) : parseFloat(value.value);
 				this.setState({ error: false, input: value.value });
 			}
 		} else {
@@ -186,7 +190,7 @@ class InputBox extends Box {
 		return !error;
 	}
 
-	render({ param, type = 'text' }, { input, error }) {
+	render({ param, type = 'text', step = null }, { input, error }) {
 		const classes = classNames({
 			'form-control': true,
 			'is-invalid': error
@@ -194,6 +198,7 @@ class InputBox extends Box {
 
 		return (
 			<input
+				step={ step }
 				type={ type }
 				className={ classes }
 				placeholder={ param.placeholder }
@@ -202,7 +207,6 @@ class InputBox extends Box {
 			/>
 		);
 	}
-
 }
 
 class BooleanBox extends Box {
@@ -215,8 +219,6 @@ class BooleanBox extends Box {
 		if (value.value === 'true') value.value = true;
 		else if (value.value === 'false') value.value = false;
 
-		const { param } = this.props;
-
 		this.setState({
 			error: value.value == null || value.value == undefined
 		});
@@ -226,7 +228,7 @@ class BooleanBox extends Box {
 		return !error;
 	}
 
-	render({ param, value }, { error, input }) {
+	render(props, { error, input }) {
 		const classes = classNames({
 			'form-control': true,
 			'is-invalid': error

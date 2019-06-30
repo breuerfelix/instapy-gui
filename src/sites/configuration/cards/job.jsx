@@ -89,8 +89,6 @@ export default class JobCard extends Component {
 		// dont render if the action is not loaded yet
 		if (!this.setAction()) return;
 
-		// TODO add button for active / inactive
-
 		// enable popover
 		$('[data-toggle="popover"]').popover();
 
@@ -155,11 +153,19 @@ export default class JobCard extends Component {
 					</div>
 
 					<div className="collapse" ref={ body => this.body = body }>
-						<div className='card-body' style={{ padding: '5px 5px 5px 5px' }}>
+						<div className='card-body' style={{ padding: '5px' }}>
 							{ action.description &&
 								<InfoArea action={ action } />
 							}
 							<EditJob ref={ edit => this.editJob = edit } job={ job } action={ action } />
+							<button
+								style={{ float: 'right', margin: '0 15px 15px 0' }}
+								onClick={ this.updateJob }
+								type='button'
+								className='btn btn-success'
+							>
+								{ translate('button_save_changes') }
+							</button>
 						</div>
 					</div>
 
