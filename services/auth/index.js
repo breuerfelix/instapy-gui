@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const MongoClient = require('mongodb').MongoClient;
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
@@ -18,7 +19,19 @@ const SALT_ROUNDS = 13;
 const client = new MongoClient(MONGO_URL, { useNewUrlParser: true });
 let auth, users;
 
-app.post('/login', async (req, res) => {
+const loginLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 minutes
+	max: 5,
+	message: 'Login limit reached for this IP. Try again in 10 minutes.'
+});
+
+const signupLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 minutes
+	max: 3,
+	message: 'Sigup limit reached for this IP.'
+});
+
+app.post('/login', loginLimiter, async (req, res) => {
 	const { username, password } = req.body;
 
 	if (!username || username === '') {
@@ -59,7 +72,7 @@ app.post('/login', async (req, res) => {
 	res.send(JSON.stringify({ token }));
 });
 
-app.post('/signup', async (req, res) => {
+app.post('/signup', signupLimiter, async (req, res) => {
 	const { email, username, password } = req.body;
 	console.log('received signup:', req.body);
 
