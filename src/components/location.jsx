@@ -9,6 +9,7 @@ class Location extends Component {
 		if (splits[0] == '') splits = splits.slice(1);
 
 		const items = splits.map(split => <BreadItem
+			key={ pathname }
 			path={ pathname }
 			label={ split }
 		/>
