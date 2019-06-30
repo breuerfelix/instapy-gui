@@ -26,7 +26,7 @@ import config from 'config';
 const history = createBrowserHistory();
 readToken();
 
-// trach location change to google analytics
+// track location change to google analytics
 ReactGA.initialize(config.gaTrackingID);
 history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 

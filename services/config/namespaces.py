@@ -115,7 +115,7 @@ def update_jobs(payload, namespace):
                                  {
                                      '$push': { 'jobs': new_job }
                                  }, return_document = ReturnDocument.AFTER)
-        
+
         # TODO change this
         # refetch all jobs to the gui can update everything
         result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
