@@ -3,7 +3,7 @@ import config from 'config';
 
 class ConfigService {
 	constructor() {
-		this.endpoint = config.apiEndpoint;
+		this.endpoint = config.configEndpoint;
 	}
 
 	async fetchNamespaces() {

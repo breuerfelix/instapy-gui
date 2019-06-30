@@ -13,7 +13,7 @@ from instapy.util import smart_run
 namespace = getenv('NAMESPACE')
 token = getenv('TOKEN')
 ident = getenv('IDENT')
-api_endpoint = getenv('API')
+config_endpoint = getenv('CONFIG')
 socket_endpoint = getenv('SOCKET')
 
 if not namespace or not token: sys.exit(0)
@@ -24,13 +24,13 @@ headers = {
 
 def get(url):
     global headers
-    res = requests.get(api_endpoint + url, headers = headers)
+    res = requests.get(config_endpoint + url, headers = headers)
     return res.json()
 
 def post(url, data):
     global headers
     res = requests.post(
-        api_endpoint + url,
+        config_endpoint + url,
         data = json.dumps(data),
         headers = headers
     )
