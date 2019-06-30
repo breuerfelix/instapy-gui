@@ -55,7 +55,7 @@ class my_handler(logging.Handler):
     def emit(self, record):
         message = self.format(record)
         global ident
-        
+
         try:
             self.connect()
             self.socket.send(json.dumps({
@@ -64,8 +64,8 @@ class my_handler(logging.Handler):
                 'ident': ident
             }))
             self.disconnect()
-        except:
-            pass
+        except Exception as e:
+            print('error sending log:', e)
 
 
 log_handler = my_handler()
@@ -100,7 +100,7 @@ for job in jobs:
     for param in job['params']:
         act_param = next(act_param for act_param in action['params'] if act_param['name'] == param['name'])
 
-        if type(param['value']) is not str: continue
+        if not isinstance(param['value'], str): continue
 
         if act_param['type'] == 'list' or act_param['type'] == 'tuple':
             param['value'] = param['value'].split(',')

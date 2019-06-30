@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from instapy import InstaPy
-from inspect import signature, getdoc, Parameter
+from inspect import signature, getdoc
 
 def get_actions():
     real_funcs = []
@@ -14,8 +14,8 @@ def get_actions():
 
         # only use following functions
         if not (
-                func.startswith('set') or 
-                func.startswith('follow') or 
+                func.startswith('set') or
+                func.startswith('follow') or
                 func.startswith('interact') or
                 func.startswith('like') or
                 func.startswith('unfollow')
