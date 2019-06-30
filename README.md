@@ -49,7 +49,7 @@ IDENT=choose_any_name_to_indentify_this_instance
 
 ## guides
 
-### video tutorials:
+### video tutorials
 
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
 
