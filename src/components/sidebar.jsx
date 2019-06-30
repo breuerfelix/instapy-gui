@@ -12,14 +12,14 @@ export default class SideBar extends Component {
 			.then(res => setUsername(res.username || ''));
 	}
 
-	render({ location, username, usernameInstapy }) {
+	render({ username, usernameInstapy }) {
 		const labelLoginInstagram = username ? username : 'sidebar_login_instagram';
 		const labelLoginInstapy = usernameInstapy ? usernameInstapy : 'sidebar_login_instapy';
 
 		return (
 			<div className='sidebar noselect sticky-top'>
 				<div className='header'>
-					<h3>INSTAPY</h3>
+					<h3>INSTAPY.IO</h3>
 				</div>
 
 				<ul className='toplevel-list list-unstyled'>
@@ -35,45 +35,49 @@ export default class SideBar extends Component {
 						level='top'
 					/>
 
-					<MenuItem
-						label={ labelLoginInstagram }
-						icon='fas fa-user'
-						link='/account/login'
-						level='top'
-					/>
+					{ usernameInstapy && // links only when logged in
+						<div>
+							<MenuItem
+								label={ labelLoginInstagram }
+								icon='fas fa-user'
+								link='/account/login'
+								level='top'
+							/>
 
-					<div className='headline'>
-						{ translate('sidebar_features') }
-					</div>
+							<div className='headline'>
+								{ translate('sidebar_features') }
+							</div>
 
-					<MenuItem
-						label='sidebar_dashboard'
-						icon='fas fa-chart-line'
-						link='/dashboard'
-						level='top'
-					/>
+							<MenuItem
+								label='sidebar_dashboard'
+								icon='fas fa-chart-line'
+								link='/dashboard'
+								level='top'
+							/>
 
-					<MenuItem
-						label='sidebar_configuration'
-						icon='fas fa-sliders-h'
-						level='top'
-					>
-						<MenuItem
-							label='sidebar_namespaces'
-							link='/configuration/namespaces'
-						/>
-						<MenuItem
-							label='sidebar_proxy'
-							link='/configuration/proxy'
-						/>
-					</MenuItem>
+							<MenuItem
+								label='sidebar_configuration'
+								icon='fas fa-sliders-h'
+								level='top'
+							>
+								<MenuItem
+									label='sidebar_namespaces'
+									link='/configuration/namespaces'
+								/>
+								<MenuItem
+									label='sidebar_proxy'
+									link='/configuration/proxy'
+								/>
+							</MenuItem>
 
-					<MenuItem
-						label='sidebar_start'
-						icon='fas fa-play'
-						link='/start'
-						level='top'
-					/>
+							<MenuItem
+								label='sidebar_start'
+								icon='fas fa-play'
+								link='/start'
+								level='top'
+							/>
+						</div>
+					}
 
 					<div className='headline'>
 						{ translate('sidebar_links') }
