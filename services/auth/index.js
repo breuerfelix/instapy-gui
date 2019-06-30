@@ -20,7 +20,6 @@ let auth, users;
 
 app.post('/login', async (req, res) => {
 	const { username, password } = req.body;
-	console.log('received login:', req.body);
 
 	if (!username || username === '') {
 		res.send(JSON.stringify({ error: 'Missing username.', type: 'username' }));

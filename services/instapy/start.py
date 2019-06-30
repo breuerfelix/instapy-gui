@@ -15,9 +15,9 @@ import websocket
 import requests
 
 # constants
-AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'http://auth.instapy.io')
-API_ENDPOINT = os.getenv('API_ENDPOINT', 'http://api.instapy.io')
-SOCKET_ENDPOINT = os.getenv('SOCKET_ENDPOINT', 'ws://socket.instapy.io')
+AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'https://auth.instapy.io')
+CONFIG_ENDPOINT = os.getenv('CONFIG_ENDPOINT', 'https://config.instapy.io')
+SOCKET_ENDPOINT = os.getenv('SOCKET_ENDPOINT', 'wss://socket.instapy.io')
 IDENT = os.getenv('IDENT')
 
 if not IDENT:
@@ -113,7 +113,7 @@ def start(ws, data):
     ienv['TOKEN'] = TOKEN
     ienv['NAMESPACE'] = data['namespace']
     ienv['SOCKET'] = SOCKET_ENDPOINT
-    ienv['API'] = API_ENDPOINT
+    ienv['CONFIG'] = CONFIG_ENDPOINT
     ienv['IDENT'] = IDENT
 
 

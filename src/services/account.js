@@ -4,7 +4,7 @@ import decode from 'jwt-decode';
 
 class AccountService {
 	constructor() {
-		this.endpoint = config.apiEndpoint;
+		this.endpoint = config.configEndpoint;
 		this.authEndpoint = config.authEndpoint;
 	}
 
