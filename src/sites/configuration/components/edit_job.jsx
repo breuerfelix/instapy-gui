@@ -255,7 +255,7 @@ class ListBox extends Box {
 
 		return (
 			<TagsInput
-				addKeys={ [ 9, 13, 32 ] } // enter, tab, space
+				addKeys={ [ 9, 13 ] } // enter, tab
 				value={ input }
 				onChange={ this.tagsChanged }
 				inputProps={{
