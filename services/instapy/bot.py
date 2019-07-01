@@ -90,8 +90,10 @@ for job in res_jobs:
     if job['active'] == False: continue
     jobs.append(job)
 
-# TODO remove until line if we have a proper list view
-# convert list to actual arrays
+# TODO remove until line if we have a proper tuple / list view
+# update 1.7.19 proper list view added!
+# remove when all tuples are removed
+# convert list to actual arrays / tuples
 actions = get('/actions')
 
 for job in jobs:
