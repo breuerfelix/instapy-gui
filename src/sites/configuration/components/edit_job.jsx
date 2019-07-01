@@ -3,6 +3,7 @@ import { translate } from 'services';
 import linkState from 'linkstate';
 import classNames from 'classnames';
 import $ from 'jquery';
+import TagsInput from 'react-tagsinput';
 
 export default class EditJob extends Component {
 	validate = () => {
@@ -83,7 +84,7 @@ class ConfigItem extends Component {
 		}
 		else if (param.type.startsWith('list')) {
 			// TODO make a proper list view
-			valueInput = <InputBox { ...props } />;
+			valueInput = <ListBox { ...props } />;
 		} else if (param.type.startsWith('tuple')) {
 			// TODO make a proper tuple view
 			valueInput = <InputBox { ...props } />;
@@ -117,9 +118,6 @@ class Box extends Component {
 
 		let input = param.defaultValue;
 
-		// TODO: remove if there is a proper list view
-		if (Array.isArray(input)) input = input.join(',');
-
 		this.setState({ input });
 	}
 
@@ -147,7 +145,7 @@ class Box extends Component {
 		}
 
 		// value is default value no need to save it
-		if (input == param.defaultValue) return value;
+		if (input == param.defaultValue) return null;
 
 		// create new value object
 		value = {
@@ -204,6 +202,66 @@ class InputBox extends Box {
 				placeholder={ param.placeholder }
 				value={ input }
 				onChange={ linkState(this, 'input') }
+			/>
+		);
+	}
+}
+
+class ListBox extends Box {
+	componentWillMount() {
+		super.componentWillMount();
+		const { param, value } = this.props;
+		if (value && value.value) {
+			// convert to array if it is comma seperated
+			if (!Array.isArray(value.value)) value.value = value.value.split(',');
+
+			this.setState({ input: value.value });
+			return;
+		}
+
+		let input = param.defaultValue || [];
+		// convert to array if it is comma seperated
+		if (!Array.isArray(input)) input = input.split(',');
+
+		this.setState({ input });
+	}
+
+	validate = () => {
+		const value = this.setValue();
+		// value is default value
+		if (!value) return true;
+
+		let error = false;
+
+		if (Array.isArray(value.value)) error = value.value.length < 1;
+		else error = !value.value;
+
+		this.setState({ error });
+
+		error = this.state.error;
+		return !error;
+	}
+
+	tagsChanged = tags => {
+		const input = tags.map(tag => tag.trim().replace(' ', '-'));
+		this.setState({ input });
+	}
+
+	render({ param }, { input, error }) {
+		const classes = classNames({
+			'react-tagsinput-input': true,
+			'is-invalid': error
+		});
+
+		return (
+			<TagsInput
+				addKeys={ [ 9, 13, 32 ] } // enter, tab, space
+				value={ input }
+				onChange={ this.tagsChanged }
+				inputProps={{
+					className: classes,
+					placeholder: param.placeholder
+				}}
 			/>
 		);
 	}

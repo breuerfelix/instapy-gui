@@ -1,3 +1,4 @@
+import 'react-tagsinput/react-tagsinput.css';
 import 'styles/main.scss';
 
 import 'jquery';
