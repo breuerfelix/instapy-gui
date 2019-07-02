@@ -14,24 +14,22 @@ py -m pip install --upgrade pip
 cls
 py -m pip install --user virtualenv
 cls
-set "UserInputPath=env"
-set /P UserInputPath="Choose your Enviroment Folder name: "
-
-py -m venv %UserInputPath%
-echo ./%UserInputPath%/Scripts/python.exe -m pip install -r requirements.txt >> %UserInputPath%.ps1
-cls
-Powershell.exe -executionpolicy remotesigned -File  %UserInputPath%.ps1
-cls
+set "EnviromentFolder=env"
+set /P EnviromentFolder="Choose your Enviroment Folder name: "
+py -m venv %EnviromentFolder%
+echo ./%EnviromentFolder%/Scripts/python.exe -m pip install -r requirements.txt >> RequirementsInstallation.ps1
+echo ./%EnviromentFolder%/Scripts/python.exe ./start.py >> StartingProject.ps1
+Powershell.exe -executionpolicy remotesigned -File  RequirementsInstallation.ps1
 set "username=username"
-set /P UserInputPath="GUI web Username: "
+set /P username="GUI web Username: "
 
 set "password=password"
-set /P UserInputPath="GUI Web Password: "
+set /P password="GUI Web Password: "
 
 set "Ident=choose_any_name_to_indentify_this_instance"
-set /P UserInputPath="Name your IDENT: "
+set /P Ident="Name your IDENT: "
 cls
-echo INSTAPY_USER=%username% >> %UserInputPath%.env
-echo INSTAPY_PASSWORD=%password% >> %UserInputPath%.env
-echo IDENT=choose_any_name_to_indentify_this_instance >> %UserInputPath%.env
+echo INSTAPY_USER=%username% >> instapy.env
+echo INSTAPY_PASSWORD=%password% >> instapy.env
+echo IDENT=%Ident% >> instapy.env
 cls
