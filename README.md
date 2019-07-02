@@ -29,6 +29,16 @@
 
 ### register a bot
 
+#### one click windows
+
+* download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
+  * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
+* double-click on `setup.bat`
+  * finish every input on the command prompt
+* right-click on `StartClient.ps1` and hit `open with powershell` to start the client
+
+#### manual cross-platform
+
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
   * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
 * navigate to the folder in the console
@@ -51,6 +61,7 @@ IDENT=choose_any_name_to_indentify_this_instance
 
 ### video tutorials
 
+**[full manual installation on windows 10](https://drive.google.com/open?id=1ZafLOa0ShSXva61eQwFAePSVBC0Suc9p)**  
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
 
 ## screenshots
