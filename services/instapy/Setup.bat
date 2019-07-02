@@ -15,7 +15,7 @@ cls
 py -m pip install --user virtualenv
 cls
 set "EnviromentFolder=env"
-set /P EnviromentFolder="Choose your enviroment folder name (example: env): "
+set /P EnviromentFolder="Choose your enviroment folder name (press enter for default: 'env'): "
 py -m venv %EnviromentFolder%
 
 echo ./%EnviromentFolder%/Scripts/pip.exe install -r requirements.txt >> RequirementsInstallation.ps1
