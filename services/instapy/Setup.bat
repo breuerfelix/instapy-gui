@@ -15,23 +15,23 @@ cls
 py -m pip install --user virtualenv
 cls
 set "EnviromentFolder=env"
-set /P EnviromentFolder="Choose your Enviroment Folder name: "
+set /P EnviromentFolder="Choose your enviroment folder name (example: env): "
 py -m venv %EnviromentFolder%
 
 echo ./%EnviromentFolder%/Scripts/pip.exe install -r requirements.txt >> RequirementsInstallation.ps1
-echo ./%EnviromentFolder%/Scripts/python.exe ./start.py >> StartingProject.ps1
+echo ./%EnviromentFolder%/Scripts/python.exe ./start.py >> StartingClient.ps1
 
 Powershell.exe -executionpolicy remotesigned -File  RequirementsInstallation.ps1
 set "username=username"
-set /P username="GUI web Username: "
+set /P username="instapy.io username: "
 
 set "password=password"
-set /P password="GUI Web Password: "
+set /P password="instapy.io password: "
 
-set "Ident=choose_any_name_to_indentify_this_instance"
-set /P Ident="Name your IDENT: "
+set "ident=choose_any_name_to_indentify_this_instance"
+set /P ident="Name of this client: "
 cls
 echo INSTAPY_USER=%username% >> instapy.env
 echo INSTAPY_PASSWORD=%password% >> instapy.env
-echo IDENT=%Ident% >> instapy.env
+echo IDENT=%ident% >> instapy.env
 cls
