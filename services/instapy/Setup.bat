@@ -18,7 +18,7 @@ set "EnviromentFolder=env"
 set /P EnviromentFolder="Choose your Enviroment Folder name: "
 py -m venv %EnviromentFolder%
 
-echo ./%EnviromentFolder%/Scripts/python.exe -m pip install -r requirements.txt >> RequirementsInstallation.ps1
+echo ./%EnviromentFolder%/Scripts/pip.exe install -r requirements.txt >> RequirementsInstallation.ps1
 echo ./%EnviromentFolder%/Scripts/python.exe ./start.py >> StartingProject.ps1
 
 Powershell.exe -executionpolicy remotesigned -File  RequirementsInstallation.ps1
