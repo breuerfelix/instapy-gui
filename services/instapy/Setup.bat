@@ -1,15 +1,14 @@
 @echo off
-ECHO Welcome To the Easy Installation batch file!
+ECHO Welcome To the easy installation batch file!
 ECHO -
-ECHO Please Answer the questions in order to setup everything for you.
+ECHO Please answer the questions so everything gets set up automatically .
 ECHO -
+ECHO (press enter to continue)
 PAUSE
 
 cls
-ECHO Did you already created an account on instapy.io ?
-ECHO -
 set "have_account=n"
-set /P have_account="Type y or n: "
+set /P have_account="Did you already created an account on instapy.io ? (y/n): "
 if %have_account% == y GOTO checkPython
 if %have_account% == n GOTO createAccount
 GOTO default
@@ -17,9 +16,9 @@ GOTO default
 :createAccount
 cls
 start "" https://gui.instapy.io/
-ECHO Please Create an account , you will use it here.
+ECHO Please create an account in order to start.
 ECHO -
-ECHO Press Enter after creating your account.
+ECHO Press enter when finished.
 PAUSE
 GOTO checkPython
 
@@ -33,9 +32,11 @@ GOTO default
 :InstallPython3
 cls
 start "" https://www.python.org/downloads/windows/
-ECHO Check the opened address and Install Python3
+ECHO Python3 not found on your system.
 ECHO -
-ECHO Double click again on Setup.bat
+ECHO Check the opened website and install Python3.
+ECHO -
+ECHO When finished, restart this .bat file.
 GOTO default
 
 :setup
@@ -45,7 +46,7 @@ py -m pip install --user virtualenv
 
 cls
 set "EnvironmentFolder=env"
-set /P EnvironmentFolder="Choose your Environment folder name (press enter for default: 'env'): "
+set /P EnvironmentFolder="Choose your environment folder name (press enter for default: 'env'): "
 
 py -m venv %EnvironmentFolder%
 
@@ -55,7 +56,7 @@ echo ./%EnvironmentFolder%/Scripts/python.exe ./start.py >> StartingClient.ps1
 Powershell.exe -executionpolicy remotesigned -File  RequirementsInstallation.ps1
 
 cls
-ECHO Make sure you use the credentials from Instapy.io
+ECHO Make sure to use the credentials from instapy.io.
 ECHO -
 set "username=username"
 set /P username="instapy.io username: "
@@ -66,7 +67,7 @@ set /P password="instapy.io password: "
 
 ECHO -
 set "ident=choose_any_name_to_indentify_this_instance"
-set /P ident="Name of this client: "
+set /P ident="Enter any identifier for this client: "
 
 cls
 echo INSTAPY_USER=%username% >> instapy.env
@@ -74,8 +75,9 @@ echo INSTAPY_PASSWORD=%password% >> instapy.env
 echo IDENT=%ident% >> instapy.env
 cls
 
-ECHO instapy.env CREATED Successfully!
+ECHO instapy.env CREATED successfully!
+GOTO default
 
 :default
-ECHO Setup is Completed
+ECHO Setup completed. (press enter to exit)
 PAUSE
