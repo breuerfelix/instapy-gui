@@ -25,7 +25,7 @@
 ### requirements
 
 * install [python 3](https://www.python.org/downloads/)
-* sign up on [gui.instapy.io](http://gui.instapy.io)
+* sign up on [instapy.io](https://instapy.io)
 
 ### register a bot
 
@@ -55,7 +55,7 @@ IDENT=choose_any_name_to_indentify_this_instance
 
 * run `python start.py`
   * use `python3` if you are on linux or mac
-* go to [gui.instapy.io](https://gui.instapy.io) and take off!
+* go to [instapy.io](https://instapy.io) and take off!
 
 ## guides
 

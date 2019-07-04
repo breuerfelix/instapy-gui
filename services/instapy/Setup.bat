@@ -15,7 +15,7 @@ GOTO default
 
 :createAccount
 cls
-start "" https://gui.instapy.io/
+start "" https://instapy.io/
 ECHO Please create an account in order to start.
 ECHO -
 ECHO Press enter when finished.
