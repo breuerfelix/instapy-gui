@@ -208,6 +208,10 @@ class InputBox extends Box {
 }
 
 class ListBox extends Box {
+	state = {
+		tempInput: ''
+	}
+
 	componentWillMount() {
 		super.componentWillMount();
 		const { param, value } = this.props;
@@ -227,6 +231,10 @@ class ListBox extends Box {
 	}
 
 	validate = () => {
+		// if the user forgot to press enter / tab just push the remaining content
+		const { tempInput, input } = this.state;
+		if (tempInput) this.setState({ input: [ ...input, tempInput ], tempInput: '' });
+
 		const value = this.setValue();
 		// value is default value
 		if (!value) return true;
@@ -237,31 +245,26 @@ class ListBox extends Box {
 		else error = !value.value;
 
 		this.setState({ error });
-
-		error = this.state.error;
 		return !error;
 	}
 
-	tagsChanged = tags => {
-		const input = tags.map(tag => tag.trim().replace(' ', '-'));
-		this.setState({ input });
-	}
-
-	render({ param }, { input, error }) {
-		const classes = classNames({
-			'react-tagsinput-input': true,
+	render({ param }, { input, error, tempInput }) {
+		const classes = classNames('react-tagsinput', {
 			'is-invalid': error
 		});
 
 		return (
 			<TagsInput
+				className={ classes }
 				addKeys={ [ 9, 13 ] } // enter, tab
 				value={ input }
-				onChange={ this.tagsChanged }
+				onChange={ input => this.setState({ input }) }
 				inputProps={{
-					className: classes,
+					className: 'react-tagsinput-input',
 					placeholder: param.placeholder
 				}}
+				inputValue={ tempInput }
+				onChangeInput={ tempInput => this.setState({ tempInput }) }
 			/>
 		);
 	}
