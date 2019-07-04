@@ -36,7 +36,7 @@ start "" https://www.python.org/downloads/windows/
 ECHO Check the opened address and Install Python3
 ECHO -
 ECHO Double click again on Setup.bat
-exit/b
+GOTO default
 
 :setup
 cls
