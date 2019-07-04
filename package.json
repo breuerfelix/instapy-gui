@@ -7,12 +7,13 @@
 	"scripts": {
 		"test": "npm run lint",
 		"start": "webpack-dev-server --open --config webpack.dev.config.js",
+		"start:local": "ENV_FILE=.env npm run start",
 		"build": "webpack --config webpack.prod.config.js",
+		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
+		"lint:fix": "npm run lint -- --fix",
 		"docker:build": "docker-compose build socket config auth",
 		"docker:host": "docker-compose -f docker-compose.host.yml",
-		"docker:ssl": "docker-compose -f docker-compose.ssl.yml",
-		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
-		"lint:fix": "npm run lint -- --fix"
+		"docker:ssl": "docker-compose -f docker-compose.ssl.yml"
 	},
 	"author": "Felix Breuer",
 	"license": "GPL-3.0",
