@@ -12,14 +12,12 @@ module.exports = {
 		extensions: [ '.js', '.jsx' ],
 		modules: [ 'node_modules', 'src' ],
 		alias: {
-			react: 'preact-compat',
+			'react': 'preact-compat',
 			'react-dom': 'preact-compat'
 		}
 	},
 
-	performance: {
-		hints: false
-	},
+	performance: { hints: false },
 
 	output: {
 		filename: '[name].bundle.js',
@@ -65,7 +63,7 @@ module.exports = {
 
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'InstaPy GUI',
+			title: 'instapy.io',
 			template: path.join(__dirname, 'public/index.html')
 		})
 	]
