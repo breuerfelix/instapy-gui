@@ -68,6 +68,10 @@ select {
 	border-radius: $border-radius !important;
 }
 
+.react-tagsinput.is-invalid {
+	border-color: #dc3545;
+}
+
 .col, .col-xs, .col-sm, .col-md, .col-lg, .col-xl {
 	padding-right: 0;
 	padding-left: 0;
