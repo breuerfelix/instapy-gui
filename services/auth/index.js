@@ -33,6 +33,7 @@ const signupLimiter = rateLimit({
 
 app.post('/login', loginLimiter, async (req, res) => {
 	const { username, password } = req.body;
+	console.log('receive login:', username);
 
 	if (!username || username === '') {
 		res.send(JSON.stringify({ error: 'Missing username.', type: 'username' }));
@@ -74,7 +75,9 @@ app.post('/login', loginLimiter, async (req, res) => {
 
 app.post('/signup', signupLimiter, async (req, res) => {
 	const { email, username, password } = req.body;
-	console.log('received signup:', req.body);
+	console.log('receive signup:', email, username);
+
+	// TODO validator
 
 	if (!email || email === '') {
 		res.send(JSON.stringify({ error: 'Email required.', type: 'email' }));
