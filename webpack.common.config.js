@@ -63,8 +63,7 @@ module.exports = {
 
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'instapy.io',
-			template: path.join(__dirname, 'public/index.html')
+			template: path.join(__dirname, 'src/index.html')
 		})
 	]
 };
