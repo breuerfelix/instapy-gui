@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const crypt = require('bcryptjs');
 const cors = require('cors');
+const validator = require('validator');
 
 const { MONGO_URL, JWT_SECRET, PORT } = process.env;
 
@@ -28,7 +29,7 @@ const loginLimiter = rateLimit({
 const signupLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 minutes
 	max: 3,
-	message: 'Sigup limit reached for this IP.'
+	message: 'Sigup limit reached for this IP. Try again in 10 minutes.'
 });
 
 app.post('/login', loginLimiter, async (req, res) => {
@@ -77,10 +78,14 @@ app.post('/signup', signupLimiter, async (req, res) => {
 	const { email, username, password } = req.body;
 	console.log('receive signup:', email, username);
 
-	// TODO validator
-
+	// validation
 	if (!email || email === '') {
 		res.send(JSON.stringify({ error: 'Email required.', type: 'email' }));
+		return;
+	}
+
+	if (!validator.isEmail(email)) {
+		res.send(JSON.stringify({ error: 'This email is invalid.', type: 'email' }));
 		return;
 	}
 
@@ -89,8 +94,18 @@ app.post('/signup', signupLimiter, async (req, res) => {
 		return;
 	}
 
+	if (username.length < 3) {
+		res.send(JSON.stringify({ error: 'Username must be at least 3 characters long.', type: 'username' }));
+		return;
+	}
+
 	if (!password || password === '') {
 		res.send(JSON.stringify({ error: 'Password required.', type: 'password' }));
+		return;
+	}
+
+	if (password.length < 8) {
+		res.send(JSON.stringify({ error: 'Password must be at least 8 characters long.', type: 'password' }));
 		return;
 	}
 
@@ -108,7 +123,6 @@ app.post('/signup', signupLimiter, async (req, res) => {
 		res.send(JSON.stringify({ error: 'Username already taken.', type:'username' }));
 		return;
 	}
-
 
 	const hash = await crypt.hash(password, SALT_ROUNDS);
 	await users.insertOne({
