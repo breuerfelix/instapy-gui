@@ -60,12 +60,16 @@ def get_token(username, password):
         'password': password
     }
 
-    response = requests.post(AUTH_ENDPOINT + '/login', data = payload);
+    url = AUTH_ENDPOINT + '/login'
+    print(f'authenticate {username} to {url} ...')
+
+    response = requests.post(url, data = payload);
     response = response.json()
     if 'error' in response:
         print(response['error'])
         sys.exit()
     
+    print(f'logged in with user: {username}')
     return response['token']
 
 # utils
@@ -87,7 +91,6 @@ def kill():
 def check_process():
     global PROCESS
     if not PROCESS: return
-    print('polling process: ', PROCESS.poll())
     if PROCESS.poll() is not None: kill()
 
 # handlers
@@ -130,6 +133,7 @@ def start(ws, data):
             env = ienv
         )
 
+    print('instapy process started')
     get_status(ws, data)
 HANDLERS['start'] = start
 
