@@ -1,14 +1,32 @@
-node_modules
-dist
-package-lock.json
-.DS_Store
-__pycache__
-*.pyc
-assets
+# secrets
 .env
 *.env
 .secret
+
+# build output
+dist
+
+# python
+__pycache__
+*.pyc
+
+# node
+package-lock.json
 npm-debug.log
+node_modules
+
+# dev environment
+dev/**/*
+
+# IDE
 .idea
 .vscode
-dev/**/*
+
+# jupyter
+.ipynb_checkpoints
+
+# mac
+.DS_Store
+
+# instapy
+assets
