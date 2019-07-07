@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from os import getenv
 
-url = getenv('MONGO_URL') or 'mongodb://instapy:instapysecret@mongo:27017'
+url = getenv('MONGO_URL') or 'mongodb://localhost:27017'
 
 client = MongoClient(url)
 

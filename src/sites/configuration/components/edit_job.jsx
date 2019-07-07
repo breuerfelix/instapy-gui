@@ -1,9 +1,7 @@
-import { h, render, Component } from 'preact';
+import { h, Component } from 'preact';
 import { translate } from 'services';
-import linkState from 'linkstate';
-import classNames from 'classnames';
 import $ from 'jquery';
-import TagsInput from 'react-tagsinput';
+import inputConfig from './input_components';
 
 export default class EditJob extends Component {
 	validate = () => {
@@ -46,6 +44,7 @@ export default class EditJob extends Component {
 	}
 }
 
+
 class ConfigItem extends Component {
 	validate = () => {
 		if (!this.valueInput) throw 'ConfigItem: no input box was found!';
@@ -64,31 +63,18 @@ class ConfigItem extends Component {
 			params
 		};
 
-		if (!param.type) {
-			// default if there is no given type
-			valueInput = <InputBox { ...props } />;
+		const comps = inputConfig;
+
+		for (const key of Object.keys(comps)) {
+			if (!param.type) break;
+			if (param.type.startsWith(key)) {
+				valueInput = h(comps[key].element, { ...comps[key].props, ...props });
+				break;
+			}
 		}
-		else if (param.type.startsWith('str')) {
-			valueInput = <InputBox { ...props } />;
-		}
-		else if (param.type.startsWith('int')) {
-			// TODO make a proper float box
-			valueInput = <InputBox { ...props } type='number' step='1' />;
-		}
-		else if (param.type.startsWith('float')) {
-			// TODO make a proper float box
-			valueInput = <InputBox { ...props } type='number' step='0.01' />;
-		}
-		else if (param.type.startsWith('bool')) {
-			valueInput = <BooleanBox { ...props } />;
-		}
-		else if (param.type.startsWith('list')) {
-			// TODO make a proper list view
-			valueInput = <ListBox { ...props } />;
-		} else if (param.type.startsWith('tuple')) {
-			// TODO make a proper tuple view
-			valueInput = <InputBox { ...props } />;
-		}
+
+		// use default
+		if (!valueInput) valueInput = h(comps.default.element, { ...props });
 
 		return (
 			<div className='form-group row'>
@@ -99,207 +85,6 @@ class ConfigItem extends Component {
 					{ valueInput }
 				</div>
 			</div>
-		);
-	}
-}
-
-class Box extends Component {
-	state = {
-		error: false,
-		input: null
-	}
-
-	componentWillMount() {
-		const { param, value } = this.props;
-		if (value) {
-			this.setState({ input: value.value });
-			return;
-		}
-
-		let input = param.defaultValue;
-
-		this.setState({ input });
-	}
-
-	setValue = () => {
-		let { value, param, params } = this.props;
-
-		// setting the input to the job
-		const { input } = this.state;
-
-		if ((input == '' || input == null || input == undefined) && param.optional) {
-			if (value) {
-				// remove value from array so it uses default value
-				const index = params.indexOf(value);
-				if (index > -1) {
-					params.splice(index, 1);
-				}
-			}
-
-			return null;
-		}
-
-		if (value) {
-			value.value = input;
-			return value;
-		}
-
-		// value is default value no need to save it
-		if (input == param.defaultValue) return null;
-
-		// create new value object
-		value = {
-			name: param.name,
-			value: input
-		};
-
-		params.push(value);
-
-		return value;
-	}
-}
-
-class InputBox extends Box {
-	validate = () => {
-		const value = this.setValue();
-		// value is default value
-		if (!value) return true;
-
-		const { step, type = 'text' } = this.props;
-
-		if (type == 'number') {
-			// test if input is a number
-			if (!value.value) {
-				this.setState({ error: true });
-			} else {
-				value.value = step == '1' ? parseInt(value.value) : parseFloat(value.value);
-				this.setState({ error: false, input: value.value });
-			}
-		} else {
-			let error = false;
-
-			if (Array.isArray(value.value)) error = value.value.length < 1;
-			else error = !value.value;
-
-			this.setState({ error });
-		}
-
-		const { error } = this.state;
-		return !error;
-	}
-
-	render({ param, type = 'text', step = null }, { input, error }) {
-		const classes = classNames({
-			'form-control': true,
-			'is-invalid': error
-		});
-
-		return (
-			<input
-				step={ step }
-				type={ type }
-				className={ classes }
-				placeholder={ param.placeholder }
-				value={ input }
-				onChange={ linkState(this, 'input') }
-			/>
-		);
-	}
-}
-
-class ListBox extends Box {
-	state = {
-		tempInput: ''
-	}
-
-	componentWillMount() {
-		super.componentWillMount();
-		const { param, value } = this.props;
-		if (value && value.value) {
-			// convert to array if it is comma seperated
-			if (!Array.isArray(value.value)) value.value = value.value.split(',');
-
-			this.setState({ input: value.value });
-			return;
-		}
-
-		let input = param.defaultValue || [];
-		// convert to array if it is comma seperated
-		if (!Array.isArray(input)) input = input.split(',');
-
-		this.setState({ input });
-	}
-
-	validate = () => {
-		// if the user forgot to press enter / tab just push the remaining content
-		const { tempInput, input } = this.state;
-		if (tempInput) this.setState({ input: [ ...input, tempInput ], tempInput: '' });
-
-		const value = this.setValue();
-		// value is default value
-		if (!value) return true;
-
-		let error = false;
-
-		if (Array.isArray(value.value)) error = value.value.length < 1;
-		else error = !value.value;
-
-		this.setState({ error });
-		return !error;
-	}
-
-	render({ param }, { input, error, tempInput }) {
-		const classes = classNames('react-tagsinput', {
-			'is-invalid': error
-		});
-
-		return (
-			<TagsInput
-				className={ classes }
-				addKeys={ [ 9, 13 ] } // enter, tab
-				value={ input }
-				onChange={ input => this.setState({ input }) }
-				inputProps={{
-					className: 'react-tagsinput-input',
-					placeholder: param.placeholder
-				}}
-				inputValue={ tempInput }
-				onChangeInput={ tempInput => this.setState({ tempInput }) }
-			/>
-		);
-	}
-}
-
-class BooleanBox extends Box {
-	validate = () => {
-		const value = this.setValue();
-		// value is default value
-		if (!value) return true;
-
-		// parse to boolean
-		if (value.value === 'true') value.value = true;
-		else if (value.value === 'false') value.value = false;
-
-		this.setState({
-			error: value.value == null || value.value == undefined
-		});
-
-		const { error } = this.state;
-
-		return !error;
-	}
-
-	render(props, { error, input }) {
-		const classes = classNames({
-			'form-control': true,
-			'is-invalid': error
-		});
-
-		return (
-			<select className={ classes } value={ input } onChange={ linkState(this, 'input') }>
-				<option value='true'>{ translate('true') }</option>
-				<option value='false'>{ translate('false') }</option>
-			</select>
 		);
 	}
 }

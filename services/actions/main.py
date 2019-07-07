@@ -4,6 +4,7 @@ load_dotenv()
 
 from instapy import InstaPy
 from inspect import signature, getdoc
+import re
 
 def get_actions():
     real_funcs = []
@@ -12,7 +13,7 @@ def get_actions():
             # just a class function
             continue
 
-        # only use following functions
+        # only use mentioned functions
         if not (
                 func.startswith('set') or
                 func.startswith('follow') or
@@ -54,7 +55,20 @@ def get_actions():
                 param['optional'] = True
 
             # save type of the annotation
-            param['type'] = None if str(actual_param.annotation) == '<class \'inspect._empty\'>' else actual_param.annotation.__name__
+            paramtype = None
+
+            if 'inspect._empty' in str(actual_param.annotation):
+                paramtype = None
+            elif 'typing.Tuple' in str(actual_param.annotation):
+                # converts 'typing.Tuple[int, str]' to 'tuple:int,str'
+                tuple_types = re.search('(?<=\[).*?(?=\])', str(actual_param.annotation))
+                tuple_types = tuple_types.group().split(',')
+                tuple_types = ','.join(list(map(lambda x: x.strip(), tuple_types)))
+                paramtype = f'tuple:{tuple_types}'
+            else:
+                paramtype = actual_param.annotation.__name__
+
+            param['type'] = paramtype
 
             params.append(param)
 

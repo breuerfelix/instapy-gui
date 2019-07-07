@@ -48,12 +48,14 @@ export default class SideBar extends Component {
 								{ translate('sidebar_features') }
 							</div>
 
+							{ /* uncomment to enable dashbaord again
 							<MenuItem
 								label='sidebar_dashboard'
 								icon='fas fa-chart-line'
 								link='/dashboard'
 								level='top'
 							/>
+							*/ }
 
 							<MenuItem
 								label='sidebar_configuration'

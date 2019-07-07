@@ -52,7 +52,7 @@ class App extends Component {
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
 								<Route exact path='/' render={
-									() => <Redirect to={ token ? '/dashboard' : '/login' } />
+									() => <Redirect to={ token ? '/configuration' : '/login' } />
 								} />
 								<Route
 									exact

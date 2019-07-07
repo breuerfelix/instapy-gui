@@ -48,4 +48,4 @@ services:
     volumes:
       - ./dev/mongo:/data/db
     ports:
-      - 4004:27017
+      - 27017:27017
