@@ -64,7 +64,7 @@ class SignupCard extends Component {
 			storeLoginInstapy(token, usernameInstapy);
 			localStorage.setItem('token', token);
 			setToken(token);
-			history.push('/dashboard');
+			history.push('/');
 			return;
 		}
 
@@ -106,7 +106,7 @@ class SignupCard extends Component {
 			storeLoginInstapy(token, usernameInstapy);
 			localStorage.setItem('token', token);
 			setToken(token);
-			history.push('/dashboard');
+			history.push('/start');
 			return;
 		}
 
