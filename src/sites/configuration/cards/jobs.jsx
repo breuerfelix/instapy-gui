@@ -2,7 +2,7 @@ import { h, render, Component } from 'preact';
 import { ConfigService, translate } from 'services';
 import arrayMove from 'array-move';
 import JobCard from './job';
-import AddJobCard from './add_job';
+import { AddCard } from '../components';
 import { ActionsModal } from 'modals';
 
 export default class JobsCard extends Component {
@@ -116,7 +116,7 @@ export default class JobsCard extends Component {
 		return (
 			<div className='jobs'>
 				{ jobList }
-				<AddJobCard />
+				<AddCard target='#actions-modal' />
 				<ActionsModal add={ this.addJob } />
 			</div>
 		);

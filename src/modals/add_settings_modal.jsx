@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import slugify from 'slugify';
 import $ from 'jquery';
 
-export default class AddNamespaceModal extends Component {
+export default class AddSettingsModal extends Component {
 	state = {
 		inputName: null,
 		inputDescription: null,
@@ -14,7 +14,7 @@ export default class AddNamespaceModal extends Component {
 		errorDescription: false
 	}
 
-	addNamespace = e => {
+	addSettings = e => {
 		e.preventDefault();
 		const { inputName, inputDescription } = this.state;
 
@@ -32,11 +32,11 @@ export default class AddNamespaceModal extends Component {
 			// TODO extend with a nice remove regex like -> remove: /[*+~.()'"!:@]/},
 		});
 
-		const found = this.props.namespaces.find(x => x.ident == slug);
+		const found = this.props.settings.find(x => x.ident == slug);
 
 		if (found) {
 			this.setState({ errorName: true });
-			const errorText = 'Template with this identifier already exists!';
+			const errorText = 'Settings with this identifier already exists!';
 			console.warn(errorText);
 			alert(errorText);
 			return;
@@ -71,30 +71,30 @@ export default class AddNamespaceModal extends Component {
 		return (
 			<div
 				ref={ modal => this.modal = modal }
-				id="add-namespace-modal"
+				id='settings-modal'
 				className='modal fade'
 				tabIndex='-1'
 				role='dialog'
 				aria-hidden='true'
-				arial-labelledby='add-namespace-modal-title'
+				arial-labelledby='add-settings-modal-title'
 			>
 				<div className='modal-dialog' role='document'>
 					<div className="modal-content">
 						<div className="modal-header">
-							<h5 id='add-namespace-modal-title' className="modal-title">{ translate('new_namespace_title') }</h5>
+							<h5 id='add-settings-modal-title' className="modal-title">{ translate('new_settings_title') }</h5>
 							<button className="close" type='button' data-dismiss='modal' aria-label='Close'>
 								<span aria-hidden='true'>&times;</span>
 							</button>
 						</div>
 						<div className="modal-body">
-							<form onSubmit={ this.addNamespace }>
+							<form onSubmit={ this.addSettings }>
 								<div className="form-group">
-									<label>{ translate('namespace_name_label') }</label>
+									<label>{ translate('settings_name_label') }</label>
 									<div className="input-group">
 										<input
 											className={ inputNameClass }
 											type="text"
-											placeholder={ translate('namespace_name_placeholder') }
+											placeholder={ translate('settings_name_placeholder') }
 											value={ inputName }
 											onInput={ linkState(this, 'inputName') }
 										/>
@@ -102,12 +102,12 @@ export default class AddNamespaceModal extends Component {
 								</div>
 
 								<div className="form-group">
-									<label>{ translate('namespace_description_label') }</label>
+									<label>{ translate('settings_description_label') }</label>
 									<div className="input-group">
 										<textarea
 											className={ inputDescriptionClass }
 											type="text"
-											placeholder={ translate('namespace_description_placeholder') }
+											placeholder={ translate('settings_description_placeholder') }
 											value={ inputDescription }
 											onInput={ linkState(this, 'inputDescription') }
 											rows='3'
@@ -128,8 +128,8 @@ export default class AddNamespaceModal extends Component {
 							</button>
 							<button
 								className="btn btn-outline-dark"
-								onClick={ this.addNamespace }
-								type="button"
+								onClick={ this.addSettings }
+								type="submit"
 							>
 								{ translate('button_save') }
 							</button>
