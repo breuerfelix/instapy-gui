@@ -16,7 +16,7 @@ def coding_wrapper(text, func):
     
     return func(text, CIPHER_SECRET)
 
-    
+
 
 @settings.route('/settings', methods=['GET'])
 @jwt_req
