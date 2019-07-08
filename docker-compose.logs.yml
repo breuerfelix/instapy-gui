@@ -1,0 +1,22 @@
+version: '3'
+services:
+  logs:
+    image: logzio/docker-collector-logs
+    restart: unless-stopped
+    environment:
+      - LOGZIO_TOKEN
+      - LOGZIO_URL
+      - matchContainerName=socket,auth,config
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers
+  metrics:
+    image: logzio/docker-collector-metrics
+    restart: unless-stopped
+    environment:
+      - LOGZIO_TOKEN
+      - LOGZIO_URL
+      - LOGZIO_TYPE=instapyio_metrics
+      - matchContainerName=socket,auth,config
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

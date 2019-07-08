@@ -28,6 +28,8 @@ if not IDENT:
 PROCESS = None
 TOKEN = None
 HANDLERS = {}
+NAMESPACE = None
+SETTING = None
 
 # socke stuff
 def on_message(ws, message):
@@ -97,11 +99,16 @@ def check_process():
 def get_status(ws, data):
     check_process()
     global PROCESS
+    global NAMESPACE
+    global SETTING
+
     status = 'running' if PROCESS else 'stopped'
 
     ws.send(json.dumps({
         'handler': 'status',
         'status': status,
+        'namespace': NAMESPACE,
+        'setting': SETTING,
         'action': 'set'
     }))
 HANDLERS['status'] = get_status
@@ -111,10 +118,15 @@ def start(ws, data):
     global PROCESS
     global TOKEN
     global IDENT
+    global NAMESPACE
+    global SETTING
 
     ienv = os.environ.copy()
     ienv['TOKEN'] = TOKEN
     ienv['NAMESPACE'] = data['namespace']
+    NAMESPACE = data['namespace']
+    ienv['SETTING'] = data['setting']
+    SETTING = data['setting']
     ienv['SOCKET'] = SOCKET_ENDPOINT
     ienv['CONFIG'] = CONFIG_ENDPOINT
     ienv['IDENT'] = IDENT

@@ -28,7 +28,10 @@ class Box extends Component {
 		// setting the input to the job
 		const { input } = this.state;
 
-		if ((input == '' || input == null || input == undefined) && param.optional) {
+		if (
+			(input == '' || input == null || input == undefined || input == param.defaultValue)
+			&& param.optional
+		) {
 			if (value) {
 				// remove value from array so it uses default value
 				const index = params.indexOf(value);
@@ -44,9 +47,6 @@ class Box extends Component {
 			value.value = input;
 			return value;
 		}
-
-		// value is default value no need to save it
-		if (input == param.defaultValue) return null;
 
 		// create new value object
 		value = {
@@ -207,6 +207,8 @@ export class BooleanBox extends Box {
 
 const inputComponents = {
 	default: { element: InputBox, props: {} },
+	str: { element: InputBox, props: {} },
+	secret: { element: InputBox, props: { type: 'password' } },
 	int: {
 		element: InputBox,
 		props: { type: 'number', step: '1' }

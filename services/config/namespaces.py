@@ -158,7 +158,7 @@ def update_job(payload, namespace, uuid):
                                  }, return_document = ReturnDocument.AFTER)
 
         # TODO change this
-        # refetch all jobs to the gui can update everything
+        # refetch all jobs so the gui can update everything
         result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
 
         return to_json(result)
