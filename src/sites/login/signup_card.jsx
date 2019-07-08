@@ -57,7 +57,7 @@ class SignupCard extends Component {
 			displayName: usernameInstapy,
 			error,
 			type
-		} = await AccountService.signupInstapy(email, username, password);
+		} = await AccountService.signup(email, username, password);
 		this.setState({ loading: false });
 
 		if (!error) {
@@ -68,7 +68,6 @@ class SignupCard extends Component {
 			return;
 		}
 
-		console.error(error);
 		if (!type) return;
 
 		const capType = type.charAt(0).toUpperCase() + type.slice(1);
@@ -99,7 +98,7 @@ class SignupCard extends Component {
 			displayName: usernameInstapy,
 			error,
 			type
-		} = await AccountService.loginInstapy(username, password);
+		} = await AccountService.login(username, password);
 		this.setState({ loading: false });
 
 		if (!error) {
@@ -110,7 +109,6 @@ class SignupCard extends Component {
 			return;
 		}
 
-		console.error(error);
 		if (!type) return;
 
 		const capType = type.charAt(0).toUpperCase() + type.slice(1);

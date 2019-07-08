@@ -14,7 +14,6 @@ import ReactGA from 'react-ga';
 import store, { connect } from 'store';
 import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
 import {
-	Account,
 	Configuration,
 	Start,
 	Dashboard,
@@ -63,10 +62,6 @@ class App extends Component {
 									exact
 									path='/login/privacy'
 									component={ Privacy }
-								/>
-								<PrivateRoute
-									path='/account'
-									component={ Account }
 								/>
 								<PrivateRoute
 									path='/configuration'

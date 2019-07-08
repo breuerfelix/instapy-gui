@@ -4,7 +4,6 @@ import actions from './actions';
 
 const initialState = {
 	showSidebar: true,
-	username: null,
 	actions: [],
 	token: null,
 	usernameInstapy: null

@@ -11,6 +11,7 @@ from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
 
 namespace = getenv('NAMESPACE')
+setting_ident = getenv('SETTING')
 token = getenv('TOKEN')
 ident = getenv('IDENT')
 config_endpoint = getenv('CONFIG')
@@ -71,17 +72,6 @@ class my_handler(logging.Handler):
 log_handler = my_handler()
 log_handler.init()
 
-user = get('/login')
-proxy = get('/proxy')
-if not proxy:
-    # set proxy default values
-    proxy = {
-        'host': None,
-        'port': None,
-        'username': None,
-        'password': None
-    }
-
 res_jobs = get(f'/namespaces/{namespace}/jobs')
 
 # sort out non active jobs
@@ -111,36 +101,23 @@ for job in jobs:
             param['value'] = tuple(param['value'])
 # ---------------------------------------------------------------------------
 
-# login credentials
-insta_username = user['username']
-insta_password = user['password']
+setting = get(f'/settings/{setting_ident}')
 
-# influx db credentials
-influx_port = getenv('INFLUXDB_PORT') or 8086
-influx_port = int(influx_port)
-influxdb_options = {
-    'user': getenv('INFLUXDB_USER') or 'instapy',
-    'password': getenv('INFLUXDB_PASSWORD') or 'instapysecret',
-    'database': getenv('INFLUXDB_DB') or 'instapy',
-    'host': getenv('INFLUXDB_HOST') or 'influxdb',
-    'port': influx_port
-}
+# user args
+instapy_args = dict()
+for param in setting['params']:
+    instapy_args[param['name']] = param['value']
+
+# custom args
+instapy_args['log_handler'] = log_handler
+
 
 # set assets folder as a workspace
 ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
 set_workspace(ASSETS)
 
 # get an InstaPy session!
-session = InstaPy(username = insta_username,
-                  password = insta_password,
-                  headless_browser = True,
-                  show_logs = True,
-                  log_handler = log_handler,
-                  #influxdb = influxdb_options,
-                  proxy_address = proxy['host'] or None,
-                  proxy_port = int(proxy['port']) if proxy['port'] else None,
-                  proxy_username = proxy['username'] or None,
-                  proxy_password = proxy['password'] or None)
+session = InstaPy(**instapy_args)
 
 # function that will be executed before sig kill, to the browser window closes
 def exit_browser(*args):

@@ -1,9 +1,7 @@
 import ActionsModal from './actions_modal';
-import AddNamespaceModal from './add_namespace_modal';
-import AddSettingsModal from './add_settings_modal';
+import AddItemModal from './add_item_modal';
 
 export {
 	ActionsModal,
-	AddNamespaceModal,
-	AddSettingsModal
+	AddItemModal
 };
