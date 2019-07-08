@@ -63,12 +63,12 @@ export default class SideBar extends Component {
 								level='top'
 							>
 								<MenuItem
-									label='sidebar_namespaces'
-									link='/configuration/namespaces'
+									label='sidebar_settings'
+									link='/configuration/settings'
 								/>
 								<MenuItem
-									label='sidebar_proxy'
-									link='/configuration/proxy'
+									label='sidebar_namespaces'
+									link='/configuration/namespaces'
 								/>
 							</MenuItem>
 
