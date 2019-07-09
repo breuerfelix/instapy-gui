@@ -10,7 +10,7 @@ services:
       - matchContainerName=socket,auth,config
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /var/snap/docker/common/var-lib-docker/containers:/var/lib/docker/containers
   metrics:
     image: logzio/docker-collector-metrics
     restart: unless-stopped
