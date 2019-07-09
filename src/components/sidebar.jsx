@@ -3,17 +3,9 @@ import { translate, AccountService } from 'services';
 import { MenuItem } from 'components';
 import { connect } from 'store';
 
-@connect('username,usernameInstapy')
+@connect('usernameInstapy')
 export default class SideBar extends Component {
-	componentWillMount() {
-		const { setUsername } = this.props;
-		// retrieve username from server
-		AccountService.getLoginCredentials()
-			.then(res => setUsername(res.username || ''));
-	}
-
-	render({ username, usernameInstapy }) {
-		const labelLoginInstagram = username ? username : 'sidebar_login_instagram';
+	render({ usernameInstapy }) {
 		const labelLoginInstapy = usernameInstapy ? usernameInstapy : 'sidebar_login_instapy';
 
 		return (
@@ -37,13 +29,6 @@ export default class SideBar extends Component {
 
 					{ usernameInstapy && // links only when logged in
 						<div>
-							<MenuItem
-								label={ labelLoginInstagram }
-								icon='fas fa-user'
-								link='/account/login'
-								level='top'
-							/>
-
 							<div className='headline'>
 								{ translate('sidebar_features') }
 							</div>
@@ -63,12 +48,12 @@ export default class SideBar extends Component {
 								level='top'
 							>
 								<MenuItem
-									label='sidebar_namespaces'
-									link='/configuration/namespaces'
+									label='sidebar_settings'
+									link='/configuration/settings'
 								/>
 								<MenuItem
-									label='sidebar_proxy'
-									link='/configuration/proxy'
+									label='sidebar_namespaces'
+									link='/configuration/namespaces'
 								/>
 							</MenuItem>
 

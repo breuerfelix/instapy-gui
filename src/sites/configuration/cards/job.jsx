@@ -2,8 +2,8 @@ import { h, render, Component } from 'preact';
 import { translate, ConfigService } from 'services';
 import { connect } from 'store';
 import $ from 'jquery';
+import { InfoArea, IconButton } from 'components';
 import { EditJob } from '../components';
-import Markup from 'preact-markup';
 import classNames from 'classnames';
 
 @connect('actions')
@@ -89,10 +89,7 @@ export default class JobCard extends Component {
 		// dont render if the action is not loaded yet
 		if (!this.setAction()) return;
 
-		// enable popover
-		$('[data-toggle="popover"]').popover();
-
-		const headerStyle = expanded ? null : 'border-bottom: 0;';
+		const headerStyle = expanded ? null : { borderBottom: 0 };
 		const badgeClass = classNames({
 			'badge': true,
 			'badge-success': job.active,
@@ -130,19 +127,6 @@ export default class JobCard extends Component {
 										icon='fas fa-cog'
 										onclick={ this.toggleCard }
 									/>
-									{ false && // popover info icon for the description
-										<a
-											className='btn btn-outline-dark fas fa-info noselect'
-											style={{ borderWidth : 0 }}
-											tabIndex='0'
-											data-container='body'
-											data-trigger='focus'
-											data-toggle='popover'
-											data-placement='top'
-											data-content={ action.description }
-											onClick={ e => e.stopPropagation() }
-										/>
-									}
 									<IconButton
 										icon='fas fa-trash-alt'
 										onclick={ e => { e.stopPropagation(); deleteJob(job); } }
@@ -155,7 +139,7 @@ export default class JobCard extends Component {
 					<div className="collapse" ref={ body => this.body = body }>
 						<div className='card-body' style={{ padding: '5px' }}>
 							{ action.description &&
-								<InfoArea action={ action } />
+								<InfoArea description={ action.description } />
 							}
 							<EditJob ref={ edit => this.editJob = edit } job={ job } action={ action } />
 							<button
@@ -170,66 +154,6 @@ export default class JobCard extends Component {
 					</div>
 
 				</div>
-			</div>
-		);
-	}
-}
-
-const IconButton = ({ icon, onclick }) => (
-	<button
-		className='btn btn-outline-dark'
-		type='button'
-		style={{ borderWidth: 0 }}
-		onClick={ onclick }
-	>
-		<i className={ icon }>
-		</i>
-	</button>
-);
-
-class InfoArea extends Component {
-	state = {
-		expanded: false
-	}
-
-	toggleInfo = e => {
-		e.preventDefault();
-		e.stopPropagation();
-
-		// do nothing if currentlu opening or closing
-		if ($(this.body).hasClass('collapsing')) return;
-
-		this.setState({ expanded: !this.state.expanded });
-		$(this.body).collapse('toggle');
-	}
-
-	render({ action }, { expanded }) {
-		const infoText = expanded ? 'job_hide_info' : 'job_show_info';
-		// replace newline with br so render html
-		// add other conversions here
-		const content = action.description.replace('\n', '<br />');
-
-		return (
-			<div style={{ margin: '5px 15px 0 15px' }}>
-
-				<div className='collapse' ref={ body => this.body = body }>
-					<div style={{ padding: '10px 0' }}>
-						<div className='alert alert-primary' style={{ margin: 0 }}>
-							<Markup markup={ content } />
-						</div>
-					</div>
-				</div>
-
-				<div className='row align-items-center' style={{ fontSize: '80%' }}>
-					<div className='col'><hr /></div>
-					<div className='col-auto'>
-						<a onClick={ this.toggleInfo } href='#' style={{ color: 'black' }}>
-							{ translate(infoText) }
-						</a>
-					</div>
-					<div className='col'><hr /></div>
-				</div>
-
 			</div>
 		);
 	}

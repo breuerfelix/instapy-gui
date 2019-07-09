@@ -103,11 +103,13 @@ function status(ws, user, socket, payload, data) {
 		const s = user.sockets
 			.filter(x => x.type == 'app');
 
-		const { status } = data;
+		const { status, namespace, setting } = data;
 		for (const so of s) {
 			so.ws.send(json({
 				handler: 'status',
-				status
+				status,
+				namespace,
+				setting
 			}));
 		}
 	}
@@ -143,12 +145,15 @@ function bot(ws, user, socket, payload, data) {
 	const s = user.sockets
 		.find(x => x.type == 'instapy' && x.ident == data.bot);
 
+	const { start, namespace, setting } = data;
+
 	// clear logs on start
-	if (data.start) s.logs = [];
+	if (start) s.logs = [];
 
 	s.ws.send(json({
-		handler: data.start ? 'start' : 'stop',
-		namespace: data.namespace
+		handler: start ? 'start' : 'stop',
+		namespace,
+		setting
 	}));
 }
 HANDLERS['bot'] = bot;

@@ -1,10 +1,10 @@
 import jwt
 import json
-import base64
 from functools import wraps
 from flask import request, current_app
 from os import getenv
 from bson.json_util import dumps
+from cryptography.fernet import Fernet
 
 SECRET = getenv('JWT_SECRET') or 'instapysecret'
 
@@ -47,25 +47,10 @@ def jwt_req(f):
 
 
 
-def encode(string, key):
-    encoded_chars = []
-    for i, char in enumerate(string):
-        key_c = key[i % len(key)]
-        encoded_c = chr(ord(char) + ord(key_c) % 256)
-        encoded_chars.append(encoded_c)
-    encoded_string = ''.join(encoded_chars)
-    encoded_string = encoded_string.encode('latin')
-    return base64.urlsafe_b64encode(encoded_string).rstrip(b'=')
+def encode(message, key):
+    return Fernet(key.encode()).encrypt(message.encode()).decode()
 
 
 
-def decode(string, key):
-    string = base64.urlsafe_b64decode(string + b'===')
-    string = string.decode('latin')
-    encoded_chars = []
-    for i, char in enumerate(string):
-        key_c = key[i % len(key)]
-        encoded_c = chr((ord(char) - ord(key_c) + 256) % 256)
-        encoded_chars.append(encoded_c)
-    encoded_string = ''.join(encoded_chars)
-    return encoded_string
+def decode(message, key):
+    return Fernet(key.encode()).decrypt(message.encode()).decode()

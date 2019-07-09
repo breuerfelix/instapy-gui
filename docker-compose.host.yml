@@ -3,6 +3,7 @@ services:
   auth:
     image: felixbreuer/instapy-auth:latest
     restart: unless-stopped
+    network_mode: bridge
     environment:
       - MONGO_URL
       - JWT_SECRET
@@ -11,6 +12,7 @@ services:
   config:
     image: felixbreuer/instapy-config:latest
     restart: unless-stopped
+    network_mode: bridge
     environment:
       - MONGO_URL
       - JWT_SECRET
@@ -20,6 +22,7 @@ services:
   socket:
     image: felixbreuer/instapy-socket:latest
     restart: unless-stopped
+    network_mode: bridge
     environment:
       - JWT_SECRET
       - VIRTUAL_HOST=socket.instapy.io
