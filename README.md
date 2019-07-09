@@ -27,6 +27,14 @@
 * install [python 3](https://www.python.org/downloads/)
 * sign up on [instapy.io](https://instapy.io)
 
+### register a bot (windows-1-click-install)
+
+* download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
+  * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
+* double-click `setup.bat`
+  * answer all the questions
+* double-click `startingClient.bat` and take off!
+
 ### register a bot
 
 #### one click windows
