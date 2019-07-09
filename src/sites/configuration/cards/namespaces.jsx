@@ -1,9 +1,9 @@
 import { h, render, Component } from 'preact';
 import DescriptionCard from './description';
 import { ConfigService, translate } from 'services';
-import classNames from 'classnames';
+import { raiseError } from 'core';
 import { withRouter, Route } from 'react-router-dom';
-import { AddNamespaceModal } from 'modals';
+import { AddItemModal } from 'modals';
 
 class NamespacesCard extends Component {
 	state = {
@@ -39,19 +39,11 @@ class NamespacesCard extends Component {
 	deleteNamespace = _ => {
 		// TODO show modal to confirm the deletion
 		const { namespaces, namespace } = this.state;
-		if (namespaces.length <= 1) {
-			console.error('you need at least one namespace!');
-			// TODO throw notification
-			return;
-		}
 
 		const name = namespaces.find(x => x.ident == namespace);
 		const idx = namespaces.indexOf(name);
 
-		if (idx == -1) {
-			console.error('could not locate namespace!');
-			return;
-		}
+		if (idx == -1) raiseError('Could not locate namespace!');
 
 		namespaces.splice(idx, 1);
 
@@ -72,7 +64,7 @@ class NamespacesCard extends Component {
 	}
 
 	editNamespace = async namespace => {
-		console.log('edit namespace.... coming soon');
+		raiseError('edit namespace.... coming soon');
 	}
 
 	render({ match }, { namespaces, namespace }) {
@@ -131,8 +123,9 @@ class NamespacesCard extends Component {
 						</div>
 
 					</div>
-					<AddNamespaceModal
-						namespaces={ namespaces }
+					<AddItemModal
+						ident='namespace'
+						items={ namespaces }
 						add={ this.addNamespace }
 					/>
 				</div>

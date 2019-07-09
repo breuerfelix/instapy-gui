@@ -7,18 +7,16 @@ from flask_cors import CORS
 
 from os import getenv
 
-from account import account
 from actions import actions
 from namespaces import namespaces
-from proxy import proxy
+from settings import settings
 
 from database import client
 
 app = Flask(__name__)
 app.register_blueprint(actions)
 app.register_blueprint(namespaces)
-app.register_blueprint(account)
-app.register_blueprint(proxy)
+app.register_blueprint(settings)
 
 CORS(app)
 

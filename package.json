@@ -12,7 +12,8 @@
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
 		"lint:fix": "npm run lint -- --fix",
 		"dc:host": "docker-compose -f docker-compose.host.yml",
-		"dc:ssl": "docker-compose -f docker-compose.ssl.yml"
+		"dc:ssl": "docker-compose -f docker-compose.ssl.yml",
+		"dc:logs": "docker-compose -f docker-compose.logs.yml"
 	},
 	"author": "Felix Breuer",
 	"license": "GPL-3.0",

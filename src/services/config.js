@@ -78,15 +78,12 @@ class ConfigService {
 		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs`, data);
 	}
 
-	async getProxy() {
-		console.log('fetching proxy configuration...');
-		return await fetchGet(`${this.endpoint}/proxy`);
+	async getSettings() {
+		return await fetchGet(`${this.endpoint}/settings`);
 	}
 
-	async setProxy(host, port, username, password) {
-		console.log('setting proxy configuration...');
-		const data = { host, port, username, password };
-		return await fetchPost(`${this.endpoint}/proxy`, data);
+	async updateSetting(data) {
+		return await fetchPost(`${this.endpoint}/settings`, data);
 	}
 }
 

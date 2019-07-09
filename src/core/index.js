@@ -51,10 +51,17 @@ const setToken = (token = null) => {
 	headers['Authorization'] = `Bearer ${token}`;
 };
 
+const raiseError = (error, display = true) => {
+	if (display) alert(error);
+	// console.error(error);
+	throw error;
+};
+
 export {
 	fetchGet,
 	fetchPost,
 	sleep,
 	readToken,
-	setToken
+	setToken,
+	raiseError
 };

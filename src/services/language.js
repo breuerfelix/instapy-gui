@@ -26,7 +26,6 @@ class Language {
 		sidebar_configuration: 'Configuration',
 		sidebar_namespaces: 'Templates',
 		sidebar_github: 'GitHub',
-		sidebar_login_instagram: 'Login Instagram',
 		sidebar_login_instapy: 'Login InstaPy',
 		sidebar_account: 'ACCOUNT',
 		sidebar_features: 'FEATURES',
@@ -34,7 +33,7 @@ class Language {
 		sidebar_start: 'Start',
 		sidebar_other: 'Other',
 		sidebar_dashboard: 'Dashboard',
-		sidebar_proxy: 'Proxy',
+		sidebar_settings: 'Settings',
 
 		link_donate: 'Donate',
 		link_instapy: 'InstaPy',
@@ -80,6 +79,12 @@ class Language {
 		namespace_description_label: 'Description',
 		namespace_description_placeholder: 'i need to buy milk',
 
+		new_settings_title: 'Add Setting',
+		settings_name_label: 'Name',
+		settings_name_placeholder: 'Ultra default settings',
+		settings_description_label: 'Description',
+		settings_description_placeholder: 'headless, bypass mobile, i hate instagram, ...',
+
 		job_show_info: 'show info',
 		job_hide_info: 'hide info',
 
@@ -94,14 +99,9 @@ class Language {
 		startbot_title: 'Start InstaPy',
 		startbot_select_namespace: 'Select Template',
 		startbot_select_bot: 'Select Bot',
+		startbot_select_setting: 'Select Setting',
 
-		console_title: 'Console',
-
-		proxy_title: 'Proxy Configuration',
-		proxy_host: 'hostname',
-		proxy_port: 'port',
-		proxy_username: 'username (optional)',
-		proxy_password: 'password (optional)'
+		console_title: 'Console'
 	};
 }
 

@@ -8,7 +8,7 @@ class AccountService {
 		this.authEndpoint = config.authEndpoint;
 	}
 
-	async signupInstapy(email, username, password) {
+	async signup(email, username, password) {
 		const data = {
 			email,
 			username,
@@ -21,7 +21,7 @@ class AccountService {
 		const payload = decode(token);
 		return { token, ...payload };
 	}
-	async loginInstapy(username, password) {
+	async login(username, password) {
 		const data = {
 			username,
 			password
@@ -32,21 +32,6 @@ class AccountService {
 
 		const payload = decode(token);
 		return { token, ...payload };
-	}
-
-	async setLoginCredentials(username, password) {
-		console.log('set login credentials ...');
-		const data = {
-			username,
-			password
-		};
-
-		return await fetchPost(this.endpoint + '/login', data);
-	}
-
-	async getLoginCredentials() {
-		console.log('getting instapy login credentials...');
-		return await fetchGet(this.endpoint + '/login');
 	}
 }
 

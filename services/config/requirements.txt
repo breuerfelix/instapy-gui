@@ -3,3 +3,4 @@ flask-cors
 eventlet
 pymongo
 pyjwt
+cryptography

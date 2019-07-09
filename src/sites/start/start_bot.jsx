@@ -1,46 +1,42 @@
 import { h, render, Component } from 'preact';
 import { SocketService, ConfigService, translate } from 'services';
 import classNames from 'classnames';
-import { connect } from 'store';
-import { withRouter } from 'react-router-dom';
 
-class StartBot extends Component {
+export default class StartBot extends Component {
 	state = {
 		namespaces: [],
-		namespace: null,
 		bots: [],
+		settings: [],
 		running: false,
 		status: 'stopped', // or running
 		errorNamespace: false,
-		errorBot: false
+		errorBot: false,
+		errorSetting: false
 	}
 
 	toggleBot = e => {
 		e.preventDefault();
-		const { namespace, running } = this.state;
-		const { bot } = this.props;
+		const { running } = this.state;
+		const { bot, namespace, setting } = this.props;
 
 		this.setState({ errorBot: !bot });
 		if (this.state.errorBot) return;
 
 		if (!running) {
 			// that means, bot will be started
-			const { username, history } = this.props;
+			this.setState({
+				errorNamespace: !namespace,
+				errorSetting: !setting
+			});
 
-			// redirect to login page if not logged in
-			if (!username) {
-				history.push('/account/login');
-				return;
-			}
-
-			this.setState({ errorNamespace: !namespace });
-			if (this.state.errorNamespace) return;
+			if (this.state.errorNamespace || this.state.errorSetting) return;
 		}
 
 		SocketService.send({
 			handler: 'bot',
 			start: !running,
 			namespace: namespace.ident,
+			setting: setting.ident,
 			bot
 		});
 
@@ -63,18 +59,39 @@ class StartBot extends Component {
 	namespaceChanged = e => {
 		const { namespaces } = this.state;
 		const namespace = namespaces.find(x => x.ident == e.target.value);
-		this.setState({ namespace });
 
 		const { namespaceChanged } = this.props;
 		namespaceChanged(namespace);
 	}
 
+	settingChanged = e => {
+		const { settings } = this.state;
+		const setting = settings.find(x => x.ident == e.target.value);
+
+		const { settingChanged } = this.props;
+		settingChanged(setting);
+	}
+
 	updateStatus = data => {
-		const { status } = data;
+		const { status, namespaceIdent, settingIdent } = data;
+		const { settings, namespaces } = this.state;
+		const { settingChanged, namespaceChanged } = this.props;
+
 		this.setState({
 			running: status == 'running',
 			status
 		});
+
+		// set namespace and template to selected bot
+		if (namespaceIdent) {
+			const namespace = namespaces.find(x => x.ident == namespaceIdent);
+			if (namespace) namespaceChanged(namespace);
+		}
+
+		if (settingIdent) {
+			const setting = settings.find(x => x.ident == settingIdent);
+			if (setting) settingChanged(setting);
+		}
 	}
 
 	botChanged = bot => {
@@ -110,9 +127,19 @@ class StartBot extends Component {
 
 				// set first namespace if there is one
 				if (namespaces) {
-					this.setState({ namespace: namespaces[0] });
 					const { namespaceChanged } = this.props;
 					namespaceChanged(namespaces[0]);
+				}
+			});
+
+		ConfigService.getSettings()
+			.then(settings => {
+				this.setState({ settings });
+
+				// set first namespace if there is one
+				if (settings) {
+					const { settingChanged } = this.props;
+					settingChanged(settings[0]);
 				}
 			});
 	}
@@ -123,10 +150,14 @@ class StartBot extends Component {
 	}
 
 	render(
-		{ height, bot },
-		{ namespaces, namespace, bots, running, status, errorNamespace, errorBot }
+		{ height, bot, namespace, setting },
+		{ namespaces, bots, settings, running, status, errorNamespace, errorBot, errorSetting }
 	) {
 		const namespaceOptions = namespaces.map(({ ident, name }) =>
+			<option key={ ident } value={ ident }>{ name }</option>
+		);
+
+		const settingOptions = settings.map(({ ident, name }) =>
 			<option key={ ident } value={ ident }>{ name }</option>
 		);
 
@@ -154,6 +185,11 @@ class StartBot extends Component {
 			'is-invalid': errorNamespace
 		});
 
+		const settingSelectClass = classNames({
+			'form-control': true,
+			'is-invalid': errorSetting
+		});
+
 		return (
 			<div className='card' style={{ height }}>
 				<div className='card-header'>
@@ -168,6 +204,19 @@ class StartBot extends Component {
 						onChange={ e => this.botChanged(e.target.value) }
 					>
 						{ botOptions }
+					</select>
+
+					<label
+						style={{ marginTop: '10px' }}
+					>
+						{ translate('startbot_select_setting') }
+					</label>
+					<select
+						value={ setting ? setting.ident : null }
+						className={ settingSelectClass }
+						onChange={ this.settingChanged }
+					>
+						{ settingOptions }
 					</select>
 
 					<label
@@ -217,5 +266,3 @@ class StartBot extends Component {
 		);
 	}
 }
-
-export default withRouter(connect('username')(StartBot));
