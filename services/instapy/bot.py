@@ -16,6 +16,7 @@ token = getenv('TOKEN')
 ident = getenv('IDENT')
 config_endpoint = getenv('CONFIG')
 socket_endpoint = getenv('SOCKET')
+chromedriver_path = getenv('CHROMEDRIVER_PATH', None)
 
 if not namespace or not token: sys.exit(0)
 
@@ -110,6 +111,7 @@ for param in setting['params']:
 
 # custom args
 instapy_args['log_handler'] = log_handler
+instapy_args['browser_binary_path'] = chromedriver_path
 
 # set assets folder as a workspace
 ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
