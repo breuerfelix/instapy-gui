@@ -13,7 +13,7 @@ settings = Blueprint('settings', __name__)
 def coding_wrapper(text, func):
     if text == None or text == '':
         return text
-    
+
     return func(text, CIPHER_SECRET)
 
 
