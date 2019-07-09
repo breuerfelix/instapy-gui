@@ -111,7 +111,6 @@ for param in setting['params']:
 # custom args
 instapy_args['log_handler'] = log_handler
 
-
 # set assets folder as a workspace
 ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
 set_workspace(ASSETS)
