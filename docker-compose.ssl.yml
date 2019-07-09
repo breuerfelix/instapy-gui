@@ -3,6 +3,7 @@ services:
   proxy:
     image: jwilder/nginx-proxy:alpine
     restart: unless-stopped
+    network_mode: bridge
     ports:
       - 80:80
       - 443:443
@@ -17,6 +18,7 @@ services:
       - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
+    network_mode: bridge
     environment:
       - DEFAULT_EMAIL=hi@felixbreuer.me
     volumes:

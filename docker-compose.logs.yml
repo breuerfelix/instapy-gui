@@ -3,6 +3,7 @@ services:
   logs:
     image: logzio/docker-collector-logs
     restart: unless-stopped
+    network_mode: bridge
     environment:
       - LOGZIO_TOKEN
       - LOGZIO_URL
@@ -13,6 +14,7 @@ services:
   metrics:
     image: logzio/docker-collector-metrics
     restart: unless-stopped
+    network_mode: bridge
     environment:
       - LOGZIO_TOKEN
       - LOGZIO_URL
