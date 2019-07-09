@@ -19,6 +19,7 @@ AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'https://auth.instapy.io')
 CONFIG_ENDPOINT = os.getenv('CONFIG_ENDPOINT', 'https://config.instapy.io')
 SOCKET_ENDPOINT = os.getenv('SOCKET_ENDPOINT', 'wss://socket.instapy.io')
 IDENT = os.getenv('IDENT')
+CHROMEDRIVER_PATH = os.getenv('CHROMEDRIVER_PATH', None)
 
 if not IDENT:
     print('IDENT not provided')
@@ -120,6 +121,7 @@ def start(ws, data):
     global IDENT
     global NAMESPACE
     global SETTING
+    global CHROMEDRIVER_PATH
 
     ienv = os.environ.copy()
     ienv['TOKEN'] = TOKEN
@@ -130,7 +132,7 @@ def start(ws, data):
     ienv['SOCKET'] = SOCKET_ENDPOINT
     ienv['CONFIG'] = CONFIG_ENDPOINT
     ienv['IDENT'] = IDENT
-
+    ienv['CHROMEDRIVER_PATH'] = CHROMEDRIVER_PATH
 
     if platform.system() == 'Windows':
         PROCESS = subprocess.Popen(

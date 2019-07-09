@@ -49,3 +49,6 @@ services:
       - ./dev/mongo:/data/db
     ports:
       - 27017:27017
+  instapy:
+    build: ./services/instapy
+    image: felixbreuer/instapy-client:latest
