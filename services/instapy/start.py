@@ -132,11 +132,13 @@ def start(ws, data):
     ienv['SOCKET'] = SOCKET_ENDPOINT
     ienv['CONFIG'] = CONFIG_ENDPOINT
     ienv['IDENT'] = IDENT
-    ienv['CHROMEDRIVER_PATH'] = CHROMEDRIVER_PATH
+    if CHROMEDRIVER_PATH:
+        ienv['CHROMEDRIVER_PATH'] = CHROMEDRIVER_PATH
 
     if platform.system() == 'Windows':
         PROCESS = subprocess.Popen(
             [sys.executable, 'bot.py'],
+            shell = True,
             creationflags = subprocess.CREATE_NEW_PROCESS_GROUP,
             env = ienv
         )
