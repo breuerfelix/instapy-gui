@@ -21,6 +21,7 @@ dev/**/*
 # IDE
 .idea
 .vscode
+.vs
 
 # jupyter
 .ipynb_checkpoints
