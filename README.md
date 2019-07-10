@@ -29,7 +29,7 @@
 
 ### register a bot (windows-1-click-install)
 
-* Download [update.bat](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/update.bat) and save it
+* download [update.bat](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/update.bat) and save it
   * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
 * double-click `update.bat`
 * double-click `setup.bat`
