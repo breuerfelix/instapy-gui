@@ -45,9 +45,9 @@
   * finish every input on the command prompt
 * right-click on `StartClient.ps1` and hit `open with powershell` to start the client
 
-#### manual cross-platform
+#### step-by-step guide
 
-* download [all files here](https://github.com/breuerfelix/instapy-gui/tree/feature/auth-service/services/instapy) and save them to a folder on your system
+* download [all files here](https://github.com/breuerfelix/instapy-gui/tree/master/services/instapy) and save them to a folder on your system
   * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
 * navigate to the folder in the console
 * you should create a new python [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) because we use a modified InstaPy version
