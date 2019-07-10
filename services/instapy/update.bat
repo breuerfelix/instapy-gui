@@ -5,10 +5,10 @@ if exist easyDownloader.ps1 (
 ) else (
     rem file doesn't exist
 )
-ECHO $urlBot = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/feature/auth-service/services/instapy/bot.py" >> easyDownloader.ps1
-ECHO $urlStart = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/feature/auth-service/services/instapy/start.py" >> easyDownloader.ps1
-ECHO $urlRequ = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/feature/auth-service/services/instapy/requirements.txt" >> easyDownloader.ps1
-ECHO $urlSetup = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/feature/auth-service/services/instapy/Setup.bat" >> easyDownloader.ps1
+ECHO $urlBot = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/bot.py" >> easyDownloader.ps1
+ECHO $urlStart = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/start.py" >> easyDownloader.ps1
+ECHO $urlRequ = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/requirements.txt" >> easyDownloader.ps1
+ECHO $urlSetup = "https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/setup.bat" >> easyDownloader.ps1
 ECHO $outputBot = "$PSScriptRoot\bot.py" >> easyDownloader.ps1
 ECHO $outputStart = "$PSScriptRoot\start.py" >> easyDownloader.ps1
 ECHO $outputRequ = "$PSScriptRoot\requirements.txt" >> easyDownloader.ps1
