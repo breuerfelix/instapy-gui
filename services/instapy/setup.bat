@@ -1,27 +1,29 @@
 @echo off
 ECHO welcome To the easy installation batch file!
+ECHO.
 ECHO please answer the questions so everything gets set up automatically .
-ECHO #
+ECHO.
 goto check_account
 
 :check_account
 set "have_account=n"
 set /P have_account="Did you already created an account on instapy.io ? (y/n): "
 if %have_account% == y GOTO :instapy.io
+if %have_account% == Y GOTO :instapy.io
 if %have_account% == n GOTO createAccount
+if %have_account% == N GOTO createAccount
 GOTO default
 
 :createAccount
 cls
 start "" https://instapy.io/
 ECHO Please create an account in order to start.
-ECHO #
+ECHO.
 ECHO Press enter when finished.
 PAUSE
 GOTO checkPython
 
 :checkPython
-cls
 python --version 3>NUL
 if errorlevel 1 GOTO InstallPython3
 if errorlevel 0 GOTO setupPips
@@ -31,38 +33,41 @@ GOTO createEnv
 cls
 start "" https://www.python.org/downloads/windows/
 ECHO Python3 not found on your system.
-ECHO #
+ECHO.
 ECHO Check the opened website and install Python3.
-ECHO #
+ECHO.
 ECHO When finished, restart this .bat file.
 PAUSE
 
 :setupPips
 cls
 py -m pip install --upgrade pip
+ECHO updated pip
 py -m pip install --user virtualenv
+ECHO installed virtualenv
 goto env
 
 :env
 set "EnvironmentFolder=env"
 py -m venv %EnvironmentFolder%
-echo ./%EnvironmentFolder%/Scripts/pip.exe install -r requirements.txt >> RequirementsInstallation.ps1
+ECHO ./%EnvironmentFolder%/Scripts/pip.exe install -r requirements.txt >> RequirementsInstallation.ps1
 
 IF EXIST pShellClient.ps1 (
-    echo Found pShellClient.ps1
+    ECHO Found pShellClient.ps1
 ) ELSE (
-    echo pShellClient.ps1 missing.
-    echo creating powershell file
-    echo ./%EnvironmentFolder%/Scripts/python.exe ./start.py >> pShellClient.ps1
+    ECHO pShellClient.ps1 missing.
+    ECHO creating powershell file
+    ECHO ./%EnvironmentFolder%/Scripts/python.exe ./start.py >> pShellClient.ps1
 )
 IF EXIST startingClient.bat (
-    echo Found startingClient
+    ECHO Found startingClient
 ) ELSE (
-    echo startingClient.bat missing.
-    echo creating batch file
-    echo @echo off >> startingClient.bat
-    echo start "" https://instapy.io/ >> startingClient.bat
-    echo Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startingClient.bat
+    ECHO startingClient.bat missing.
+	ECHO.
+    ECHO creating batch file
+    ECHO @echo off >> startingClient.bat
+    ECHO start "" https://instapy.io/ >> startingClient.bat
+    ECHO Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startingClient.bat
 )
 goto powershell
 
@@ -73,6 +78,7 @@ goto createEnv
 :instapy.io
 cls
 ECHO Make sure to use the credentials from instapy.io.
+ECHO You can always edit the file (instapy.env)
 set "username=username"
 set /P username="instapy.io username: "
 set "password=password"
@@ -94,6 +100,5 @@ GOTO theEnd
 
 
 :theEnd
-ECHO instapy.env CREATED successfully!
 ECHO Setup completed.
 PAUSE
