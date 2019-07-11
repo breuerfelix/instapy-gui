@@ -19,7 +19,11 @@ def get_actions():
                 func.startswith('follow') or
                 func.startswith('interact') or
                 func.startswith('like') or
-                func.startswith('unfollow')
+                func.startswith('unfollow') or
+                func.startswith('join') or
+                func.startswith('clarifai') or
+                func.startswith('comment') or
+                func.startswith('accept') # accept_follow_requests
         ): continue
 
         real_funcs.append(func)
