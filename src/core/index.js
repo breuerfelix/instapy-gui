@@ -1,7 +1,14 @@
+import decode from 'jwt-decode';
+import store from 'store';
+
 const headers = {};
 
 async function fetchGet(url) {
-	const res = await fetch(url, { headers });
+	const res = await fetch(url, {
+		method: 'GET',
+		mode: 'cors',
+		headers
+	});
 	const json = await res.json();
 	return json;
 }
@@ -9,6 +16,7 @@ async function fetchGet(url) {
 async function fetchPost(url, data) {
 	const res = await fetch(url, {
 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		mode: 'cors',
 		headers: {
 			'Content-Type': 'application/json',
 			... headers
@@ -25,16 +33,35 @@ const sleep = (ms) => {
 	return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-const setToken = () => {
-	// set the auth token, only for free local version
-	const jwt = require('jsonwebtoken');
-	const token = jwt.sign({ database: 'user' }, 'instapysecret');
+const readToken = () => {
+	const token = localStorage.getItem('token');
+	if (!token) return;
+
+	const { displayName } = decode(token);
+	store.setState({ token, usernameInstapy: displayName });
 	headers['Authorization'] = `Bearer ${token}`;
+};
+
+const setToken = (token = null) => {
+	if (!token) {
+		delete headers['Authorization'];
+		return;
+	}
+
+	headers['Authorization'] = `Bearer ${token}`;
+};
+
+const raiseError = (error, display = true) => {
+	if (display) alert(error);
+	// console.error(error);
+	throw error;
 };
 
 export {
 	fetchGet,
 	fetchPost,
 	sleep,
-	setToken
+	readToken,
+	setToken,
+	raiseError
 };

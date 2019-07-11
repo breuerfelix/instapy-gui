@@ -1,7 +1,10 @@
 #!/usr/bin/env python
+from dotenv import load_dotenv
+load_dotenv()
 
 from instapy import InstaPy
-from inspect import signature, getdoc, Parameter
+from inspect import signature, getdoc
+import re
 
 def get_actions():
     real_funcs = []
@@ -10,10 +13,10 @@ def get_actions():
             # just a class function
             continue
 
-        # only use following functions
+        # only use mentioned functions
         if not (
-                func.startswith('set') or 
-                func.startswith('follow') or 
+                func.startswith('set') or
+                func.startswith('follow') or
                 func.startswith('interact') or
                 func.startswith('like') or
                 func.startswith('unfollow')
@@ -52,7 +55,20 @@ def get_actions():
                 param['optional'] = True
 
             # save type of the annotation
-            param['type'] = None if str(actual_param.annotation) == '<class \'inspect._empty\'>' else actual_param.annotation.__name__
+            paramtype = None
+
+            if 'inspect._empty' in str(actual_param.annotation):
+                paramtype = None
+            elif 'typing.Tuple' in str(actual_param.annotation):
+                # converts 'typing.Tuple[int, str]' to 'tuple:int,str'
+                tuple_types = re.search('(?<=\[).*?(?=\])', str(actual_param.annotation))
+                tuple_types = tuple_types.group().split(',')
+                tuple_types = ','.join(list(map(lambda x: x.strip(), tuple_types)))
+                paramtype = f'tuple:{tuple_types}'
+            else:
+                paramtype = actual_param.annotation.__name__
+
+            param['type'] = paramtype
 
             params.append(param)
 
@@ -66,8 +82,8 @@ def get_actions():
 from database import client
 
 if __name__ == '__main__':
-    table = client.general.actions
-    table.create_index('functionName', unique = True, background = True)
+    table = client.configuration.actions
+    # table.create_index('functionName', unique = True, background = True)
 
     for action in get_actions():
         table.replace_one({ 'functionName': action['functionName'] }, action, upsert = True)

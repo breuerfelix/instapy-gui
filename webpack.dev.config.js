@@ -2,36 +2,26 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.config.js');
+const dotenv = require('dotenv-webpack');
+
+const { PORT, ENV_FILE } = process.env;
 
 module.exports = merge(common, {
 	mode: 'development',
 	devtool: 'cheap-module-eval-source-map',
 
 	plugins: [
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+		ENV_FILE ? new dotenv(ENV_FILE) : () => {}
 	],
 
 	devServer: {
 		contentBase: path.join(__dirname, 'public'),
-		port: 8080,
+		port: PORT || 8080,
 		hot: true,
 		inline: true,
 		progress: true,
 		compress: true,
-		historyApiFallback: true,
-		proxy: {
-			'/api': {
-				target: 'http://localhost:3002',
-				pathRewrite: { '^/api': '' }
-			},
-			'/socket': {
-				target: 'http://localhost:3001',
-				pathRewrite: { '^/socket': '' },
-				ws: true
-			},
-			'/grafana': {
-				target: 'http://localhost/grafana'
-			},
-		}
+		historyApiFallback: true
 	}
 });

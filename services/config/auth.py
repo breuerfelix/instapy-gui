@@ -4,9 +4,9 @@ from functools import wraps
 from flask import request, current_app
 from os import getenv
 from bson.json_util import dumps
+from cryptography.fernet import Fernet
 
 SECRET = getenv('JWT_SECRET') or 'instapysecret'
-
 
 def to_json(obj, status = 200):
     return current_app.response_class(
@@ -38,5 +38,19 @@ def jwt_req(f):
             print('error: no payload')
             return to_json({ 'error': 'no payload' }, 400)
 
+        if not payload['username']:
+            print('error: no username')
+            return to_json({ 'error': 'no username in payload' })
+
         return f(*args, payload = payload, **kwargs)
     return decorated_function
+
+
+
+def encode(message, key):
+    return Fernet(key.encode()).encrypt(message.encode()).decode()
+
+
+
+def decode(message, key):
+    return Fernet(key.encode()).decrypt(message.encode()).decode()

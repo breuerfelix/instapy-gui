@@ -1,79 +1,124 @@
 import { h, render, Component } from 'preact';
 import { SocketService, ConfigService, translate } from 'services';
 import classNames from 'classnames';
-import { connect } from 'store';
-import { withRouter } from 'react-router-dom';
 
-class StartBot extends Component {
+export default class StartBot extends Component {
 	state = {
 		namespaces: [],
-		namespace: null,
+		bots: [],
+		settings: [],
 		running: false,
-		status: 'exited'
+		status: 'stopped', // or running
+		errorNamespace: false,
+		errorBot: false,
+		errorSetting: false
 	}
 
 	toggleBot = e => {
 		e.preventDefault();
-		const { namespace, running } = this.state;
+		const { running } = this.state;
+		const { bot, namespace, setting } = this.props;
+
+		this.setState({ errorBot: !bot });
+		if (this.state.errorBot) return;
 
 		if (!running) {
 			// that means, bot will be started
-			const { username, history } = this.props;
+			this.setState({
+				errorNamespace: !namespace,
+				errorSetting: !setting
+			});
 
-			// redirect to login page if not logged in
-			if (!username) {
-				history.push('/account/login');
-				return;
-			}
+			if (this.state.errorNamespace || this.state.errorSetting) return;
 		}
 
 		SocketService.send({
-			handler: 'bot_state',
-			action: 'toggle',
-			running: !running,
-			namespace: namespace.ident
+			handler: 'bot',
+			start: !running,
+			namespace: namespace.ident,
+			setting: setting.ident,
+			bot
 		});
 
-		// todo disable button
 		this.setState({ running: !running, status: 'loading' });
 
 		SocketService.send({
-			handler: 'bot_state',
-			action: 'get'
+			handler: 'status',
+			action: 'get',
+			ident: bot
 		});
 
 		// refresh logs, since they get deleted on start
 		SocketService.send({
-			handler: 'logger',
-			action: 'get'
+			handler: 'logs',
+			action: 'get',
+			bot
 		});
 	}
 
 	namespaceChanged = e => {
 		const { namespaces } = this.state;
 		const namespace = namespaces.find(x => x.ident == e.target.value);
-		this.setState({ namespace });
 
 		const { namespaceChanged } = this.props;
 		namespaceChanged(namespace);
 	}
 
-	recieveSocketData = data => {
-		if (data.handler != 'bot_state') return;
+	settingChanged = e => {
+		const { settings } = this.state;
+		const setting = settings.find(x => x.ident == e.target.value);
+
+		const { settingChanged } = this.props;
+		settingChanged(setting);
+	}
+
+	updateStatus = data => {
+		const { status, namespaceIdent, settingIdent } = data;
+		const { settings, namespaces } = this.state;
+		const { settingChanged, namespaceChanged } = this.props;
 
 		this.setState({
-			running: data.running,
-			status: data.status
+			running: status == 'running',
+			status
 		});
+
+		// set namespace and template to selected bot
+		if (namespaceIdent) {
+			const namespace = namespaces.find(x => x.ident == namespaceIdent);
+			if (namespace) namespaceChanged(namespace);
+		}
+
+		if (settingIdent) {
+			const setting = settings.find(x => x.ident == settingIdent);
+			if (setting) settingChanged(setting);
+		}
+	}
+
+	botChanged = bot => {
+		const { botChanged } = this.props;
+
+		SocketService.send({
+			handler: 'status',
+			action: 'get',
+			ident: bot
+		});
+
+		botChanged(bot);
+	}
+
+	updateBots = res => {
+		const bots = res.data;
+		this.setState({ bots });
+		if (!bots.length) return;
+		this.botChanged(bots[0]);
 	}
 
 	componentWillMount() {
-		SocketService.register(this, this.recieveSocketData);
+		SocketService.register('status', this.updateStatus);
+		SocketService.register('bots', this.updateBots);
 
-		// event to get current bot state
 		SocketService.send({
-			handler: 'bot_state',
-			action: 'get'
+			handler: 'bots'
 		});
 
 		ConfigService.fetchNamespaces()
@@ -82,28 +127,42 @@ class StartBot extends Component {
 
 				// set first namespace if there is one
 				if (namespaces) {
-					this.setState({ namespace: namespaces[0] });
 					const { namespaceChanged } = this.props;
 					namespaceChanged(namespaces[0]);
 				}
 			});
-	}
 
-	getBotState = () => {
-		// event to get current bot state
-		SocketService.send({
-			handler: 'bot_state',
-			action: 'get'
-		});
+		ConfigService.getSettings()
+			.then(settings => {
+				this.setState({ settings });
+
+				// set first namespace if there is one
+				if (settings) {
+					const { settingChanged } = this.props;
+					settingChanged(settings[0]);
+				}
+			});
 	}
 
 	componentWillUnmount() {
-		SocketService.unregister(this);
+		SocketService.unregister('status', this.updateStatus);
+		SocketService.unregister('bots', this.updateBots);
 	}
 
-	render({ height }, { namespaces, namespace, running, status }) {
-		const namespaceOptions = namespaces.map(namespace =>
-			<option value={ namespace.ident }>{ namespace.name }</option>
+	render(
+		{ height, bot, namespace, setting },
+		{ namespaces, bots, settings, running, status, errorNamespace, errorBot, errorSetting }
+	) {
+		const namespaceOptions = namespaces.map(({ ident, name }) =>
+			<option key={ ident } value={ ident }>{ name }</option>
+		);
+
+		const settingOptions = settings.map(({ ident, name }) =>
+			<option key={ ident } value={ ident }>{ name }</option>
+		);
+
+		const botOptions = bots.map(bot =>
+			<option key={ bot } value={ bot }>{ bot }</option>
 		);
 
 		const buttonText = running ? 'button_stop' : 'button_start';
@@ -111,9 +170,24 @@ class StartBot extends Component {
 		const statusText = 'status_' + status;
 		const statusBadge = classNames({
 			'badge': true,
-			'badge-danger': status == 'exited',
+			'badge-danger': status == 'stopped',
 			'badge-success': status == 'running',
 			'badge-primary': status == 'loading'
+		});
+
+		const botSelectClass = classNames({
+			'form-control': true,
+			'is-invalid': errorBot
+		});
+
+		const namespaceSelectClass = classNames({
+			'form-control': true,
+			'is-invalid': errorNamespace
+		});
+
+		const settingSelectClass = classNames({
+			'form-control': true,
+			'is-invalid': errorSetting
 		});
 
 		return (
@@ -122,10 +196,37 @@ class StartBot extends Component {
 					{ translate('startbot_title') }
 				</div>
 				<div className='card-body'>
-					<label>{ translate('startbot_select_namespace') }</label>
+
+					<label>{ translate('startbot_select_bot') }</label>
+					<select
+						value={ bot }
+						className={ botSelectClass }
+						onChange={ e => this.botChanged(e.target.value) }
+					>
+						{ botOptions }
+					</select>
+
+					<label
+						style={{ marginTop: '10px' }}
+					>
+						{ translate('startbot_select_setting') }
+					</label>
+					<select
+						value={ setting ? setting.ident : null }
+						className={ settingSelectClass }
+						onChange={ this.settingChanged }
+					>
+						{ settingOptions }
+					</select>
+
+					<label
+						style={{ marginTop: '10px' }}
+					>
+						{ translate('startbot_select_namespace') }
+					</label>
 					<select
 						value={ namespace ? namespace.ident : null }
-						className='form-control'
+						className={ namespaceSelectClass }
 						onChange={ this.namespaceChanged }
 					>
 						{ namespaceOptions }
@@ -165,5 +266,3 @@ class StartBot extends Component {
 		);
 	}
 }
-
-export default withRouter(connect('username')(StartBot));

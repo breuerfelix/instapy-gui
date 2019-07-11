@@ -26,14 +26,14 @@ class Language {
 		sidebar_configuration: 'Configuration',
 		sidebar_namespaces: 'Templates',
 		sidebar_github: 'GitHub',
-		sidebar_login: 'Login',
+		sidebar_login_instapy: 'Login InstaPy',
 		sidebar_account: 'ACCOUNT',
 		sidebar_features: 'FEATURES',
 		sidebar_links: 'LINKS',
 		sidebar_start: 'Start',
 		sidebar_other: 'Other',
 		sidebar_dashboard: 'Dashboard',
-		sidebar_proxy: 'Proxy',
+		sidebar_settings: 'Settings',
 
 		link_donate: 'Donate',
 		link_instapy: 'InstaPy',
@@ -47,8 +47,10 @@ class Language {
 		button_start: 'start',
 		button_stop: 'stop',
 		button_login: 'login',
+		button_signup: 'register',
 		button_logout: 'logout',
 		button_reset: 'reset',
+		button_save_changes: 'save changes',
 
 		badge_enabled: 'enabled',
 		badge_disabled: 'disabled',
@@ -62,8 +64,11 @@ class Language {
 		status_exited: 'exited',
 
 		login_username: 'username',
+		login_email: 'email (only for register)',
 		login_password: 'password',
 		login_title: 'Login to Instagram',
+
+		signup_title: 'Login / Register for InstaPy',
 
 		namespaces_title: 'Templates',
 		namespaces_description: 'Description',
@@ -74,6 +79,12 @@ class Language {
 		namespace_description_label: 'Description',
 		namespace_description_placeholder: 'i need to buy milk',
 
+		new_settings_title: 'Add Setting',
+		settings_name_label: 'Name',
+		settings_name_placeholder: 'Ultra default settings',
+		settings_description_label: 'Description',
+		settings_description_placeholder: 'headless, bypass mobile, i hate instagram, ...',
+
 		job_show_info: 'show info',
 		job_hide_info: 'hide info',
 
@@ -81,20 +92,16 @@ class Language {
 		input_search_placeholder: 'search ...',
 		actions_tab_set: 'set',
 		actions_tab_follow: 'follow',
-		actions_tab_unfollow: 'unfollow',
+		actions_tab_misc: 'misc',
 		actions_tab_like: 'like',
 		actions_tab_interact: 'interact',
 
 		startbot_title: 'Start InstaPy',
 		startbot_select_namespace: 'Select Template',
+		startbot_select_bot: 'Select Bot',
+		startbot_select_setting: 'Select Setting',
 
-		console_title: 'Console',
-
-		proxy_title: 'Proxy Configuration',
-		proxy_host: 'hostname',
-		proxy_port: 'port',
-		proxy_username: 'username (optional)',
-		proxy_password: 'password (optional)'
+		console_title: 'Console'
 	};
 }
 

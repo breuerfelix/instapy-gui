@@ -64,8 +64,12 @@ select {
 	border-radius: $border-radius !important;
 }
 
-input, textarea, select {
+.react-tagsinput, input, textarea, select {
 	border-radius: $border-radius !important;
+}
+
+.react-tagsinput.is-invalid {
+	border-color: #dc3545;
 }
 
 .col, .col-xs, .col-sm, .col-md, .col-lg, .col-xl {
@@ -92,4 +96,3 @@ input, textarea, select {
 @import 'login';
 @import 'configuration';
 @import 'console';
-@import 'proxy';

@@ -1,0 +1,29 @@
+version: '3'
+services:
+  auth:
+    image: felixbreuer/instapy-auth:latest
+    restart: unless-stopped
+    network_mode: bridge
+    environment:
+      - MONGO_URL
+      - JWT_SECRET
+      - VIRTUAL_HOST=auth.instapy.io
+      - LETSENCRYPT_HOST=auth.instapy.io
+  config:
+    image: felixbreuer/instapy-config:latest
+    restart: unless-stopped
+    network_mode: bridge
+    environment:
+      - MONGO_URL
+      - JWT_SECRET
+      - CIPHER_SECRET
+      - VIRTUAL_HOST=config.instapy.io
+      - LETSENCRYPT_HOST=config.instapy.io
+  socket:
+    image: felixbreuer/instapy-socket:latest
+    restart: unless-stopped
+    network_mode: bridge
+    environment:
+      - JWT_SECRET
+      - VIRTUAL_HOST=socket.instapy.io
+      - LETSENCRYPT_HOST=socket.instapy.io

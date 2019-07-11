@@ -24,31 +24,46 @@
 
 ### requirements
 
-* install [docker](https://www.docker.com/get-started)
-* install [docker-compose](https://docs.docker.com/compose/install)
+* install [python 3](https://www.python.org/downloads/)
+* sign up on [instapy.io](https://instapy.io)
 
-### run instapy-gui locally
+### register a bot
 
-* download the docker-compose file
-	* [click here](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/docs/docker-compose.windows.yml) for windows
-	* [click here](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/docs/docker-compose.unix.yml) for mac or linux
-* save as `docker-compose.yml`
-* navigate in your terminal to the downloaded file
-* run `docker-compose up`
-	* first start will take a while
-* open `http://localhost` to view the gui
-* press `ctrl + c` in your terminal to exit the gui
+#### windows-1-click-install
+
+* download [update.bat](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/update.bat) and save it
+  * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
+* double-click `update.bat`
+* double-click `setup.bat`
+  * answer all the questions
+* double-click `startingClient.bat` To take off!
+
+#### step-by-step guide
+
+* download [all files here](https://github.com/breuerfelix/instapy-gui/tree/master/services/instapy) and save them to a folder on your system
+  * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
+* navigate to the folder in the console
+* you should create a new python [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) because we use a modified InstaPy version
+* run `pip install -r requirements.txt`
+  * use `pip3` if you are on linux or mac
+* create a file named `.env` or `instapy.env` with the following content
+
+```env
+INSTAPY_USER=instapy.io_username
+INSTAPY_PASSWORD=instapy.io_password
+IDENT=choose_any_name_to_indentify_this_instance
+```
+
+* run `python start.py`
+  * use `python3` if you are on linux or mac
+* go to [instapy.io](https://instapy.io) and take off!
 
 ## guides
 
-### video tutorials:
+### video tutorials
 
+**[full manual installation on windows 10](https://drive.google.com/open?id=1ZafLOa0ShSXva61eQwFAePSVBC0Suc9p) by [@LexLinux](https://github.com/lexlinux)**  
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
-
-### written guides:
-
-**[start developing](docs/contributing.md)**  
-**[deploy on digital ocean](docs/digital-ocean.md)**
 
 ## screenshots
 

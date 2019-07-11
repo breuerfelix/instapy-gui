@@ -1,0 +1,38 @@
+version: '3'
+services:
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - dhparam:/etc/nginx/dhparam
+      - vhost:/etc/nginx/vhost.d
+      - conf:/etc/nginx/conf.f
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    network_mode: bridge
+    environment:
+      - DEFAULT_EMAIL=hi@felixbreuer.me
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - conf:/etc/nginx/conf.f
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+    depends_on:
+      - proxy
+
+volumes:
+  certs:
+  dhparam:
+  vhost:
+  conf:
+  html:

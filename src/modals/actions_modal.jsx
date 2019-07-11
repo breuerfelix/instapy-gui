@@ -55,36 +55,22 @@ export default class ActionsModal extends Component {
 								<TabHeader name='follow' />
 								<TabHeader name='like' />
 								<TabHeader name='interact' />
-								<TabHeader name='unfollow' />
+								<TabHeader name='misc' />
 							</ul>
 							<div className="tab-content">
 								<TabContent name='set' actions={ actions } add={ this.addAction } active={ true } />
 								<TabContent name='follow' actions={ actions } add={ this.addAction } />
 								<TabContent name='like' actions={ actions } add={ this.addAction } />
 								<TabContent name='interact' actions={ actions } add={ this.addAction } />
-								<TabContent name='unfollow' actions={ actions } add={ this.addAction } />
+								<TabContent
+									name='misc'
+									except={ [ 'set', 'follow', 'like', 'interact' ] }
+									actions={ actions }
+									add={ this.addAction }
+								/>
 							</div>
 
 						</div>
-
-						{ false &&
-							<div className='modal-footer'>
-								<button
-									className='btn btn-outline-dark'
-									data-dismiss='modal'
-									type='button'
-								>
-									{ translate('button_cancel') }
-								</button>
-								<button
-									className='btn btn-outline-dark'
-									onClick={ this.addAction }
-									type='button'
-								>
-									{ translate('button_add') }
-								</button>
-							</div>
-						}
 					</div>
 				</div>
 			</div>
@@ -115,9 +101,21 @@ const TabHeader = ({ name, active = false }) => {
 	);
 };
 
-const TabContent = ({ name, actions, add, active = false }) => {
+const TabContent = ({ name, actions, add, active = false, except = [] }) => {
 	// filter out specific actions based on name
-	const specificActions = actions.filter(action => action.functionName.startsWith(name));
+	let specificActions = [];
+	if (name == 'misc') {
+		specificActions = actions.filter(action => {
+			for (const ex of except) {
+				if (action.functionName.startsWith(ex)) return false;
+			}
+
+			return true;
+		});
+	} else {
+		specificActions = actions.filter(action => action.functionName.startsWith(name));
+	}
+
 	const classes = classNames({
 		'tab-pane': true,
 		'fade': true,
@@ -146,7 +144,7 @@ const ActionTable = ({ actions, add }) => {
 	};
 
 	const rows = actions.map(action =>
-		<tr>
+		<tr key={ action.functionName }>
 			<td>{ action.functionName }</td>
 			<td>
 				<a
