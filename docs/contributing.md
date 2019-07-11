@@ -1,14 +1,26 @@
 # how to start developing
 
-* `npm install`
-* `npm run build`
-* `npm run dev` to start all containers
-	* all files from the repository will be mounted
-	* live reloading inside containers is activated
-	* you can start editing files and see the results instantly
-* `npm start` to serve local website
-* open `localhost:8080` to see live reloading website which connects to docker backend
-* open `localhost/grafana` to see the admin grafana dashboard
-* open `localhost:8888` to see influxdb admin panel
+## only frontend
 
-* `npm run dev:down` to stop all docker containers
+* `npm install`
+* `npm start`
+
+* cloud backend will be used
+
+## with local backend
+
+* create a folder named `./dev/mongo`
+* create a file named `.env`
+
+```env
+MONGO_URL=mongodb://mongo:27017
+JWT_SECRET=jwtsecret
+CIPHER_SECRET=ciphersecret
+SOCKET_ENDPOINT=ws://localhost:4005
+CONFIG_ENDPOINT=http://localhost:4002
+AUTH_ENDPOINT=http://localhost:4001
+```
+
+* `docker-compose up mongo` - wait for it to start
+* `docker-compose up auth config socket`
+* `npm run start:local`

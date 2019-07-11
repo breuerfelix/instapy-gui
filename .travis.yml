@@ -16,10 +16,18 @@ install:
 script:
   - npm run test
   - npm run build
+  - echo instapy.io >> dist/CNAME
   - docker-compose build
 deploy:
-  skip_cleanup: true
-  provider: script
-  script: bash scripts/deploy_docker.sh
-  on:
-    branch: master
+  - provider: script
+    skip_cleanup: true
+    script: bash scripts/deploy_docker.sh
+    on:
+      branch: master
+  - deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: dist
+    on:
+      branch: master

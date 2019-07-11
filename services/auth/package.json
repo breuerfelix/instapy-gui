@@ -1,0 +1,26 @@
+{
+  "name": "instapy-auth",
+  "version": "1.0.0",
+  "description": "service which handles registration of new users",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Felix Breuer",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.2.7",
+    "validator": "^11.1.0"
+  }
+}

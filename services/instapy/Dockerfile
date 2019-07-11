@@ -17,4 +17,5 @@ RUN apk --update --no-cache add \
   chromium \
   chromium-chromedriver
 
-CMD ["sh", "start.sh"]
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+CMD ["python3", "-u", "start.py"]

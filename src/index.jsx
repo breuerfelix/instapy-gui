@@ -1,3 +1,4 @@
+import 'react-tagsinput/react-tagsinput.css';
 import 'styles/main.scss';
 
 import 'jquery';
@@ -5,23 +6,35 @@ import 'popper.js';
 import 'bootstrap';
 
 import { h, render, Component } from 'preact';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Router, Route, Redirect } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { Provider } from 'unistore/preact';
+import ReactGA from 'react-ga';
 
 import store, { connect } from 'store';
-import { NavBar, SideBar, Footer } from 'components';
-import { Account, Configuration, Start, Dashboard } from 'sites';
-import { setToken } from 'core';
+import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
+import {
+	Configuration,
+	Start,
+	Dashboard,
+	Login,
+	Privacy
+} from 'sites';
+import { readToken } from 'core';
+import config from 'config';
 
-import { PREMIUM } from 'config';
+const history = createBrowserHistory();
+readToken();
 
-if (!PREMIUM) setToken();
+// track location change to google analytics
+ReactGA.initialize(config.gaTrackingID);
+history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 
-@connect('showSidebar')
+@connect('showSidebar,token')
 class App extends Component {
-	render({ showSidebar }) {
+	render({ showSidebar, token }) {
 		return (
-			<Router>
+			<Router history={ history }>
 				<div className='container-fluid'>
 					<div className='row no-gutters'>
 
@@ -37,20 +50,28 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								<Route exact path='/' render={ () => <Redirect to='/dashboard' /> } />
+								<Route exact path='/' render={
+									() => <Redirect to={ token ? '/configuration' : '/login' } />
+								} />
 								<Route
-									path='/account'
-									component={ Account }
+									exact
+									path='/login'
+									component={ Login }
 								/>
 								<Route
+									exact
+									path='/login/privacy'
+									component={ Privacy }
+								/>
+								<PrivateRoute
 									path='/configuration'
 									component={ Configuration }
 								/>
-								<Route
+								<PrivateRoute
 									path='/start'
 									component={ Start }
 								/>
-								<Route
+								<PrivateRoute
 									path='/dashboard'
 									component={ Dashboard }
 								/>

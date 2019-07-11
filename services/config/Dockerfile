@@ -7,6 +7,8 @@ COPY . .
 RUN apk add --update --no-cache --virtual .build-dependencies \
 	gcc \
 	musl-dev \
+	libffi-dev \
+  openssl-dev \
   && pip3 install -r requirements.txt \
   && apk del .build-dependencies
 

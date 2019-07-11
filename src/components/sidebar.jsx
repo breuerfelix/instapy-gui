@@ -3,21 +3,15 @@ import { translate, AccountService } from 'services';
 import { MenuItem } from 'components';
 import { connect } from 'store';
 
-@connect('username')
+@connect('usernameInstapy')
 export default class SideBar extends Component {
-	componentWillMount() {
-		// retrieve username from server
-		AccountService.getLoginCredentials()
-			.then(res => this.props.setUsername(res.username));
-	}
-
-	render({ location, username }) {
-		const labelLogin = username ? username : 'sidebar_login';
+	render({ usernameInstapy }) {
+		const labelLoginInstapy = usernameInstapy ? usernameInstapy : 'sidebar_login_instapy';
 
 		return (
 			<div className='sidebar noselect sticky-top'>
 				<div className='header'>
-					<h3>INSTAPY</h3>
+					<h3>INSTAPY.IO</h3>
 				</div>
 
 				<ul className='toplevel-list list-unstyled'>
@@ -27,44 +21,50 @@ export default class SideBar extends Component {
 					</div>
 
 					<MenuItem
-						label={ labelLogin }
+						label={ labelLoginInstapy }
 						icon='fas fa-user'
-						link='/account/login'
+						link='/login'
 						level='top'
 					/>
 
-					<div className='headline'>
-						{ translate('sidebar_features') }
-					</div>
+					{ usernameInstapy && // links only when logged in
+						<div>
+							<div className='headline'>
+								{ translate('sidebar_features') }
+							</div>
 
-					<MenuItem
-						label='sidebar_dashboard'
-						icon='fas fa-chart-line'
-						link='/dashboard'
-						level='top'
-					/>
+							{ /* uncomment to enable dashbaord again
+							<MenuItem
+								label='sidebar_dashboard'
+								icon='fas fa-chart-line'
+								link='/dashboard'
+								level='top'
+							/>
+							*/ }
 
-					<MenuItem
-						label='sidebar_configuration'
-						icon='fas fa-sliders-h'
-						level='top'
-					>
-						<MenuItem
-							label='sidebar_namespaces'
-							link='/configuration/namespaces'
-						/>
-						<MenuItem
-							label='sidebar_proxy'
-							link='/configuration/proxy'
-						/>
-					</MenuItem>
+							<MenuItem
+								label='sidebar_configuration'
+								icon='fas fa-sliders-h'
+								level='top'
+							>
+								<MenuItem
+									label='sidebar_settings'
+									link='/configuration/settings'
+								/>
+								<MenuItem
+									label='sidebar_namespaces'
+									link='/configuration/namespaces'
+								/>
+							</MenuItem>
 
-					<MenuItem
-						label='sidebar_start'
-						icon='fas fa-play'
-						link='/start'
-						level='top'
-					/>
+							<MenuItem
+								label='sidebar_start'
+								icon='fas fa-play'
+								link='/start'
+								level='top'
+							/>
+						</div>
+					}
 
 					<div className='headline'>
 						{ translate('sidebar_links') }

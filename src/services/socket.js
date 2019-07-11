@@ -1,4 +1,5 @@
 import config from 'config';
+import store from 'store';
 import { sleep } from 'core';
 
 class SocketService {
@@ -6,17 +7,14 @@ class SocketService {
 		this.socket = null;
 		this.connected = false;
 		this.isConnecting = false;
-		this.idCounter = 0;
-		this.handler = {};
-		this.keyIdent = 'custom_socket_id';
+		this.handlers = {};
 
-		this.open();
+		store.subscribe(this.open.bind(this));
 	}
 
 	ping() {
 		this.send({
-			handler: 'pint',
-			action: 'set'
+			handler: 'ping'
 		});
 	}
 
@@ -31,23 +29,28 @@ class SocketService {
 		return this.connected;
 	}
 
-	async open() {
+	async open({ token }) {
+		if (!token) return;
+		if (this.connected || this.isConnecting) return;
+
 		try {
 			this.isConnecting = true;
-			const websocket = new WebSocket(`ws://${location.host}${config.socketEndpoint}`);
+			const websocket = new WebSocket(config.socketEndpoint + `/${token}`);
 
 			// wait until socket is open
 			while (websocket.readyState !== websocket.OPEN) {
-				await sleep(100);
+				await sleep(50);
 			}
 
-			websocket.onmessage = this.recieve;
+			websocket.onmessage = this.receive;
 			this.connected = true;
 			this.isConnecting = false;
 			this.socket = websocket;
 			console.log('connected so websocket');
 
-			this.pingInterval = setInterval(this.ping.bind(this), 3000);
+			this.send({ handler: 'register', type: 'app' });
+
+			this.pingInterval = setInterval(this.ping.bind(this), 30000);
 		} catch {
 			this.connected = false;
 			this.socket = null;
@@ -67,14 +70,15 @@ class SocketService {
 		}
 	}
 
-	recieve = event => {
+	receive = event => {
 		const data = JSON.parse(event.data);
+		const { handler } = data;
+		if (!handler) return;
 
-		for (let key of Object.keys(this.handler)) {
-			for (let func of this.handler[key]) {
-				func(data);
-			}
-		}
+		const functions = this.handlers[handler];
+		if (!functions) return;
+
+		for (const func of functions) func(data);
 	}
 
 	async send(data) {
@@ -83,19 +87,16 @@ class SocketService {
 		this.socket.send(JSON.stringify(data));
 	}
 
-	register(obj, func) {
-		// instantiate new list if there is none
-		if (!(this.keyIdent in obj)) {
-			obj[this.keyIdent] = this.idCounter;
-			this.handler[this.idCounter] = [];
-			this.idCounter++;
-		}
-
-		this.handler[obj[this.keyIdent]].push(func);
+	register(handler, func) {
+		if (!this.handlers[handler]) this.handlers[handler] = [];
+		this.handlers[handler].push(func);
 	}
 
-	unregister(obj) {
-		delete this.handler[obj[this.keyIdent]];
+	unregister(handler, func) {
+		if (!this.handlers[handler]) return;
+		const idx = this.handlers[handler].indexOf(func);
+		if (idx == -1) return;
+		this.handlers[handler].splice(idx, 1);
 	}
 }
 

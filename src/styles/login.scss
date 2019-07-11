@@ -7,7 +7,11 @@
 		border-radius: 2px;
 	}
 
-	.input-group:first-child {
+	.input-group {
 		padding: 0 0 20px 0;
+	}
+
+	.input-group:last-child {
+		padding: 0;
 	}
 }
