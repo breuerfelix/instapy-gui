@@ -68,6 +68,19 @@ python3 -m pip uninstall instapy-chromedriver
 python3 -m pip install --user instapy-chromedriver==2.36.post0
 ```
 
+if this is not working try the following:
+
+* cd into instpay-client folder
+
+```bash
+mkdir assets && cd assets
+wget https://github.com/electron/electron/releases/download/v3.0.0-beta.5/chromedriver-v3.0.0-beta.5-linux-armv7l.zip
+unzip chromedriver-v3.0.0-beta.5-linux-armv7l.zip
+chmod 755 chromedriver
+chmod +x chromedriver
+sudo apt-get remove chromium
+```
+
 ## guides
 
 ### video tutorials
