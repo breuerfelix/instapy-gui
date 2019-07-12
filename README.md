@@ -38,6 +38,15 @@
   * answer all the questions
 * double-click `startingClient.bat` To take off!
 
+#### linux/mac-1-click-install
+
+* download [update.sh](https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/update.sh) and save it
+  * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
+* execute `bash update.sh`
+* execute `bash setup.sh`
+  * answer all the questions
+* execute `bash startClient.sh` To take off!
+
 #### step-by-step guide
 
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/master/services/instapy) and save them to a folder on your system
