@@ -85,8 +85,8 @@ class Language {
 		settings_description_label: 'Description',
 		settings_description_placeholder: 'headless, bypass mobile, i hate instagram, ...',
 
-		job_show_info: 'show info',
-		job_hide_info: 'hide info',
+		job_show_info: 'click here to show info',
+		job_hide_info: 'click here to hide info',
 
 		actions_title: 'Add Action',
 		input_search_placeholder: 'search ...',
