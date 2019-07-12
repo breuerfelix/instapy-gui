@@ -58,6 +58,16 @@ IDENT=choose_any_name_to_indentify_this_instance
   * use `python3` if you are on linux or mac
 * go to [instapy.io](https://instapy.io) and take off!
 
+##### adjustments for raspberry pi
+
+* activate the virtual enviroment
+* run following commands in the console
+
+```bash
+python3 -m pip uninstall instapy-chromedriver
+python3 -m pip install --user instapy-chromedriver==2.36.post0
+```
+
 ## guides
 
 ### video tutorials
