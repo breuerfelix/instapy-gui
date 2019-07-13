@@ -90,6 +90,16 @@ chmod +x chromedriver
 sudo apt-get remove chromium
 ```
 
+### register more bots
+
+if you are on a different machine just follow the steps [register a bot](#register-a-bot) again.
+
+* copy the whole client folder to a different folder
+* edit `.env` or `instapy.env`
+  * change `IDENT=...` to something new
+* start the new client
+* in the start panel of instapy.io you now have 2 bots in the select bot dropdown menu
+
 ## guides
 
 ### video tutorials
@@ -102,6 +112,15 @@ sudo apt-get remove chromium
 
 ![templates](docs/templates.png)  
 ![start](docs/start.png)
+
+## roadmap
+
+* edit name / description of template and setting
+* copy template and setting from an existing one
+* scheduler
+* change account info
+* forgot password
+* analytics
 
 ## support
 
