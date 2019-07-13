@@ -5,3 +5,4 @@ curl ${BASE_URL}start.py > start.py
 curl ${BASE_URL}requirements.txt > requirements.txt
 curl ${BASE_URL}setup.sh > setup.sh
 curl ${BASE_URL}startClient.sh > startClient.sh
+[ -d "./env" ] && ./env/bin/pip3 install -r requirements.txt --upgrade
