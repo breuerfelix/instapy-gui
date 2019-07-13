@@ -36,7 +36,7 @@
 * double-click `update.bat`
 * double-click `setup.bat`
   * answer all the questions
-* double-click `startingClient.bat` To take off!
+* double-click `startClient.bat` To take off!
 
 #### linux/mac-1-click-install
 
