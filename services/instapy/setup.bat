@@ -59,15 +59,15 @@ IF EXIST pShellClient.ps1 (
     ECHO creating powershell file
     ECHO ./%EnvironmentFolder%/Scripts/python.exe ./start.py >> pShellClient.ps1
 )
-IF EXIST startingClient.bat (
-    ECHO Found startingClient
+IF EXIST startClient.bat (
+    ECHO Found startClient
 ) ELSE (
-    ECHO startingClient.bat missing.
+    ECHO startClient.bat missing.
 	ECHO.
     ECHO creating batch file
-    ECHO @echo off >> startingClient.bat
-    ECHO start "" https://instapy.io/ >> startingClient.bat
-    ECHO Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startingClient.bat
+    ECHO @echo off >> startClient.bat
+    ECHO start "" https://instapy.io/ >> startClient.bat
+    ECHO Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startClient.bat
 )
 goto powershell
 
