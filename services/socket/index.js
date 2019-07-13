@@ -11,7 +11,6 @@ const HANDLERS = {};
 const json = (data) => JSON.stringify(data);
 
 wss.on('connection', (ws, { headers, url }) => {
-	console.log('got connection');
 	let payload = null;
 	let token = null;
 
@@ -75,6 +74,7 @@ HANDLERS['ping'] = ping;
 
 function register(ws, user, socket, payload, data) {
 	const { type } = data;
+	console.log('register new client:', type);
 	socket.type = type;
 
 	if (type == 'instapy') {

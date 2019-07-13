@@ -47,6 +47,24 @@
   * answer all the questions
 * execute `bash startClient.sh` To take off!
 
+#### docker
+
+create a file named `instapy.env` with the following content:
+
+```env
+INSTAPY_USER=instapy.io_username
+INSTAPY_PASSWORD=instapy.io_password
+IDENT=choose_any_name_to_indentify_this_instance
+```
+
+execute the following command:
+
+```bash
+sudo docker run -d --env-file instapy.env --name instapyclient felixbreuer/instapy-client
+```
+
+remember that you can only run docker clients in headless mode.
+
 #### step-by-step guide
 
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/master/services/instapy) and save them to a folder on your system
