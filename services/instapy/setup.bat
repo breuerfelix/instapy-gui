@@ -59,15 +59,12 @@ IF EXIST pShellClient.ps1 (
     ECHO creating powershell file
     ECHO ./%EnvironmentFolder%/Scripts/python.exe ./start.py >> pShellClient.ps1
 )
-IF EXIST startingClient.bat (
-    ECHO Found startingClient
+IF EXIST startClient.bat (
+    ECHO Found startClient
 ) ELSE (
-    ECHO startingClient.bat missing.
-	ECHO.
-    ECHO creating batch file
-    ECHO @echo off >> startingClient.bat
-    ECHO start "" https://instapy.io/ >> startingClient.bat
-    ECHO Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startingClient.bat
+    ECHO startClient.bat missing, creating file...
+    ECHO start "" https://instapy.io/ >> startClient.bat
+    ECHO Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startClient.bat
 )
 goto powershell
 
@@ -80,14 +77,15 @@ cls
 ECHO Make sure to use the credentials from instapy.io.
 ECHO You can always edit the file (instapy.env)
 set "username=username"
-set /P username="instapy.io username: "
+set /P username="Enter your instapy.io username: "
 set "password=password"
-set /P password="instapy.io password: "
+set /P password="Enter your instapy.io password: "
 set "ident=choose_any_name_to_indentify_this_instance"
-set /P ident="Enter any identifier for this client: "
+set /P ident="Identifier for this client: "
 goto checkPython
 
 :createEnv
+del "instapy.env" /s /f /q
 cls
 echo INSTAPY_USER=%username% >> instapy.env
 echo INSTAPY_PASSWORD=%password% >> instapy.env
@@ -100,5 +98,6 @@ GOTO theEnd
 
 
 :theEnd
-ECHO Setup completed.
+echo Successfully setup instapy.io client.
+echo Run 'startClient.sh' to start the client.
 PAUSE
