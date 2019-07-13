@@ -179,7 +179,7 @@ if __name__ == '__main__':
 
             ws.on_open = on_open
             ws.run_forever(ping_interval = 30)
-            time.sleep(1)
+            time.sleep(3)
 
         except KeyboardInterrupt:
             break
