@@ -158,4 +158,8 @@ if you should encounter any issue, please first [search for similar issues](http
 
 ---
 
+**disclaimer:** please note that this is a research project. i am by no means responsible for any usage of this tool. use on your own behalf. i am also not responsible if your accounts get banned due to extensive use of this tool.
+
+---
+
 _we love lowercase_
