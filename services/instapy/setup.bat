@@ -42,34 +42,16 @@ PAUSE
 :setupPips
 cls
 py -m pip install --upgrade pip
-ECHO updated pip
 py -m pip install --user virtualenv
-ECHO installed virtualenv
 goto env
 
 :env
-set "EnvironmentFolder=env"
-py -m venv %EnvironmentFolder%
-ECHO ./%EnvironmentFolder%/Scripts/pip.exe install -r requirements.txt >> RequirementsInstallation.ps1
+cls
+py -m venv env
+goto installRequ
 
-IF EXIST pShellClient.ps1 (
-    ECHO Found pShellClient.ps1
-) ELSE (
-    ECHO pShellClient.ps1 missing.
-    ECHO creating powershell file
-    ECHO ./%EnvironmentFolder%/Scripts/python.exe ./start.py >> pShellClient.ps1
-)
-IF EXIST startClient.bat (
-    ECHO Found startClient
-) ELSE (
-    ECHO startClient.bat missing, creating file...
-    ECHO start "" https://instapy.io/ >> startClient.bat
-    ECHO Powershell.exe -executionpolicy remotesigned -File  pShellClient.ps1 >> startClient.bat
-)
-goto powershell
-
-:powershell
-Powershell.exe -executionpolicy remotesigned -File  RequirementsInstallation.ps1
+:installRequ
+.\env\Scripts\pip3.exe install -r requirements.txt
 goto createEnv
 
 :instapy.io
@@ -80,7 +62,7 @@ set "username=username"
 set /P username="Enter your instapy.io username: "
 set "password=password"
 set /P password="Enter your instapy.io password: "
-set "ident=choose_any_name_to_indentify_this_instance"
+set "ident=anyName"
 set /P ident="Identifier for this client: "
 goto checkPython
 
@@ -90,10 +72,6 @@ cls
 echo INSTAPY_USER=%username% >> instapy.env
 echo INSTAPY_PASSWORD=%password% >> instapy.env
 echo IDENT=%ident% >> instapy.env
-GOTO deleteNonUsedFiles
-
-:deleteNonUsedFiles
-del "RequirementsInstallation.ps1" /s /f /q
 GOTO theEnd
 
 
