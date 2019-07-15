@@ -50,7 +50,7 @@ class SocketService {
 
 			this.send({ handler: 'register', type: 'app' });
 
-			this.pingInterval = setInterval(this.ping.bind(this), 30000);
+			this.pingInterval = setInterval(this.ping.bind(this), 10000);
 		} catch {
 			this.connected = false;
 			this.socket = null;
