@@ -55,7 +55,6 @@ wss.on('connection', (ws, { headers, url }) => {
 	});
 
 	ws.on('close', () => {
-		console.log('connection closed');
 		const idx = user.sockets.indexOf(socket);
 		if (idx != -1) user.sockets.splice(idx, 1);
 	});
