@@ -48,8 +48,14 @@ class NamespacesCard extends Component {
 		namespaces.splice(idx, 1);
 
 		this.setState({ namespaces });
+
+		// dont await since the result is not relevant
 		ConfigService.deleteNamespace(namespace);
-		this.props.history.replace(`/configuration/namespaces/${namespaces[0].ident}`);
+
+		let url = '/configuration/namespaces';
+		if (this.state.namespaces.length) url += `/${namespaces[0].ident}`;
+
+		this.props.history.replace(url);
 	}
 
 	addNamespace = async namespace => {
