@@ -12,6 +12,8 @@ export default class Console extends Component {
 	receiveLogs = data => {
 		if (data.action == 'single') {
 			const { logList } = this.state;
+			// only show logs which are for the current selected bot
+			if (data.bot && data.bot != this.state.bot) return;
 
 			// TODO fix display of description
 			// TODO render emojis
