@@ -32,7 +32,11 @@ history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 
 @connect('showSidebar,token')
 class App extends Component {
-	render({ showSidebar, token }) {
+	state = {
+		showInfo: true
+	}
+
+	render({ showSidebar, token }, { showInfo }) {
 		return (
 			<Router history={ history }>
 				<div className='container-fluid'>
@@ -50,6 +54,18 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
+								{ showInfo &&
+									<div className='alert alert-info' role='alert'>
+										<button onClick={ e => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
+											<span aria-hidden='true'>&times;</span>
+										</button>
+										If you are having issues on the page, please press the logout button and login again.
+										<br/>
+										Also we had to clear all Settings (not Templates). We are really sorry for this but the issue is already fixed.
+										<br/>
+										This info will be removed on 18.07.19.
+									</div>
+								}
 								<Route exact path='/' render={
 									() => <Redirect to={ token ? '/configuration/namespaces' : '/login' } />
 								} />
