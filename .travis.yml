@@ -24,8 +24,7 @@ deploy:
     script: bash scripts/deploy_docker.sh
     on:
       branch: master
-  - deploy:
-    provider: pages
+  - provider: pages
     skip_cleanup: true
     github_token: $GITHUB_TOKEN
     local_dir: dist
