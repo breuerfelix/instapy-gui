@@ -59,9 +59,9 @@ class App extends Component {
 										<button onClick={ e => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
 											<span aria-hidden='true'>&times;</span>
 										</button>
-										If you are having issues on the page, please press the logout button and login again.
+										If you are having issues on the page, please press the logout button and login again (also restart your clients).
 										<br/>
-										Also we had to clear all Settings (not Templates). We are really sorry for this but the issue is already fixed.
+										Also we had to clear all Settings (not Templates). We are really sorry for this. The issue is fixed and will not occur again in the future.
 										<br/>
 										This info will be removed on 18.07.19.
 									</div>
