@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const common = require('./webpack.common.config.js');
-
 const glob = require('glob');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 
