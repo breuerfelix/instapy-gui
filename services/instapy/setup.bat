@@ -46,7 +46,6 @@ py -m pip install --user virtualenv
 goto env
 
 :env
-cls
 py -m venv env
 goto installRequ
 
