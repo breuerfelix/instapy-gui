@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import { translate, ConfigService } from 'services';
+import { translate } from 'services';
 import $ from 'jquery';
 import { InfoArea, IconButton } from 'components';
 import { EditJob } from '../components';
@@ -35,7 +35,18 @@ export default class SettingCard extends Component {
 		}
 
 		// TODO maybe make a popover over the save icon which displays 'saved';
-		this.props.updateSetting(this.props.setting);
+		const { updateSetting, setting } = this.props;
+		updateSetting(setting);
+	}
+
+	deleteSetting = e => {
+		e.stopPropagation();
+
+		$(this.body).collapse('hide');
+		this.setState({ expanded: false });
+
+		const { deleteSetting, setting } = this.props;
+		deleteSetting(setting);
 	}
 
 	toggleCard = e => {
@@ -49,7 +60,7 @@ export default class SettingCard extends Component {
 		$(this.body).collapse('toggle');
 	}
 
-	render({ setting, deleteSetting }, { expanded }) {
+	render({ setting }, { expanded }) {
 		const headerStyle = expanded ? null : { borderBottom: 0 };
 
 		return (
@@ -73,7 +84,7 @@ export default class SettingCard extends Component {
 									/>
 									<IconButton
 										icon='fas fa-trash-alt'
-										onclick={ e => { e.stopPropagation(); deleteSetting(setting); } }
+										onclick={ this.deleteSetting }
 									/>
 								</div>
 							</div>

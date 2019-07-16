@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import { Link } from 'react-router-dom';
-import { connect } from 'store';
+import { connect } from 'core';
 import classNames from 'classnames';
 import { Location } from 'components';
 

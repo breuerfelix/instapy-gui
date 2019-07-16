@@ -1,6 +1,6 @@
 import { h, render, Component } from 'preact';
 import { NamespacesCard, JobsCard, Settings } from './cards';
-import { connect } from 'store';
+import { connect } from 'core';
 import { Route } from 'react-router-dom';
 import { ConfigService, translate } from 'services';
 

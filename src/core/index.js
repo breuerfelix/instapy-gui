@@ -1,7 +1,8 @@
 import decode from 'jwt-decode';
-import store from 'store';
+import store, { actions, connect } from './store';
 
 const headers = {};
+const handler = { onError: null };
 
 async function fetchGet(url) {
 	const res = await fetch(url, {
@@ -9,23 +10,27 @@ async function fetchGet(url) {
 		mode: 'cors',
 		headers
 	});
+
 	const json = await res.json();
+
+	if (json.error && handler.onError) handler.onError(json);
 	return json;
 }
 
 async function fetchPost(url, data) {
 	const res = await fetch(url, {
-		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		method: 'POST',
 		mode: 'cors',
 		headers: {
 			'Content-Type': 'application/json',
 			... headers
-			// "Content-Type": "application/x-www-form-urlencoded",
 		},
-		body: JSON.stringify(data), // body data type must match "Content-Type" header
+		body: JSON.stringify(data),
 	});
 
 	const json = await res.json();
+
+	if (json.error && handler.onError) handler.onError(json);
 	return json;
 }
 
@@ -63,5 +68,9 @@ export {
 	sleep,
 	readToken,
 	setToken,
-	raiseError
+	raiseError,
+	store,
+	actions,
+	connect,
+	handler
 };

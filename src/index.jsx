@@ -11,7 +11,6 @@ import { createBrowserHistory } from 'history';
 import { Provider } from 'unistore/preact';
 import ReactGA from 'react-ga';
 
-import store, { connect } from 'store';
 import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
 import {
 	Configuration,
@@ -20,11 +19,24 @@ import {
 	Login,
 	Privacy
 } from 'sites';
-import { readToken } from 'core';
+import {
+	readToken, store, connect,
+	handler, setToken
+} from 'core';
 import config from 'config';
 
 const history = createBrowserHistory();
 readToken();
+
+handler.onError = (json) => {
+	if ((json.type && json.type == 'auth') || json.error.includes('token')) {
+		// logout
+		store.setState({ token: null, usernameInstapy: null });
+		localStorage.removeItem('token');
+		setToken();
+		throw 'auth error';
+	}
+};
 
 // track location change to google analytics
 ReactGA.initialize(config.gaTrackingID);
@@ -32,7 +44,11 @@ history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 
 @connect('showSidebar,token')
 class App extends Component {
-	render({ showSidebar, token }) {
+	state = {
+		showInfo: true
+	}
+
+	render({ showSidebar, token }, { showInfo }) {
 		return (
 			<Router history={ history }>
 				<div className='container-fluid'>
@@ -50,6 +66,18 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
+								{ showInfo &&
+									<div className='alert alert-info' role='alert'>
+										<button onClick={ e => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
+											<span aria-hidden='true'>&times;</span>
+										</button>
+										If you are having issues selecting your bot, please restart the bot.
+										<br/>
+										Also we had to clear all Settings (not Templates). We are really sorry for this. The issue is fixed and will not occur again in the future.
+										<br/>
+										This info will be removed on 18.07.19.
+									</div>
+								}
 								<Route exact path='/' render={
 									() => <Redirect to={ token ? '/configuration/namespaces' : '/login' } />
 								} />

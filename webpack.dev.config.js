@@ -12,7 +12,7 @@ module.exports = merge(common, {
 
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-		ENV_FILE && new dotenv(ENV_FILE)
+		ENV_FILE ? new dotenv(ENV_FILE) : () => {}
 	],
 
 	devServer: {

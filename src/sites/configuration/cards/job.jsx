@@ -1,6 +1,6 @@
 import { h, render, Component } from 'preact';
 import { translate, ConfigService } from 'services';
-import { connect } from 'store';
+import { connect } from 'core';
 import $ from 'jquery';
 import { InfoArea, IconButton } from 'components';
 import { EditJob } from '../components';
