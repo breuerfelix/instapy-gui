@@ -1,6 +1,5 @@
 import config from 'config';
-import store from 'store';
-import { sleep } from 'core';
+import { sleep, store } from 'core';
 
 class SocketService {
 	constructor() {
@@ -68,7 +67,7 @@ class SocketService {
 		try {
 			clearInterval(this.pingInterval);
 			this.socket.close();
-		} finally {
+		} catch (e) {} finally {
 			this.connected = false;
 			this.isConnecting = false;
 			this.socket = null;

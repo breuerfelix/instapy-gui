@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
 import { translate, AccountService } from 'services';
 import { MenuItem } from 'components';
-import { connect } from 'store';
+import { connect } from 'core';
 
 @connect('usernameInstapy')
 export default class SideBar extends Component {

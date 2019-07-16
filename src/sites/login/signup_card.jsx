@@ -2,9 +2,8 @@ import { h, render, Component } from 'preact';
 import { AccountService, translate } from 'services';
 import linkState from 'linkstate';
 import classNames from 'classnames';
-import { connect } from 'store';
 import { withRouter, Link } from 'react-router-dom';
-import { setToken } from 'core';
+import { setToken, connect } from 'core';
 
 class SignupCard extends Component {
 	state = {

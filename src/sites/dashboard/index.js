@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import { IframeCard } from 'components';
-import { connect } from 'store';
+import { connect } from 'core';
 
 @connect('username')
 class Dashboard extends Component {
