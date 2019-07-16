@@ -124,7 +124,7 @@ function receiveInstapyLog(ws, user, socket, payload, data) {
 		app.ws.send(json({
 			handler: 'logs',
 			action: 'single',
-			bot,
+			bot: s.ident,
 			message: data.message
 		}));
 	}

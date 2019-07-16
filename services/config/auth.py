@@ -23,7 +23,7 @@ def jwt_req(f):
         token = request.headers.get('Authorization', None)
         if not token:
             print('error: no token provided')
-            return to_json({ 'error': 'no token provided' }, 400)
+            return to_json({ 'error': 'no token provided', 'type': 'auth' }, 400)
 
         payload = None
 
@@ -32,15 +32,15 @@ def jwt_req(f):
             payload = jwt.decode(token, SECRET, algorithms = ['HS256'])
         except:
             print('error: decoding token')
-            return to_json({ 'error': 'decoding token' }, 400)
+            return to_json({ 'error': 'decoding token', 'type': 'auth' }, 400)
 
         if not payload:
             print('error: no payload')
-            return to_json({ 'error': 'no payload' }, 400)
+            return to_json({ 'error': 'no payload', 'type': 'auth' }, 400)
 
         if not payload['username']:
             print('error: no username')
-            return to_json({ 'error': 'no username in payload' })
+            return to_json({ 'error': 'no username in payload', 'type': 'auth' }, 400)
 
         return f(*args, payload = payload, **kwargs)
     return decorated_function

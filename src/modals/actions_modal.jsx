@@ -3,7 +3,7 @@ import { translate } from 'services';
 import linkState from 'linkstate';
 import classNames from 'classnames';
 import $ from 'jquery';
-import { connect } from 'store';
+import { connect } from 'core';
 
 @connect('actions')
 export default class ActionsModal extends Component {
