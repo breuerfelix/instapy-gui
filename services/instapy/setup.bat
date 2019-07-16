@@ -77,5 +77,9 @@ GOTO theEnd
 
 :theEnd
 echo Successfully setup instapy.io client.
-echo Run 'startClient.sh' to start the client.
-PAUSE
+echo Run 'startClient.bat' to start the client.
+set "answer=y"
+set /P answer="Or you wish to run it now ? (y/n): "
+if %answer% == y CALL startClient.bat
+if %answer% == n exit
+EXIT
