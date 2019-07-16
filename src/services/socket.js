@@ -30,7 +30,12 @@ class SocketService {
 	}
 
 	async open({ token }) {
-		if (!token) return;
+		if (!token) {
+			// user logged out
+			this.close();
+			return;
+		}
+
 		if (this.connected || this.isConnecting) return;
 
 		try {
@@ -53,20 +58,21 @@ class SocketService {
 			this.pingInterval = setInterval(this.ping.bind(this), 10000);
 		} catch {
 			this.connected = false;
+			this.isConnecting = false;
 			this.socket = null;
 			console.error('error connect to websocket!');
 		}
 	}
 
 	close() {
-		if (!this.connected) return;
-
 		try {
-			this.socket.close();
 			clearInterval(this.pingInterval);
+			this.socket.close();
 		} finally {
 			this.connected = false;
+			this.isConnecting = false;
 			this.socket = null;
+			console.log('closed websocket connection');
 		}
 	}
 
