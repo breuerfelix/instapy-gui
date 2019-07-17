@@ -142,6 +142,18 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 ## support
 
+### troubleshoot
+
+#### certificate
+
+in the client after `logged in with user: <username>` you get the following error:
+
+```error
+certificate verify failed: unable to get local issuer certificate
+```
+
+please have a look at [this](https://stackoverflow.com/questions/52805115/certificate-verify-failed-unable-to-get-local-issuer-certificate) stack overflow post to resolve the issue.
+
 ### do you need help ?
 
 if you should encounter any issue, please first [search for similar issues](https://github.com/breuerfelix/instapy-gui/issues) and only if you can't find any, create a new issue or use the [discord channel](https://discord.gg/FDETsht) for help.
