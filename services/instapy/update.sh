@@ -1,4 +1,5 @@
 #!/bin/bash          
+set -e
 BASE_URL="https://raw.githubusercontent.com/breuerfelix/instapy-gui/master/services/instapy/"
 curl ${BASE_URL}bot.py > bot.py
 curl ${BASE_URL}start.py > start.py
