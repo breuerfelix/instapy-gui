@@ -44,11 +44,7 @@ history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 
 @connect('showSidebar,token')
 class App extends Component {
-	state = {
-		showInfo: true
-	}
-
-	render({ showSidebar, token }, { showInfo }) {
+	render({ showSidebar, token }) {
 		return (
 			<Router history={ history }>
 				<div className='container-fluid'>
@@ -66,18 +62,6 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								{ showInfo &&
-									<div className='alert alert-info' role='alert'>
-										<button onClick={ e => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
-											<span aria-hidden='true'>&times;</span>
-										</button>
-										If you are having issues selecting your bot, please restart the bot.
-										<br/>
-										Also we had to clear all Settings (not Templates). We are really sorry for this. The issue is fixed and will not occur again in the future.
-										<br/>
-										This info will be removed on 18.07.19.
-									</div>
-								}
 								<Route exact path='/' render={
 									() => <Redirect to={ token ? '/configuration/namespaces' : '/login' } />
 								} />
