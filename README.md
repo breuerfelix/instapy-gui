@@ -144,7 +144,27 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 ### troubleshoot
 
-#### certificate
+#### no module named 'pip'
+
+* run `curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+* execute the downloaded file
+  * on linux or mac run `./env/bin/python3 get-pip.py`
+  * on windows run `.\env\Scripts\python.exe get-pip.py`
+* reinstall the requirements
+  * on linux or mac run `./env/bin/pip3 install -r requirements.txt`
+  * on windows run `.\env\Scripts\pip.exe install -r requirements.txt`
+
+#### chromedriver is not installed
+
+```bash
+cd ~
+wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+sudo apt-get install -y -f
+sudo rm google-chrome-stable_current_amd64.deb
+```
+
+#### certificate verify failed
 
 in the client after `logged in with user: <username>` you get the following error:
 
