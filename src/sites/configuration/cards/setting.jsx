@@ -39,6 +39,12 @@ export default class SettingCard extends Component {
 		updateSetting(setting);
 	}
 
+	editSetting = e => {
+		e.stopPropagation();
+		const { modal, setting } = this.props;
+		modal.editItem(setting);
+	}
+
 	deleteSetting = e => {
 		e.stopPropagation();
 
@@ -64,8 +70,8 @@ export default class SettingCard extends Component {
 		const headerStyle = expanded ? null : { borderBottom: 0 };
 
 		return (
-			<div className="col-padding col">
-				<div className="card">
+			<div className='col-padding col'>
+				<div className='card'>
 
 					<div className="card-header" style={ headerStyle } onClick={ this.toggleCard }>
 						<div className="row">
@@ -81,6 +87,10 @@ export default class SettingCard extends Component {
 									<IconButton
 										icon='fas fa-cog'
 										onclick={ this.toggleCard }
+									/>
+									<IconButton
+										icon='fas fa-edit'
+										onclick={ this.editSetting }
 									/>
 									<IconButton
 										icon='fas fa-trash-alt'
