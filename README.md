@@ -120,6 +120,8 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 ## guides
 
+**[how to start contributing](docs/contributing.md)**
+
 ### video tutorials
 
 **[full manual installation on windows 10](https://drive.google.com/open?id=1ZafLOa0ShSXva61eQwFAePSVBC0Suc9p) by [@LexLinux](https://github.com/lexlinux)**  
