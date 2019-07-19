@@ -56,6 +56,11 @@ class Settings extends Component {
 		if (setting.error) raiseError(setting.error);
 	}
 
+	editSetting = async setting => {
+		console.log('edit')
+
+	}
+
 	render(props, { settings }) {
 		const settingsComps = settings.map(set =>
 			<SettingCard
@@ -63,6 +68,7 @@ class Settings extends Component {
 				setting={ set }
 				deleteSetting={ this.deleteSetting }
 				updateSetting={ this.updateSetting }
+				modal={ this.modal }
 			/>
 		);
 
@@ -70,7 +76,13 @@ class Settings extends Component {
 			<div>
 				{ settingsComps }
 				<AddCard target='#add-settings-modal' />
-				<AddItemModal ident='settings' items={ settings } add={ this.addSettings } />
+				<AddItemModal
+					ident='settings'
+					items={ settings }
+					add={ this.addSettings }
+					edit={ this.editSetting }
+					ref={ modal => this.modal = modal }
+				/>
 			</div>
 		);
 	}
