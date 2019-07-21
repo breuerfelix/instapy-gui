@@ -1,10 +1,6 @@
 import 'react-tagsinput/react-tagsinput.css';
 import 'styles/main.scss';
 
-import 'jquery';
-import 'popper.js';
-import 'bootstrap';
-
 import { h, render, Component } from 'preact';
 import { Router, Route, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
