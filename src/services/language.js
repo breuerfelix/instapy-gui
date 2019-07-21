@@ -23,6 +23,9 @@ class Language {
 	}
 
 	defaultTable = {
+		title_info: 'Info',
+
+		sidebar_home: 'Home',
 		sidebar_configuration: 'Configuration',
 		sidebar_namespaces: 'Templates',
 		sidebar_github: 'GitHub',
