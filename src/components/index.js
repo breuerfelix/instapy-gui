@@ -7,6 +7,7 @@ import IframeCard from './iframe_card';
 import PrivateRoute from './private_route';
 import InfoArea from './info_area';
 import IconButton from './icon_button';
+import InfoCard from './info_card';
 
 export {
 	NavBar,
@@ -17,5 +18,6 @@ export {
 	IframeCard,
 	PrivateRoute,
 	InfoArea,
-	IconButton
+	IconButton,
+	InfoCard
 };

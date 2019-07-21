@@ -39,6 +39,7 @@ handler.onError = (json) => {
 };
 
 // track location change to google analytics
+// TODO disable in dev mode
 ReactGA.initialize(config.gaTrackingID);
 history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 
