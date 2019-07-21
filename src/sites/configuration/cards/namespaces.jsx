@@ -70,7 +70,19 @@ class NamespacesCard extends Component {
 	}
 
 	editNamespace = async namespace => {
-		raiseError('edit namespace.... coming soon');
+		const res = await ConfigService.editNamespace(namespace);
+
+		if (res.error) raiseError(res.error);
+
+		// update setting
+		const { namespaces } = this.state;
+		const set = namespaces.find(x => x.ident == namespace.oldIdent);
+		set.ident = namespace.ident;
+		set.name = namespace.name;
+		set.description = namespace.description;
+		this.setState({ namespaces: [...namespaces] });
+
+		this.props.history.push(`/configuration/namespaces/${namespace.ident}`);
 	}
 
 	editNamespaceOpen = e => {
