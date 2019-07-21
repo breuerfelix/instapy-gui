@@ -27,3 +27,16 @@ services:
       - JWT_SECRET
       - VIRTUAL_HOST=socket.instapy.io
       - LETSENCRYPT_HOST=socket.instapy.io
+  nginx:
+    image: nginx
+    volumes:
+      - /path/to/index.html/and/main.bundle.js:/usr/share/nginx/html:ro
+      - /path/to/nginx.conf:/etc/nginx/nginx.conf:ro
+    expose:
+    - "80"
+    restart: unless-stopped
+    network_mode: bridge #needs to be checked if this works
+    environment:
+      - JWT_SECRET
+      - VIRTUAL_HOST=www.instapy.io,instapy.io
+      - LETSENCRYPT_HOST=www.instapy.io,instapy.io 
