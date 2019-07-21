@@ -10,11 +10,19 @@ export default class SideBar extends Component {
 
 		return (
 			<div className='sidebar noselect sticky-top'>
-				<div className='header'>
+				<div className='header' style={{ marginBottom: '2px' }}>
 					<h3>INSTAPY.IO</h3>
 				</div>
 
 				<ul className='toplevel-list list-unstyled'>
+
+					<MenuItem
+						label='sidebar_home'
+						icon='fas fa-home'
+						link='/'
+						level='top'
+						exact
+					/>
 
 					<div className='headline'>
 						{ translate('sidebar_account') }

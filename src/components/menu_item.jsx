@@ -17,20 +17,24 @@ class MenuItem extends Component {
 		this.setState({ open: !open });
 	}
 
-	checkLocation() {
+	checkLocation(exact) {
 		const { location: { pathname }, link, linkMatch } = this.props;
 
 		// TODO linkMatch also have to get matched, maybe handle opening and closing also on our own ?
-		return pathname.startsWith(link);
+		return exact ? pathname == link : pathname.startsWith(link);
 	}
 
-	render({ label, icon = false, link = false, children, level = 'sub', external = false }, { open }) {
+	render({
+		label, icon = false, link = false,
+		children, level = 'sub', external = false,
+		exact
+	}, { open }) {
 		const levelString = level + 'level';
 		const levelListString = 'sublevel-list';
 		const levelItemString = levelString + '-item';
 
 		const isDropdown = children.length > 0;
-		if (this.checkLocation()) open = true;
+		if (this.checkLocation(exact)) open = true;
 
 		const sublevelListClass = classNames(levelListString, {
 			'collapse': true,
