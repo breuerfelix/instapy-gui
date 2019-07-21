@@ -50,7 +50,7 @@ def on_close(ws):
 
 def on_open(ws):
     print('opened socket')
-    print('goto instapy.io and take off right now!')
+    print('goto instapy.io and take off!')
     global IDENT
     ws.send(json.dumps({
         'handler': 'register',
