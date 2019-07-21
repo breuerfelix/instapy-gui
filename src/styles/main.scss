@@ -11,14 +11,13 @@ $sb-font-color: darken($white, 25%);
 $sb-highlight-item: lighten($primary-sb, 15%);
 $sb-bg-submenu: darken($primary-sb, 5%);
 
-//$sb-highlight-font-color: #1ab491;
-//$sb-highlight-font-color: rgb(252, 85, 114);
 $sb-highlight-font-color: $white;
 
 $border-radius: 2px;
 $border-radius-card: $border-radius;
 
-@import '~bootstrap/scss/bootstrap';
+$gray-100: #f8f9fa !default;
+$gray-700: #495057 !default;
 
 body {
 	background-color: $main-bg;
