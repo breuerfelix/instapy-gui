@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import DescriptionCard from './description';
+import { InfoCard } from 'components';
 import { ConfigService, translate } from 'services';
 import { raiseError } from 'core';
 import { withRouter, Route } from 'react-router-dom';
@@ -136,16 +136,15 @@ class NamespacesCard extends Component {
 					/>
 				</div>
 
-				<div className="col-padding col-md">
-					{ namespace_obj &&
-						<Route
-							path={ '/configuration/namespaces/:namespace' }
-							render={ (props) => <DescriptionCard
-								{ ...props }
-								namespace={ namespace_obj }
-							/> }
-						/>
-					}
+				<div className='col-padding col-md'>
+					<InfoCard>
+						Here you can describe in detail what your bot is going to do.
+						<br />
+						<br />
+						If you are having trouble setting up a proper template,
+						<br />
+						have a look <a href='https://github.com/InstaPy/instapy-quickstart' target='__blank'>here</a> to get some basic examples.
+					</InfoCard>
 				</div>
 
 			</div>
