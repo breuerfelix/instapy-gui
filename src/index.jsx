@@ -13,11 +13,8 @@ import ReactGA from 'react-ga';
 
 import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
 import {
-	Configuration,
-	Start,
-	Dashboard,
-	Login,
-	Privacy
+	Configuration, Start, Dashboard,
+	Login, Privacy, Home
 } from 'sites';
 import {
 	readToken, store, connect,
@@ -63,9 +60,11 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								<Route exact path='/' render={
-									() => <Redirect to={ token ? '/configuration/namespaces' : '/login' } />
-								} />
+								<Route
+									exact
+									path='/'
+									component={ Home }
+								/>
 								<Route
 									exact
 									path='/login'
