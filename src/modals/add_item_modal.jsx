@@ -35,7 +35,8 @@ export default class AddItemModal extends Component {
 		const { inputName, inputDescription } = this.state;
 
 		this.setState({
-			errorDescription: !inputDescription,
+			// description is optional
+			// errorDescription: !inputDescription,
 			errorName: !inputName
 		});
 
@@ -82,13 +83,11 @@ export default class AddItemModal extends Component {
 		errorName
 	}) {
 
-		const inputNameClass = classNames({
-			'form-control': true,
+		const inputNameClass = classNames('form-control', {
 			'is-invalid': errorName
 		});
 
-		const inputDescriptionClass = classNames({
-			'form-control': true,
+		const inputDescriptionClass = classNames('form-control', {
 			'is-invalid': errorDescription
 		});
 

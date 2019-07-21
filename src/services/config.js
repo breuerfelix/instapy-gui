@@ -85,6 +85,10 @@ class ConfigService {
 	async updateSetting(data) {
 		return await fetchPost(`${this.endpoint}/settings`, data);
 	}
+
+	async editSetting(data) {
+		return await fetchPost(`${this.endpoint}/settings`, data);
+	}
 }
 
 export default new ConfigService();
