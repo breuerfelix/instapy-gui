@@ -17,7 +17,7 @@ def coding_wrapper(text, func):
 	try:
 		return func(text, CIPHER_SECRET)
 	except Exception as e:
-		print('error in coding wrapper')
+		print('error in coding wrapper', e)
 		return None
 
 
@@ -100,7 +100,7 @@ def update_settings(payload):
             { 'ident': setting['ident'], 'username': username },
             { '$set': { 'params': setting['params'] } }
         )
-    
+
     elif action == 'edit':
         table.find_one_and_update(
             { 'ident': setting['oldIdent'], 'username': username },
