@@ -26,6 +26,10 @@ module.exports = {
 		publicPath: '/'
 	},
 
+	externals: {
+		jquery: 'jQuery'
+	},
+
 	module: {
 		rules: [
 			{
