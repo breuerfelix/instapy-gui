@@ -91,6 +91,14 @@ select {
 	padding: 10px;
 }
 
+.hide-scrollbar {
+	scrollbar-width: none; /* Firefox 64 */
+	-ms-overflow-style: none; /* IE 11 */
+	&::-webkit-scrollbar { /** Webkit */
+		display: none;
+	}
+}
+
 @import 'sidebar';
 @import 'navbar';
 @import 'login';

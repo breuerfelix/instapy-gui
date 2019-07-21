@@ -8,7 +8,7 @@ const InfoCard = ({ children, height = '200px' }) => (
 			{ translate('title_info') }
 		</div>
 
-		<div className='card-body'>
+		<div className='card-body' style={{ overflowY: 'scroll' }}>
 			{ children }
 		</div>
 
