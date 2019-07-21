@@ -11,7 +11,6 @@ class ConfigService {
 	}
 
 	async deleteNamespace(namespace) {
-		console.log('deleting namespace!');
 		const data = {
 			action: 'delete'
 		};
@@ -20,9 +19,17 @@ class ConfigService {
 	}
 
 	async addNamespace(namespace) {
-		console.log('adding namespace!');
 		const data = {
 			action: 'add',
+			namespace
+		};
+
+		return await fetchPost(this.endpoint + '/namespaces', data);
+	}
+
+	async editNamespace(namespace) {
+		const data = {
+			action: 'edit',
 			namespace
 		};
 
