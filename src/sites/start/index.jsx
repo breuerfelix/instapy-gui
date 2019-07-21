@@ -1,6 +1,7 @@
 import { h, render, Component } from 'preact';
 import StartBot from './start_bot';
 import Console from './console';
+import { InfoCard } from 'components';
 
 export default class Start extends Component {
 	state = {
@@ -27,7 +28,20 @@ export default class Start extends Component {
 						/>
 					</div>
 
-					<div className='col-padding col-md'></div>
+					<div className='col-padding col-md'>
+						<InfoCard height={ firstRowHeight }>
+							Handling all your bots and be up-to-date with their status will be done from this site.
+							<br />
+							<br />
+							Click <a href='https://github.com/breuerfelix/instapy-gui' target='__blank'>here</a> to see a guide on how to setup bots which can be started from this panel.
+							<br />
+							<br />
+							The console shows the current output from any selected bot.
+							<br />
+							<br />
+							Do not forget to set your Instagram username and password in the according settings.
+						</InfoCard>
+					</div>
 
 				</div>
 
