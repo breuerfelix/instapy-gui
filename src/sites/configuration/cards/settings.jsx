@@ -12,7 +12,12 @@ class Settings extends Component {
 	}
 
 	componentWillMount() {
-		ConfigService.getSettings().then(settings => this.setState({ settings }));
+		this.refreshSettings();
+	}
+
+	refreshSettings = async () => {
+		const settings = await ConfigService.getSettings();
+		this.setState({ settings });
 	}
 
 	addSettings = async setting => {
@@ -53,12 +58,27 @@ class Settings extends Component {
 			data: setting
 		});
 
-		if (setting.error) raiseError(setting.error);
+		if (setting.error) {
+			this.refreshSettings();
+			raiseError(setting.error);
+		}
 	}
 
 	editSetting = async setting => {
-		console.log('edit')
+		const res = await ConfigService.updateSetting({
+			action: 'edit',
+			data: setting
+		});
 
+		if (res.error) raiseError(res.error);
+
+		// update setting
+		const { settings } = this.state;
+		const set = settings.find(x => x.ident == setting.oldIdent);
+		set.ident = setting.ident;
+		set.name = setting.name;
+		set.description = setting.description;
+		this.setState({ settings: [...settings] });
 	}
 
 	render(props, { settings }) {

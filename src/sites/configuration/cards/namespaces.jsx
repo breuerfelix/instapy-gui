@@ -73,6 +73,13 @@ class NamespacesCard extends Component {
 		raiseError('edit namespace.... coming soon');
 	}
 
+	editNamespaceOpen = e => {
+		e.stopPropagation();
+		const { namespace, namespaces } = this.state;
+		const name = namespaces.find(x => x.ident == namespace);
+		this.modal.editItem(name);
+	}
+
 	render({ match }, { namespaces, namespace }) {
 		const { params } = match;
 		if (namespace != params.namespace)
@@ -118,8 +125,7 @@ class NamespacesCard extends Component {
 								</button>
 								<IconButton
 									icon='fas fa-edit'
-									onclick={ this.editNamespace }
-									disabled={ true }
+									onclick={ this.editNamespaceOpen }
 								/>
 								<IconButton
 									icon='fas fa-trash-alt'
@@ -133,6 +139,8 @@ class NamespacesCard extends Component {
 						ident='namespace'
 						items={ namespaces }
 						add={ this.addNamespace }
+						edit={ this.editNamespace }
+						ref={ modal => this.modal = modal }
 					/>
 				</div>
 
