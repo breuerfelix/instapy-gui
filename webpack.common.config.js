@@ -20,8 +20,8 @@ module.exports = {
 	performance: { hints: false },
 
 	output: {
-		filename: '[name].bundle.js',
-		chunkFilename: '[name].bundle.js',
+		filename: '[name].[hash].bundle.js',
+		chunkFilename: '[name].[chunkhash].chunk.js',
 		path: path.join(__dirname, 'dist'),
 		publicPath: '/'
 	},
