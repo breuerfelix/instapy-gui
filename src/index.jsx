@@ -1,5 +1,9 @@
+import '404.html';
 import 'react-tagsinput/react-tagsinput.css';
 import 'styles/main.scss';
+
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 import { h, render, Component } from 'preact';
 import { Router, Route, Redirect } from 'react-router-dom';
