@@ -1,12 +1,8 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	entry: [
-		'@babel/polyfill',
-		'./src'
-	],
+	entry: [ './src' ],
 
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
@@ -61,13 +57,20 @@ module.exports = {
 					'postcss-loader',
 					'sass-loader'
 				]
+			},
+			{
+				test: /\.html$/,
+				use: [{
+					loader: 'file-loader',
+					options: { name: '[name].[ext]' }
+				}]
 			}
 		]
 	},
 
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src/index.html')
+			template: path.join(__dirname, 'src/index.htm')
 		})
 	]
 };
