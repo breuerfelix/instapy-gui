@@ -39,47 +39,46 @@ def on_message(ws, message):
     if data['handler'] not in HANDLERS:
         print('could not locate handler:', data['handler'])
         return
-    
+
     HANDLERS[data['handler']](ws, data)
+
 
 def on_error(ws, error):
     print('error:', error)
 
+
 def on_close(ws):
     print('closed socket')
+
 
 def on_open(ws):
     print('opened socket')
     print('goto instapy.io and take off!')
     global IDENT
-    ws.send(json.dumps({
-        'handler': 'register',
-        'type': 'instapy',
-        'ident': IDENT
-    }))
+    ws.send(json.dumps({'handler': 'register', 'type': 'instapy', 'ident': IDENT}))
+
 
 def get_token(username, password):
-    payload = {
-        'username': username,
-        'password': password
-    }
+    payload = {'username': username, 'password': password}
 
     url = AUTH_ENDPOINT + '/login'
     print(f'authenticate {username} to {url} ...')
 
-    response = requests.post(url, data = payload);
+    response = requests.post(url, data=payload)
     response = response.json()
     if 'error' in response:
         print(response['error'])
         sys.exit()
-    
+
     print(f'logged in with user: {username}')
     return response['token']
+
 
 # utils
 def kill():
     global PROCESS
-    if not PROCESS: return
+    if not PROCESS:
+        return
     if PROCESS.poll() is None:
         print('killing process...')
 
@@ -92,10 +91,14 @@ def kill():
 
     PROCESS = None
 
+
 def check_process():
     global PROCESS
-    if not PROCESS: return
-    if PROCESS.poll() is not None: kill()
+    if not PROCESS:
+        return
+    if PROCESS.poll() is not None:
+        kill()
+
 
 # handlers
 def get_status(ws, data):
@@ -106,14 +109,21 @@ def get_status(ws, data):
 
     status = 'running' if PROCESS else 'stopped'
 
-    ws.send(json.dumps({
-        'handler': 'status',
-        'status': status,
-        'namespace': NAMESPACE,
-        'setting': SETTING,
-        'action': 'set'
-    }))
+    ws.send(
+        json.dumps(
+            {
+                'handler': 'status',
+                'status': status,
+                'namespace': NAMESPACE,
+                'setting': SETTING,
+                'action': 'set',
+            }
+        )
+    )
+
+
 HANDLERS['status'] = get_status
+
 
 def start(ws, data):
     check_process()
@@ -139,24 +149,27 @@ def start(ws, data):
     if platform.system() == 'Windows':
         PROCESS = subprocess.Popen(
             [sys.executable, 'bot.py'],
-            shell = True,
-            creationflags = subprocess.CREATE_NEW_PROCESS_GROUP,
-            env = ienv
+            shell=True,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
+            env=ienv,
         )
     else:
         PROCESS = subprocess.Popen(
-            [sys.executable, 'bot.py'],
-            preexec_fn = os.setsid,
-            env = ienv
+            [sys.executable, 'bot.py'], preexec_fn=os.setsid, env=ienv
         )
 
     print('instapy process started')
     get_status(ws, data)
+
+
 HANDLERS['start'] = start
+
 
 def stop(ws, data):
     kill()
     get_status(ws, data)
+
+
 HANDLERS['stop'] = stop
 
 if __name__ == '__main__':
@@ -164,22 +177,20 @@ if __name__ == '__main__':
     password = os.getenv('INSTAPY_PASSWORD')
 
     TOKEN = get_token(username, password)
-    header = {
-        'Authorization': f'Bearer {TOKEN}'
-    }
+    header = {'Authorization': f'Bearer {TOKEN}'}
 
     while True:
         try:
             ws = websocket.WebSocketApp(
                 SOCKET_ENDPOINT,
-                on_message = on_message,
-                on_error = on_error,
-                on_close = on_close,
-                header = header
+                on_message=on_message,
+                on_error=on_error,
+                on_close=on_close,
+                header=header,
             )
 
             ws.on_open = on_open
-            ws.run_forever(ping_interval = 30)
+            ws.run_forever(ping_interval=30)
             time.sleep(3)
 
         except KeyboardInterrupt:

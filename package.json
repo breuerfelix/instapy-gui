@@ -10,6 +10,7 @@
 		"start:local": "ENV_FILE=.env npm run start",
 		"build": "webpack --config webpack.prod.config.js",
 		"lint": "eslint --config .eslintrc.yml --ext jsx --ext js src",
+		"black": "black -S services",
 		"lint:fix": "npm run lint -- --fix",
 		"dc:host": "docker-compose -f docker-compose.host.yml",
 		"dc:ssl": "docker-compose -f docker-compose.ssl.yml",

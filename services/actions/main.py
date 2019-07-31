@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from instapy import InstaPy
 from inspect import signature, getdoc
 import re
+
 
 def get_actions():
     real_funcs = []
@@ -15,19 +17,19 @@ def get_actions():
 
         # only use mentioned functions
         if not (
-                func.startswith('set') or
-                func.startswith('follow') or
-                func.startswith('interact') or
-                func.startswith('like') or
-                func.startswith('unfollow') or
-                func.startswith('join') or
-                func.startswith('clarifai') or
-                func.startswith('comment') or
-                func.startswith('accept') # accept_follow_requests
-        ): continue
+            func.startswith('set')
+            or func.startswith('follow')
+            or func.startswith('interact')
+            or func.startswith('like')
+            or func.startswith('unfollow')
+            or func.startswith('join')
+            or func.startswith('clarifai')
+            or func.startswith('comment')
+            or func.startswith('accept')  # accept_follow_requests
+        ):
+            continue
 
         real_funcs.append(func)
-
 
     actions = []
     for func in real_funcs:
@@ -42,7 +44,8 @@ def get_actions():
 
         for index, para in enumerate(sig.parameters):
             # ignore 'self'
-            if index == 0: continue
+            if index == 0:
+                continue
 
             actual_param = sig.parameters[para]
             param = dict()
@@ -65,7 +68,9 @@ def get_actions():
                 paramtype = None
             elif 'typing.Tuple' in str(actual_param.annotation):
                 # converts 'typing.Tuple[int, str]' to 'tuple:int,str'
-                tuple_types = re.search('(?<=\[).*?(?=\])', str(actual_param.annotation))
+                tuple_types = re.search(
+                    '(?<=\[).*?(?=\])', str(actual_param.annotation)
+                )
                 tuple_types = tuple_types.group().split(',')
                 tuple_types = ','.join(list(map(lambda x: x.strip(), tuple_types)))
                 paramtype = f'tuple:{tuple_types}'
@@ -90,7 +95,7 @@ if __name__ == '__main__':
     # table.create_index('functionName', unique = True, background = True)
 
     for action in get_actions():
-        table.replace_one({ 'functionName': action['functionName'] }, action, upsert = True)
+        table.replace_one({'functionName': action['functionName']}, action, upsert=True)
 
     client.close()
     print('added actions to mongodb')

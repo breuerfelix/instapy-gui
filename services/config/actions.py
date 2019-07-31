@@ -4,6 +4,7 @@ from auth import to_json
 
 actions = Blueprint('actions', __name__)
 
+
 @actions.route('/actions', methods=['GET'])
 def get_actions():
     actions = client.configuration.actions.find()

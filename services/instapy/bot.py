@@ -18,38 +18,36 @@ config_endpoint = getenv('CONFIG')
 socket_endpoint = getenv('SOCKET')
 chromedriver_path = getenv('CHROMEDRIVER_PATH', None)
 
-if not namespace or not token: sys.exit(0)
+if not namespace or not token:
+    sys.exit(0)
 
-headers = {
-    'Authorization': f'Bearer {token}'
-}
+headers = {'Authorization': f'Bearer {token}'}
+
 
 def get(url):
     global headers
-    res = requests.get(config_endpoint + url, headers = headers)
+    res = requests.get(config_endpoint + url, headers=headers)
     return res.json()
+
 
 def post(url, data):
     global headers
-    res = requests.post(
-        config_endpoint + url,
-        data = json.dumps(data),
-        headers = headers
-    )
+    res = requests.post(config_endpoint + url, data=json.dumps(data), headers=headers)
     return res.json()
+
 
 class my_handler(logging.Handler):
     def init(self):
         self.setLevel(logging.DEBUG)
         logger_formatter = logging.Formatter(
-            '%(levelname)s [%(asctime)s] %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S')
+            '%(levelname)s [%(asctime)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S'
+        )
         self.setFormatter(logger_formatter)
 
     def connect(self):
         global token
         global headers
-        self.socket = create_connection(socket_endpoint, header = headers)
+        self.socket = create_connection(socket_endpoint, header=headers)
 
     def disconnect(self):
         self.socket.close()
@@ -60,11 +58,11 @@ class my_handler(logging.Handler):
 
         try:
             self.connect()
-            self.socket.send(json.dumps({
-                'handler': 'instapy_log',
-                'message': message,
-                'ident': ident
-            }))
+            self.socket.send(
+                json.dumps(
+                    {'handler': 'instapy_log', 'message': message, 'ident': ident}
+                )
+            )
             self.disconnect()
         except Exception as e:
             print('error sending log:', e)
@@ -78,7 +76,8 @@ res_jobs = get(f'/namespaces/{namespace}/jobs')
 # sort out non active jobs
 jobs = []
 for job in res_jobs:
-    if job['active'] == False: continue
+    if job['active'] == False:
+        continue
     jobs.append(job)
 
 # TODO remove until line if we have a proper tuple / list view
@@ -88,12 +87,19 @@ for job in res_jobs:
 actions = get('/actions')
 
 for job in jobs:
-    action = next(action for action in actions if action['functionName'] == job['functionName'])
+    action = next(
+        action for action in actions if action['functionName'] == job['functionName']
+    )
 
     for param in job['params']:
-        act_param = next(act_param for act_param in action['params'] if act_param['name'] == param['name'])
+        act_param = next(
+            act_param
+            for act_param in action['params']
+            if act_param['name'] == param['name']
+        )
 
-        if not isinstance(param['value'], str): continue
+        if not isinstance(param['value'], str):
+            continue
 
         if act_param['type'] == 'list' or act_param['type'] == 'tuple':
             param['value'] = param['value'].split(',')
@@ -123,6 +129,7 @@ session = InstaPy(**instapy_args)
 # function that will be executed before sig kill, to the browser window closes
 def exit_browser(*args):
     session.browser.quit()
+
 
 if platform.system() != 'Windows':
     signal.signal(signal.SIGUSR1, exit_browser)
