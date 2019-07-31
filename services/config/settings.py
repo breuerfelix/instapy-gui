@@ -11,10 +11,14 @@ settings = Blueprint('settings', __name__)
 
 
 def coding_wrapper(text, func):
-    if text == None or text == '':
-        return text
+	if text == None or text == '':
+		return text
 
-    return func(text, CIPHER_SECRET)
+	try:
+		return func(text, CIPHER_SECRET)
+	except Exception as e:
+		print('error in coding wrapper', e)
+		return None
 
 
 
@@ -61,16 +65,14 @@ def update_settings(payload):
     username = payload['username']
     body = json.loads(request.data)
     setting = body['data']
+    action = body['action']
 
     table = client.configuration.settings
 
-    if body['action'] == 'add':
+    if action == 'add':
         result = table.find_one({ 'ident': setting['ident'], 'username': username })
 
-        if result:
-            return to_json({
-                'error': 'Ident already used!'
-            })
+        if result: return to_json({ 'error': 'Ident already used!' })
 
         table.insert_one({
             'ident': setting['ident'],
@@ -80,13 +82,13 @@ def update_settings(payload):
             'params': []
         })
 
-    elif body['action'] == 'delete':
-        result = table.delete_one({ 'ident': setting['ident'], 'username': username })
-        return to_json({
-            'done': True
-        })
+        # return the setting to approve
+        return to_json(setting)
 
-    elif body['action'] == 'update':
+    elif action == 'delete':
+        result = table.delete_one({ 'ident': setting['ident'], 'username': username })
+
+    elif action == 'update':
         # encode instagram credentials
         for param in setting['params']:
             if param['name'] != 'password' and param['name'] != 'username':
@@ -94,13 +96,22 @@ def update_settings(payload):
 
             param['value'] = coding_wrapper(param['value'], encode)
 
-        result = table.find_one_and_update(
+        table.find_one_and_update(
             { 'ident': setting['ident'], 'username': username },
             { '$set': { 'params': setting['params'] } }
         )
-        return to_json({
-            'done': True
-        })
 
-    # return the given setting to approve
-    return to_json(setting)
+    elif action == 'edit':
+        table.find_one_and_update(
+            { 'ident': setting['oldIdent'], 'username': username },
+            { '$set': {
+				'ident': setting['ident'],
+				'name': setting['name'],
+				'description': setting['description']
+			} }
+        )
+
+    else:
+        return to_json({ 'error': 'Action not found!' })
+
+    return to_json({ 'done': True })

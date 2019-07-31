@@ -80,13 +80,13 @@ class Language {
 		namespace_name_label: 'Name',
 		namespace_name_placeholder: 'Following by hashtag #sport',
 		namespace_description_label: 'Description',
-		namespace_description_placeholder: 'i need to buy milk',
+		namespace_description_placeholder: 'i need to buy milk (optional)',
 
 		new_settings_title: 'Add Setting',
 		settings_name_label: 'Name',
 		settings_name_placeholder: 'Ultra default settings',
 		settings_description_label: 'Description',
-		settings_description_placeholder: 'headless, bypass mobile, i hate instagram, ...',
+		settings_description_placeholder: 'headless, bypass mobile, i hate instagram (optional)',
 
 		job_show_info: 'click here to show info',
 		job_hide_info: 'click here to hide info',

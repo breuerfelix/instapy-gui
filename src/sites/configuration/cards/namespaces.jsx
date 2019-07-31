@@ -70,7 +70,26 @@ class NamespacesCard extends Component {
 	}
 
 	editNamespace = async namespace => {
-		raiseError('edit namespace.... coming soon');
+		const res = await ConfigService.editNamespace(namespace);
+
+		if (res.error) raiseError(res.error);
+
+		// update setting
+		const { namespaces } = this.state;
+		const set = namespaces.find(x => x.ident == namespace.oldIdent);
+		set.ident = namespace.ident;
+		set.name = namespace.name;
+		set.description = namespace.description;
+		this.setState({ namespaces: [...namespaces] });
+
+		this.props.history.push(`/configuration/namespaces/${namespace.ident}`);
+	}
+
+	editNamespaceOpen = e => {
+		e.stopPropagation();
+		const { namespace, namespaces } = this.state;
+		const name = namespaces.find(x => x.ident == namespace);
+		this.modal.editItem(name);
 	}
 
 	render({ match }, { namespaces, namespace }) {
@@ -118,8 +137,7 @@ class NamespacesCard extends Component {
 								</button>
 								<IconButton
 									icon='fas fa-edit'
-									onclick={ this.editNamespace }
-									disabled={ true }
+									onclick={ this.editNamespaceOpen }
 								/>
 								<IconButton
 									icon='fas fa-trash-alt'
@@ -133,6 +151,8 @@ class NamespacesCard extends Component {
 						ident='namespace'
 						items={ namespaces }
 						add={ this.addNamespace }
+						edit={ this.editNamespace }
+						ref={ modal => this.modal = modal }
 					/>
 				</div>
 

@@ -12,7 +12,22 @@ export default class AddItemModal extends Component {
 		inputDescription: null,
 
 		errorName: false,
-		errorDescription: false
+		errorDescription: false,
+
+		mode: 'add',
+		oldIdent: null
+	}
+
+	editItem = item => {
+		const { ident, name, description } = item;
+		this.setState({
+			inputName: name,
+			inputDescription: description,
+			oldIdent: ident,
+			mode: 'edit'
+		});
+
+		$(this.modal).modal('show');
 	}
 
 	addItem = e => {
@@ -20,7 +35,8 @@ export default class AddItemModal extends Component {
 		const { inputName, inputDescription } = this.state;
 
 		this.setState({
-			errorDescription: !inputDescription,
+			// description is optional
+			// errorDescription: !inputDescription,
 			errorName: !inputName
 		});
 
@@ -33,23 +49,28 @@ export default class AddItemModal extends Component {
 			// TODO extend with a nice remove regex like -> remove: /[*+~.()'"!:@]/},
 		});
 
+		const { oldIdent, mode } = this.state;
 		const found = this.props.items.find(x => x.ident == slug);
 
-		if (found) {
+		if (found && (slug != oldIdent && mode == 'edit')) {
 			this.setState({ errorName: true });
 			raiseError('An item with this identifier already exists!');
 		}
 
-		this.props.add({
+		const newItem = {
 			ident: slug,
 			name: inputName,
 			description: inputDescription
-		});
+		};
+
+		if (mode == 'add') this.props.add(newItem);
+		else if (mode == 'edit') this.props.edit({ ...newItem, oldIdent });
 
 		// reset input on success
 		this.setState({
 			inputName: null,
-			inputDescription: null
+			inputDescription: null,
+			mode: 'add'
 		});
 
 		$(this.modal).modal('hide');
@@ -62,13 +83,11 @@ export default class AddItemModal extends Component {
 		errorName
 	}) {
 
-		const inputNameClass = classNames({
-			'form-control': true,
+		const inputNameClass = classNames('form-control', {
 			'is-invalid': errorName
 		});
 
-		const inputDescriptionClass = classNames({
-			'form-control': true,
+		const inputDescriptionClass = classNames('form-control', {
 			'is-invalid': errorDescription
 		});
 

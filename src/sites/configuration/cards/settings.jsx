@@ -12,7 +12,12 @@ class Settings extends Component {
 	}
 
 	componentWillMount() {
-		ConfigService.getSettings().then(settings => this.setState({ settings }));
+		this.refreshSettings();
+	}
+
+	refreshSettings = async () => {
+		const settings = await ConfigService.getSettings();
+		this.setState({ settings });
 	}
 
 	addSettings = async setting => {
@@ -53,7 +58,27 @@ class Settings extends Component {
 			data: setting
 		});
 
-		if (setting.error) raiseError(setting.error);
+		if (setting.error) {
+			this.refreshSettings();
+			raiseError(setting.error);
+		}
+	}
+
+	editSetting = async setting => {
+		const res = await ConfigService.updateSetting({
+			action: 'edit',
+			data: setting
+		});
+
+		if (res.error) raiseError(res.error);
+
+		// update setting
+		const { settings } = this.state;
+		const set = settings.find(x => x.ident == setting.oldIdent);
+		set.ident = setting.ident;
+		set.name = setting.name;
+		set.description = setting.description;
+		this.setState({ settings: [...settings] });
 	}
 
 	render(props, { settings }) {
@@ -63,6 +88,7 @@ class Settings extends Component {
 				setting={ set }
 				deleteSetting={ this.deleteSetting }
 				updateSetting={ this.updateSetting }
+				modal={ this.modal }
 			/>
 		);
 
@@ -70,7 +96,13 @@ class Settings extends Component {
 			<div>
 				{ settingsComps }
 				<AddCard target='#add-settings-modal' />
-				<AddItemModal ident='settings' items={ settings } add={ this.addSettings } />
+				<AddItemModal
+					ident='settings'
+					items={ settings }
+					add={ this.addSettings }
+					edit={ this.editSetting }
+					ref={ modal => this.modal = modal }
+				/>
 			</div>
 		);
 	}
