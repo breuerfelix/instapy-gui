@@ -32,9 +32,10 @@ def update_namespaces(payload):
     username = payload['username']
     body = json.loads(request.data)
     namespace = body['namespace']
+    action = body['action']
+    db = client.configuration
 
-    if body['action'] == 'add':
-        db = client.configuration
+    if action == 'add':
         result = db.namespaces.find_one({ 'ident': namespace, 'username': username })
 
         if result:
@@ -49,6 +50,16 @@ def update_namespaces(payload):
             'description': namespace['description'],
             'jobs': []
         })
+
+    elif action == 'edit':
+        db.namespaces.find_one_and_update(
+            { 'ident': namespace['oldIdent'], 'username': username },
+            { '$set': {
+				'ident': namespace['ident'],
+				'name': namespace['name'],
+				'description': namespace['description']
+			} }
+        )
 
     # return the given namespace to approve
     return to_json(namespace)
