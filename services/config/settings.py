@@ -9,7 +9,6 @@ CIPHER_SECRET = getenv('CIPHER_SECRET') or 'instapysecret'
 settings = Blueprint('settings', __name__)
 
 
-
 def coding_wrapper(text, func):
     if text == None or text == '':
         return text
@@ -17,11 +16,10 @@ def coding_wrapper(text, func):
     return func(text, CIPHER_SECRET)
 
 
-
 @settings.route('/settings', methods=['GET'])
 @jwt_req
 def get_settings(payload):
-    result = client.configuration.settings.find({ 'username': payload['username'] })
+    result = client.configuration.settings.find({'username': payload['username']})
     result = json.loads(dumps(result))
 
     # decode instagram credentials
@@ -32,15 +30,15 @@ def get_settings(payload):
 
             param['value'] = coding_wrapper(param['value'], decode)
 
-
     return to_json(result)
-
 
 
 @settings.route('/settings/<setting>', methods=['GET'])
 @jwt_req
 def get_setting(payload, setting):
-    result = client.configuration.settings.find_one({ 'username': payload['username'], 'ident': setting })
+    result = client.configuration.settings.find_one(
+        {'username': payload['username'], 'ident': setting}
+    )
     result = json.loads(dumps(result))
 
     # decode instagram credentials
@@ -50,9 +48,7 @@ def get_setting(payload, setting):
 
         param['value'] = coding_wrapper(param['value'], decode)
 
-
     return to_json(result)
-
 
 
 @settings.route('/settings', methods=['POST'])
@@ -65,26 +61,24 @@ def update_settings(payload):
     table = client.configuration.settings
 
     if body['action'] == 'add':
-        result = table.find_one({ 'ident': setting['ident'], 'username': username })
+        result = table.find_one({'ident': setting['ident'], 'username': username})
 
         if result:
-            return to_json({
-                'error': 'Ident already used!'
-            })
+            return to_json({'error': 'Ident already used!'})
 
-        table.insert_one({
-            'ident': setting['ident'],
-            'username': username,
-            'name': setting['name'],
-            'description': setting['description'],
-            'params': []
-        })
+        table.insert_one(
+            {
+                'ident': setting['ident'],
+                'username': username,
+                'name': setting['name'],
+                'description': setting['description'],
+                'params': [],
+            }
+        )
 
     elif body['action'] == 'delete':
-        result = table.delete_one({ 'ident': setting['ident'], 'username': username })
-        return to_json({
-            'done': True
-        })
+        result = table.delete_one({'ident': setting['ident'], 'username': username})
+        return to_json({'done': True})
 
     elif body['action'] == 'update':
         # encode instagram credentials
@@ -95,12 +89,10 @@ def update_settings(payload):
             param['value'] = coding_wrapper(param['value'], encode)
 
         result = table.find_one_and_update(
-            { 'ident': setting['ident'], 'username': username },
-            { '$set': { 'params': setting['params'] } }
+            {'ident': setting['ident'], 'username': username},
+            {'$set': {'params': setting['params']}},
         )
-        return to_json({
-            'done': True
-        })
+        return to_json({'done': True})
 
     # return the given setting to approve
     return to_json(setting)

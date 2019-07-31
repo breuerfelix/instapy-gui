@@ -28,7 +28,7 @@ if __name__ == '__main__':
     mode = getenv('MODE') or 'production'
 
     if mode == 'development':
-        app.run(debug = True, host = '0.0.0.0', port = PORT)
+        app.run(debug=True, host='0.0.0.0', port=PORT)
     else:
         eventlet.wsgi.server(eventlet.listen(('', PORT)), app)
 
