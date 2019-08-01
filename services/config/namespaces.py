@@ -9,21 +9,19 @@ from bson.json_util import loads
 namespaces = Blueprint('namespaces', __name__)
 
 
-
 @namespaces.route('/namespaces', methods=['GET'])
 @jwt_req
 def get_namespaces(payload):
     db = client.configuration
 
     # TODO do aggregation with project without 'jobs'
-    namespaces = db.namespaces.find({ 'username': payload['username'] })
+    namespaces = db.namespaces.find({'username': payload['username']})
     namespaces = list(namespaces)
 
     for namespace in namespaces:
         del namespace['jobs']
 
     return to_json(namespaces)
-
 
 
 @namespaces.route('/namespaces', methods=['POST'])
@@ -36,34 +34,35 @@ def update_namespaces(payload):
     db = client.configuration
 
     if action == 'add':
-        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })
+        result = db.namespaces.find_one({'ident': namespace, 'username': username})
 
         if result:
-            return to_json({
-                'error': 'ident already used!'
-            })
+            return to_json({'error': 'ident already used!'})
 
-        db.namespaces.insert_one({
-            'ident': namespace['ident'],
-            'username': username,
-            'name': namespace['name'],
-            'description': namespace['description'],
-            'jobs': []
-        })
+        db.namespaces.insert_one(
+            {
+                'ident': namespace['ident'],
+                'username': username,
+                'name': namespace['name'],
+                'description': namespace['description'],
+                'jobs': [],
+            }
+        )
 
     elif action == 'edit':
         db.namespaces.find_one_and_update(
-            { 'ident': namespace['oldIdent'], 'username': username },
-            { '$set': {
-				'ident': namespace['ident'],
-				'name': namespace['name'],
-				'description': namespace['description']
-			} }
+            {'ident': namespace['oldIdent'], 'username': username},
+            {
+                '$set': {
+                    'ident': namespace['ident'],
+                    'name': namespace['name'],
+                    'description': namespace['description'],
+                }
+            },
         )
 
     # return the given namespace to approve
     return to_json(namespace)
-
 
 
 @namespaces.route('/namespaces/<namespace>', methods=['POST'])
@@ -74,12 +73,11 @@ def update_namespace(payload, namespace):
 
     if body['action'] == 'delete':
         db = client.configuration
-        db.namespaces.delete_one({ 'ident': namespace, 'username': username })
+        db.namespaces.delete_one({'ident': namespace, 'username': username})
 
-        return to_json({ 'done': True })
+        return to_json({'done': True})
 
-    return to_json({ 'error': 'action not found' })
-
+    return to_json({'error': 'action not found'})
 
 
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['GET'])
@@ -88,10 +86,9 @@ def get_jobs(payload, namespace):
     username = payload['username']
     db = client.configuration
 
-    result = db.namespaces.find_one({ 'ident': namespace, 'username': username })
+    result = db.namespaces.find_one({'ident': namespace, 'username': username})
 
     return to_json(result['jobs'])
-
 
 
 @namespaces.route('/namespaces/<namespace>/jobs', methods=['POST'])
@@ -104,15 +101,17 @@ def update_jobs(payload, namespace):
         new_jobs = body['jobs']
 
         db = client.configuration
-        result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace, 'username': username },
-                                 {
-                                     '$set': { 'jobs': new_jobs }
-                                 }, return_document = ReturnDocument.AFTER)
+        result = db.namespaces.find_one_and_update(
+            {'ident': namespace, 'username': username},
+            {'$set': {'jobs': new_jobs}},
+            return_document=ReturnDocument.AFTER,
+        )
 
         # TODO change this
         # refetch all jobs to the gui can update everything
-        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
+        result = db.namespaces.find_one({'ident': namespace, 'username': username})[
+            'jobs'
+        ]
 
         return to_json(result)
 
@@ -121,20 +120,21 @@ def update_jobs(payload, namespace):
         new_job['_id'] = ObjectId()
 
         db = client.configuration
-        result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace, 'username': username },
-                                 {
-                                     '$push': { 'jobs': new_job }
-                                 }, return_document = ReturnDocument.AFTER)
+        result = db.namespaces.find_one_and_update(
+            {'ident': namespace, 'username': username},
+            {'$push': {'jobs': new_job}},
+            return_document=ReturnDocument.AFTER,
+        )
 
         # TODO change this
         # refetch all jobs to the gui can update everything
-        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
+        result = db.namespaces.find_one({'ident': namespace, 'username': username})[
+            'jobs'
+        ]
 
         return to_json(result)
 
-    return to_json({ 'error': 'could not find matching action!' })
-
+    return to_json({'error': 'could not find matching action!'})
 
 
 @namespaces.route('/namespaces/<namespace>/jobs/<uuid>', methods=['POST'])
@@ -146,15 +146,17 @@ def update_job(payload, namespace, uuid):
 
     if body['action'] == 'delete':
         db = client.configuration
-        result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace, 'username': username },
-                                 {
-                                     '$pull': { 'jobs': { '_id': uuid } }
-                                 }, return_document = ReturnDocument.AFTER)
+        result = db.namespaces.find_one_and_update(
+            {'ident': namespace, 'username': username},
+            {'$pull': {'jobs': {'_id': uuid}}},
+            return_document=ReturnDocument.AFTER,
+        )
 
         # TODO change this
         # refetch all jobs to the gui can update everything
-        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
+        result = db.namespaces.find_one({'ident': namespace, 'username': username})[
+            'jobs'
+        ]
 
         return to_json(result)
 
@@ -162,17 +164,18 @@ def update_job(payload, namespace, uuid):
         new_job = body['job']
 
         db = client.configuration
-        result = db.namespaces \
-            .find_one_and_update({ 'ident': namespace, 'username': username, 'jobs._id': uuid },
-                                 {
-                                     '$set': { 'jobs.$': new_job }
-                                 }, return_document = ReturnDocument.AFTER)
+        result = db.namespaces.find_one_and_update(
+            {'ident': namespace, 'username': username, 'jobs._id': uuid},
+            {'$set': {'jobs.$': new_job}},
+            return_document=ReturnDocument.AFTER,
+        )
 
         # TODO change this
         # refetch all jobs so the gui can update everything
-        result = db.namespaces.find_one({ 'ident': namespace, 'username': username })['jobs']
+        result = db.namespaces.find_one({'ident': namespace, 'username': username})[
+            'jobs'
+        ]
 
         return to_json(result)
 
-    return json.dumps({ 'error': 'could not find matching action!' })
-
+    return json.dumps({'error': 'could not find matching action!'})
