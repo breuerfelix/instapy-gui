@@ -27,6 +27,15 @@ class ConfigService {
 		return await fetchPost(this.endpoint + '/namespaces', data);
 	}
 
+	async copyNamespace(namespace) {
+		const data = {
+			action: 'copy',
+			namespace
+		};
+
+		return await fetchPost(this.endpoint + '/namespaces', data);
+	}
+
 	async editNamespace(namespace) {
 		const data = {
 			action: 'edit',
