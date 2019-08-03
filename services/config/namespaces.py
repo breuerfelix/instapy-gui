@@ -5,6 +5,7 @@ from auth import to_json, jwt_req
 from pymongo import ReturnDocument
 from bson.objectid import ObjectId
 from bson.json_util import loads
+from bson.json_util import dumps
 
 namespaces = Blueprint('namespaces', __name__)
 
@@ -60,6 +61,42 @@ def update_namespaces(payload):
                 }
             },
         )
+
+    elif action == 'copy':
+        result = db.namespaces.find_one({'ident': namespace, 'username': username})
+        if not result:
+            return to_json({'error': 'ident not found!'})
+
+        old_namespace = json.loads(dumps(result))
+        for job in old_namespace['jobs']:
+            job['_id'] = ObjectId()
+
+        new_ident = old_namespace['ident']
+        new_name = old_namespace['name']
+
+        counter = 0
+        max_counter = 20
+        while counter < max_counter:
+            counter = counter + 1
+            new_ident = new_ident + ' copy'
+            new_name = new_name + ' copy'
+            result = db.namespaces.find_one({'ident': new_ident, 'username': username})
+            if not result:
+                break
+
+        if counter == max_counter:
+            return to_json({'error': 'Too many copies!'})
+
+        new_namespace = {
+            'ident': new_ident,
+            'username': username,
+            'name': new_name,
+            'description': old_namespace['description'],
+            'jobs': old_namespace['jobs'],
+        }
+
+        db.namespaces.insert_one(new_namespace)
+        return to_json(new_namespace)
 
     # return the given namespace to approve
     return to_json(namespace)
