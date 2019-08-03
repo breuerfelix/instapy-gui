@@ -2,7 +2,7 @@ import { h, render, Component } from 'preact';
 import { InfoCard } from 'components';
 import { ConfigService, translate } from 'services';
 import { raiseError } from 'core';
-import { withRouter, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { AddItemModal } from 'modals';
 
 class NamespacesCard extends Component {
@@ -37,7 +37,8 @@ class NamespacesCard extends Component {
 	}
 
 	deleteNamespace = _ => {
-		// TODO show modal to confirm the deletion
+		if (!confirm('Do you really want to delete this template ?')) return;
+
 		const { namespaces, namespace } = this.state;
 
 		const name = namespaces.find(x => x.ident == namespace);
@@ -46,7 +47,6 @@ class NamespacesCard extends Component {
 		if (idx == -1) raiseError('Could not locate namespace!');
 
 		namespaces.splice(idx, 1);
-
 		this.setState({ namespaces });
 
 		// dont await since the result is not relevant
@@ -89,15 +89,27 @@ class NamespacesCard extends Component {
 		e.stopPropagation();
 		const { namespace, namespaces } = this.state;
 		const name = namespaces.find(x => x.ident == namespace);
+		if (!name) raiseError('error finding namespace: ' + namespace, false);
 		this.modal.editItem(name);
+	}
+
+	copyNamespace = async e => {
+		e.stopPropagation();
+		const { namespace } = this.state;
+		const new_namespace = await ConfigService.copyNamespace(namespace);
+		if (new_namespace.error) raiseError(new_namespace.error);
+
+		const { namespaces } = this.state;
+		namespaces.push(new_namespace);
+		this.setState({ namespaces: [ ...namespaces ] });
+
+		this.props.history.push(`/configuration/namespaces/${new_namespace.ident}`);
 	}
 
 	render({ match }, { namespaces, namespace }) {
 		const { params } = match;
 		if (namespace != params.namespace)
 			this.setState({ namespace: params.namespace });
-
-		let namespace_obj = namespaces.find(x => x.ident == namespace);
 
 		const namespaceOptions = namespaces.map(namespace =>
 			<option key={ namespace.ident } value={ namespace.ident }>{ namespace.name }</option>
@@ -138,6 +150,10 @@ class NamespacesCard extends Component {
 								<IconButton
 									icon='fas fa-edit'
 									onclick={ this.editNamespaceOpen }
+								/>
+								<IconButton
+									icon='fas fa-copy'
+									onclick={ this.copyNamespace }
 								/>
 								<IconButton
 									icon='fas fa-trash-alt'
