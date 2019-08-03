@@ -36,6 +36,8 @@ class Settings extends Component {
 	}
 
 	deleteSetting = async setting => {
+		if (!confirm('Do you really want to delete this setting ?')) return;
+
 		const res = await ConfigService.updateSetting({
 			action: 'delete',
 			data: setting
