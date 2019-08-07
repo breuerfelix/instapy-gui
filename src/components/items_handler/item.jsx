@@ -1,22 +1,19 @@
 import { h, render, Component } from 'preact';
 import { translate } from 'services';
 import $ from 'jquery';
-import { InfoArea, IconButton } from 'components';
-import { EditJob } from '../components';
-import { instapyAction } from 'config';
+import InfoArea from '../info_area';
+import IconButton from '../icon_button';
+import { EditJob } from '../edit_job';
 
-
-export default class SettingCard extends Component {
-	state = {
-		expanded: false
-	}
+export default class ItemCard extends Component {
+	state = { expanded: false }
 
 	componentWillMount() {
 		this.setState({ expanded: false });
 		$(this.body).collapse('hide');
 	}
 
-	updateSetting = e => {
+	updateItem = e => {
 		e.stopPropagation();
 
 		// in the validate function all params get set !
@@ -35,24 +32,24 @@ export default class SettingCard extends Component {
 		}
 
 		// TODO maybe make a popover over the save icon which displays 'saved';
-		const { updateSetting, setting } = this.props;
-		updateSetting(setting);
+		const { updateItem, item } = this.props;
+		updateItem(item);
 	}
 
-	editSetting = e => {
+	editItem = e => {
 		e.stopPropagation();
-		const { modal, setting } = this.props;
-		modal.editItem(setting);
+		const { modal, item } = this.props;
+		modal.editItem(item);
 	}
 
-	deleteSetting = e => {
+	deleteItem = e => {
 		e.stopPropagation();
 
 		$(this.body).collapse('hide');
 		this.setState({ expanded: false });
 
-		const { deleteSetting, setting } = this.props;
-		deleteSetting(setting);
+		const { deleteItem, item } = this.props;
+		deleteItem(item);
 	}
 
 	toggleCard = e => {
@@ -66,7 +63,7 @@ export default class SettingCard extends Component {
 		$(this.body).collapse('toggle');
 	}
 
-	render({ setting }, { expanded }) {
+	render({ item, action, editComponent }, { expanded }) {
 		const headerStyle = expanded ? null : { borderBottom: 0 };
 
 		return (
@@ -76,13 +73,13 @@ export default class SettingCard extends Component {
 					<div className="card-header" style={ headerStyle } onClick={ this.toggleCard }>
 						<div className="row">
 							<div className='col-md align-self-center'>
-								{ setting.name }
+								{ item.name }
 							</div>
 							<div style={{ textAlign: 'right' }} className='col-md align-self-center'>
 								<div className="iconnav btn-group" role='group'>
 									<IconButton
 										icon='fas fa-save'
-										onclick={ this.updateSetting }
+										onclick={ this.updateItem }
 									/>
 									<IconButton
 										icon='fas fa-cog'
@@ -90,11 +87,11 @@ export default class SettingCard extends Component {
 									/>
 									<IconButton
 										icon='fas fa-edit'
-										onclick={ this.editSetting }
+										onclick={ this.editItem }
 									/>
 									<IconButton
 										icon='fas fa-trash-alt'
-										onclick={ this.deleteSetting }
+										onclick={ this.deleteItem }
 									/>
 								</div>
 							</div>
@@ -103,13 +100,13 @@ export default class SettingCard extends Component {
 
 					<div className="collapse" ref={ body => this.body = body }>
 						<div className='card-body' style={{ padding: '5px' }}>
-							{ setting.description &&
-								<InfoArea description={ setting.description } />
+							{ item.description &&
+								<InfoArea description={ item.description } />
 							}
-							<EditJob ref={ edit => this.editJob = edit } job={ setting } action={ instapyAction } />
+							<EditJob ref={ edit => this.editJob = edit } job={ item } action={ action } />
 							<button
 								style={{ float: 'right', margin: '0 15px 15px 0' }}
-								onClick={ this.updateSetting }
+								onClick={ this.updateItem }
 								type='button'
 								className='btn btn-success'
 							>

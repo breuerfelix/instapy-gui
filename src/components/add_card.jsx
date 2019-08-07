@@ -8,7 +8,7 @@ const AddCard = ({ target }) => (
 				<a
 					className='fas fa-plus fa-3x'
 					data-toggle='modal'
-					data-target={ target }
+					data-target={ `#add-${target}-modal` }
 				/>
 			</div>
 

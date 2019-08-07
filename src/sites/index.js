@@ -4,6 +4,7 @@ import Dashboard from './dashboard';
 import Login from './login';
 import Privacy from './login/privacy';
 import Home from './home';
+import Scheduler from './scheduler';
 
 export {
 	Home,
@@ -11,5 +12,6 @@ export {
 	Start,
 	Dashboard,
 	Login,
-	Privacy
+	Privacy,
+	Scheduler,
 };

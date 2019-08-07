@@ -21,7 +21,7 @@ export default class ActionsModal extends Component {
 		return (
 			<div
 				ref={ modal => this.modal = modal }
-				id='actions-modal'
+				id='add-actions-modal'
 				className='modal fade'
 				tabIndex='-1'
 				role='dialog'

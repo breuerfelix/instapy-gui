@@ -3,7 +3,7 @@ import { translate, ConfigService } from 'services';
 import { connect } from 'core';
 import $ from 'jquery';
 import { InfoArea, IconButton } from 'components';
-import { EditJob } from '../components';
+import { EditJob } from 'components/edit_job';
 import classNames from 'classnames';
 
 @connect('actions')

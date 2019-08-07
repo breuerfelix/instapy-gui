@@ -71,6 +71,12 @@ export default class SideBar extends Component {
 								link='/start'
 								level='top'
 							/>
+							<MenuItem
+								label='sidebar_scheduler'
+								icon='fas fa-clock'
+								link='/scheduler'
+								level='top'
+							/>
 						</div>
 					}
 

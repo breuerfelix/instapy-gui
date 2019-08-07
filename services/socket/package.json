@@ -11,8 +11,8 @@
   "author": "Felix Breuer",
   "license": "GPL-3.0",
   "dependencies": {
-    "dockerode": "^2.5.8",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.3.0-beta2",
     "ws": "^6.1.4"
   },
   "devDependencies": {

@@ -15,6 +15,7 @@
 MONGO_URL=mongodb://mongo:27017
 JWT_SECRET=jwtsecret
 CIPHER_SECRET=ciphersecret <-- needs to be a 32-byte key
+MACHINE_KEY=machine_key
 SOCKET_ENDPOINT=ws://localhost:4005
 CONFIG_ENDPOINT=http://localhost:4002
 AUTH_ENDPOINT=http://localhost:4001
