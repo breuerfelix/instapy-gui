@@ -8,6 +8,7 @@ import PrivateRoute from './private_route';
 import InfoArea from './info_area';
 import IconButton from './icon_button';
 import InfoCard from './info_card';
+import AddCard from './add_card';
 
 export {
 	NavBar,
@@ -19,5 +20,6 @@ export {
 	PrivateRoute,
 	InfoArea,
 	IconButton,
-	InfoCard
+	InfoCard,
+	AddCard,
 };

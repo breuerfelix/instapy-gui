@@ -94,16 +94,16 @@ class ConfigService {
 		return await fetchPost(`${this.endpoint}/namespaces/${job.namespace}/jobs`, data);
 	}
 
-	async getSettings() {
-		return await fetchGet(`${this.endpoint}/settings`);
+	async getItems(ident) {
+		return await fetchGet(`${this.endpoint}/${ident}`);
 	}
 
-	async updateSetting(data) {
-		return await fetchPost(`${this.endpoint}/settings`, data);
+	async updateItem(ident, data) {
+		return await fetchPost(`${this.endpoint}/${ident}`, data);
 	}
 
-	async editSetting(data) {
-		return await fetchPost(`${this.endpoint}/settings`, data);
+	async editItem(ident, data) {
+		return await fetchPost(`${this.endpoint}/${ident}`, data);
 	}
 }
 

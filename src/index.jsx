@@ -6,7 +6,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import { h, render, Component } from 'preact';
-import { Router, Route, Redirect } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'unistore/preact';
 import ReactGA from 'react-ga';
@@ -14,7 +14,7 @@ import ReactGA from 'react-ga';
 import { PrivateRoute, NavBar, SideBar, Footer } from 'components';
 import {
 	Configuration, Start, Dashboard,
-	Login, Privacy, Home
+	Login, Privacy, Home, Scheduler
 } from 'sites';
 import {
 	readToken, store, connect,
@@ -86,6 +86,10 @@ class App extends Component {
 								<PrivateRoute
 									path='/dashboard'
 									component={ Dashboard }
+								/>
+								<PrivateRoute
+									path='/scheduler'
+									component={ Scheduler }
 								/>
 								<Footer />
 							</div>
