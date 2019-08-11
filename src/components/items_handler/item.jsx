@@ -16,20 +16,17 @@ export default class ItemCard extends Component {
 	updateItem = e => {
 		e.stopPropagation();
 
-		// in the validate function all params get set !
-		// never forget calling this, otherwise params wont be updated
-
 		// return if validation is not true
 		if (!this.editJob.validate()) {
 			// open card if error occured
 			$(this.body).collapse('show');
 			this.setState({ expanded: true });
 			return;
-		} else {
-			// close card if successful
-			$(this.body).collapse('hide');
-			this.setState({ expanded: false });
 		}
+
+		// close card if successful
+		$(this.body).collapse('hide');
+		this.setState({ expanded: false });
 
 		// TODO maybe make a popover over the save icon which displays 'saved';
 		const { updateItem, item } = this.props;
@@ -65,6 +62,13 @@ export default class ItemCard extends Component {
 
 	render({ item, action, editComponent }, { expanded }) {
 		const headerStyle = expanded ? null : { borderBottom: 0 };
+		this.editJob = h(
+			editComponent || EditJob,
+			{
+				job: item,
+				action,
+			}
+		);
 
 		return (
 			<div className='col-padding col'>
@@ -103,7 +107,7 @@ export default class ItemCard extends Component {
 							{ item.description &&
 								<InfoArea description={ item.description } />
 							}
-							<EditJob ref={ edit => this.editJob = edit } job={ item } action={ action } />
+							{ this.editJob }
 							<button
 								style={{ float: 'right', margin: '0 15px 15px 0' }}
 								onClick={ this.updateItem }

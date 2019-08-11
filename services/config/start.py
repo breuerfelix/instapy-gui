@@ -10,6 +10,7 @@ from os import getenv
 from actions import actions
 from namespaces import namespaces
 from settings import settings
+from scheduler import scheduler
 
 from database import client
 
@@ -17,6 +18,7 @@ app = Flask(__name__)
 app.register_blueprint(actions)
 app.register_blueprint(namespaces)
 app.register_blueprint(settings)
+app.register_blueprint(scheduler)
 
 CORS(app)
 
