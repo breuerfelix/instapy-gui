@@ -26,6 +26,7 @@
 
 * install [python 3](https://www.python.org/downloads/)
 * sign up on [instapy.io](https://instapy.io)
+* install [firefox](https://www.mozilla.org)
 
 ### register a bot
 
@@ -49,6 +50,7 @@
 
 #### docker
 
+__docker does not work due to the update to 0.6.* ! (we will try to fix this asap)__
 create a file named `instapy.env` with the following content:
 
 ```env
