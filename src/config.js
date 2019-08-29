@@ -62,30 +62,6 @@ const instapyAction = {
 			optional: true,
 			type: 'bool'
 		},
-		{
-			name: 'bypass_suspicious_attempt',
-			defaultValue: false,
-			optional: true,
-			type: 'bool'
-		},
-		{
-			name: 'bypass_with_mobile',
-			defaultValue: false,
-			optional: true,
-			type: 'bool'
-		},
-		{
-			name: 'multi_logs',
-			defaultValue: true,
-			optional: true,
-			type: 'bool'
-		},
-		{
-			name: 'split_db',
-			defaultValue: false,
-			optional: true,
-			type: 'bool'
-		}
 	]
 };
 

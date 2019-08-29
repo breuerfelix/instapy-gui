@@ -26,6 +26,7 @@
 
 * install [python 3](https://www.python.org/downloads/)
 * sign up on [instapy.io](https://instapy.io)
+* install [firefox](https://www.mozilla.org)
 
 ### register a bot
 
@@ -49,6 +50,7 @@
 
 #### docker
 
+__docker does not work due to the update to 0.6.* ! (we will try to fix this asap)__
 create a file named `instapy.env` with the following content:
 
 ```env
@@ -70,7 +72,7 @@ remember that you can only run docker clients in headless mode.
 * download [all files here](https://github.com/breuerfelix/instapy-gui/tree/master/services/instapy) and save them to a folder on your system
   * you can copy your old assets folder into this folder aswell to reuse your database / cookies / etc.
 * navigate to the folder in the console
-* you should create a new python [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) because we use a modified InstaPy version
+  * you could create a new python [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) here _(optional)_
 * run `pip install -r requirements.txt`
   * use `pip3` if you are on linux or mac
 * create a file named `.env` or `instapy.env` with the following content
@@ -155,16 +157,6 @@ if you are on a different machine just follow the steps [register a bot](#regist
 * reinstall the requirements
   * on linux or mac run `./env/bin/pip3 install -r requirements.txt`
   * on windows run `.\env\Scripts\pip.exe install -r requirements.txt`
-
-#### chromedriver is not installed
-
-```bash
-cd ~
-wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-sudo dpkg -i google-chrome-stable_current_amd64.deb
-sudo apt-get install -y -f
-sudo rm google-chrome-stable_current_amd64.deb
-```
 
 #### certificate verify failed
 

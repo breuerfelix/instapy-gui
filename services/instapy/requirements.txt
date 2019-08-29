@@ -1,4 +1,4 @@
-https://github.com/timgrossmann/InstaPy/zipball/gui-features
+instapy
 websocket-client
 requests
 python-dotenv
