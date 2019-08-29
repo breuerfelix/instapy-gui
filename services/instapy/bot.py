@@ -117,7 +117,6 @@ for param in setting['params']:
 
 # custom args
 instapy_args['log_handler'] = log_handler
-instapy_args['browser_binary_path'] = chromedriver_path
 
 # set assets folder as a workspace
 ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
