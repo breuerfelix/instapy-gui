@@ -149,6 +149,12 @@ export class ListBox extends Box {
 		return !error;
 	}
 
+	pasteSplit = (data) => {
+		// copied from https://stackoverflow.com/a/42008826/3575969
+		const separators = [',', ';', '\\(', '\\)', '\\*', '/', ':', '\\?', '\n', '\r'];
+		return data.split(new RegExp(separators.join('|'))).map(d => d.trim());
+	}
+
 	render({ param }, { input, error, tempInput }) {
 		const classes = classNames('react-tagsinput', {
 			'is-invalid': error
@@ -165,6 +171,8 @@ export class ListBox extends Box {
 					placeholder: param.placeholder
 				}}
 				inputValue={ tempInput }
+				pasteSplit={ this.pasteSplit }
+				addOnPaste={ true }
 				onChangeInput={ tempInput => this.setState({ tempInput }) }
 			/>
 		);
