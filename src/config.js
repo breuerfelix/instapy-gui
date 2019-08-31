@@ -62,6 +62,12 @@ const instapyAction = {
 			optional: true,
 			type: 'bool'
 		},
+		{
+			name: 'bypass_security_challenge_using',
+			defaultValue: 'email',
+			optional: true,
+			type: 'str'
+		},
 	]
 };
 
