@@ -18,9 +18,9 @@ const Home = () => (
 				<h6>How to get started within 10 minutes:</h6>
 				<br/>
 				<ol>
-					<li>Install <Link to='https://www.mozilla.org'>Firefox</Link></li>
+					<li>Install <a target='_blank' href='https://www.mozilla.org'>Firefox</a></li>
 					<li>Create an <Link to='/login'>Account</Link></li>
-					<li><Link to='https://github.com/breuerfelix/instapy-gui'>Register</Link> a Bot</li>
+					<li><a target='_blank' href='https://github.com/breuerfelix/instapy-gui'>Register</a> a Bot</li>
 					<li>Create a <Link to='/configuration/namespaces'>Template</Link></li>
 					<li>Modify your <Link to='/configuration/settings'>Settings</Link></li>
 					<li><Link to='/start'>Start</Link> your automation tool!</li>
