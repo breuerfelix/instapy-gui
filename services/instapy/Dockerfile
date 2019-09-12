@@ -9,6 +9,7 @@ RUN apk add --update --no-cache --virtual .build-dependencies \
 	gcc \
 	musl-dev \
 	g++ \
+	libffi \
   && pip3 install -r requirements.txt \
   && pip3 uninstall -y instapy-chromedriver \
   && apk del .build-dependencies
