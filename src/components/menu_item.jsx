@@ -66,7 +66,7 @@ class MenuItem extends Component {
 						</Link>
 				}
 				{ (link && external) &&
-						<a href={ link } target='__blank'>
+						<a href={ link } rel='noopener noreferrer' target='_blank'>
 							<Item
 								label={ label }
 								itemClass={ itemClass }
