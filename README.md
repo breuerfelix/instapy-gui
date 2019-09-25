@@ -137,8 +137,6 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 ## roadmap
 
-* edit name / description of template and setting
-* copy template and setting from an existing one
 * scheduler
 * change account info
 * forgot password
