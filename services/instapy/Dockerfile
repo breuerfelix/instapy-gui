@@ -1,23 +1,16 @@
-FROM python:3-alpine
+FROM python:3.7-slim-buster
 
 WORKDIR /usr/instapy
 
 COPY . .
 
-RUN apk add --update --no-cache --virtual .build-dependencies \
-	python3-dev \
-	gcc \
-	musl-dev \
-	g++ \
-	libffi-dev \
-	libressl-dev \
-  && pip3 install -r requirements.txt \
-  && pip3 uninstall -y instapy-chromedriver \
-  && apk del .build-dependencies
+RUN sed -i "s#deb http://deb.debian.org/debian buster main#deb http://deb.debian.org/debian buster main contrib non-free#g" /etc/apt/sources.list \
+	&& apt-get update && apt-get install -y --no-install-recommends \
+    	wget=1.20.1-1.1 gcc=4:8.3.0-1 g++=4:8.3.0-1 \
+	firefox-esr=60.8.0esr-1~deb10u1 firefoxdriver=3.14.1-1\
+ 	&& apt-get clean \
+ 	&& rm -rf /var/lib/apt/lists/*
+	
+RUN pip3 install -r requirements.txt;
 
-RUN apk --update --no-cache add \
-  chromium \
-  chromium-chromedriver
-
-ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 CMD ["python3", "-u", "start.py"]

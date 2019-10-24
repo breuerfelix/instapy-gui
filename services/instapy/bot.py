@@ -16,7 +16,6 @@ token = getenv('TOKEN')
 ident = getenv('IDENT')
 config_endpoint = getenv('CONFIG')
 socket_endpoint = getenv('SOCKET')
-chromedriver_path = getenv('CHROMEDRIVER_PATH', None)
 
 if not namespace or not token:
     sys.exit(0)
