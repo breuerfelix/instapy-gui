@@ -1,4 +1,4 @@
-instapy
-websocket-client
-requests
-python-dotenv
+instapy==0.6.4
+websocket-client==0.56.0
+requests==2.22.0
+python-dotenv==0.10.3
