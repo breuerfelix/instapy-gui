@@ -1,21 +1,21 @@
 <p align='center'>
-	<h1 align="center">InstaPy GUI</h1>
-	<p align="center">Graphical User Interface for <a href='https://github.com/timgrossmann/InstaPy'>InstaPy</a> Automation including some useful Analytics.<p>
-	<p align="center">
-		<a href="https://travis-ci.com/breuerfelix/instapy-gui">
-		<img src="https://travis-ci.com/breuerfelix/instapy-gui.svg?branch=master">
+	<h1 align='center'>InstaPy GUI</h1>
+	<p align='center'>Graphical User Interface for <a href='https://github.com/timgrossmann/InstaPy'>InstaPy</a> Automation including some useful Analytics.<p>
+	<p align='center'>
+		<a href='https://travis-ci.com/breuerfelix/instapy-gui'>
+			<img src='https://travis-ci.com/breuerfelix/instapy-gui.svg?branch=master' />
 		</a>
-		<a href="https://discord.gg/FDETsht">
-		<img src="https://img.shields.io/discord/510385886869979136.svg">
+		<a href='https://discord.gg/FDETsht'>
+			<img src='https://img.shields.io/discord/510385886869979136.svg' />
 		</a>
-		<a href="https://www.github.com/timgrossmann/InstaPy#backer">
-		<img src="https://opencollective.com/instapy/backers/badge.svg">
+		<a href='https://www.github.com/timgrossmann/InstaPy#backer'>
+			<img src='https://opencollective.com/instapy/backers/badge.svg' />
 		</a>
-		<a href="https://www.github.com/timgrossmann/InstaPy#sponsors">
-		<img src="https://opencollective.com/instapy/sponsors/badge.svg">
-		</a>  
-		<a href="https://github.com/breuerfelix/instapy-gui/blob/master/LICENSE">
-		<img src="https://img.shields.io/github/license/breuerfelix/instapy-gui.svg" />
+		<a href='https://www.github.com/timgrossmann/InstaPy#sponsors'>
+			<img src='https://opencollective.com/instapy/sponsors/badge.svg' />
+		</a>
+		<a href='https://github.com/breuerfelix/instapy-gui/blob/master/LICENSE'>
+			<img src='https://img.shields.io/github/license/breuerfelix/instapy-gui.svg' />
 		</a>
 	</p>
 </p>
@@ -50,7 +50,6 @@
 
 #### docker
 
-__docker does not work due to the update to 0.6.* ! (we will try to fix this asap)__
 create a file named `instapy.env` with the following content:
 
 ```env
