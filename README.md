@@ -165,6 +165,19 @@ certificate verify failed: unable to get local issuer certificate
 
 please have a look at [this](https://stackoverflow.com/questions/52805115/certificate-verify-failed-unable-to-get-local-issuer-certificate) stack overflow post to resolve the issue.
 
+#### global name 'f' is not defined
+
+```error
+Traceback (most recent call last):
+File "start.py", line 175, in
+TOKEN = get_token(username, password)
+File "start.py", line 64, in get_token
+print(f,"authenticate {username} to {url} ...")
+NameError: global name 'f' is not defined
+```
+
+you need to use python version `3.6` or higher. the f-string format got implemented in that version.
+
 ### do you need help ?
 
 if you should encounter any issue, please first [search for similar issues](https://github.com/breuerfelix/instapy-gui/issues) and only if you can't find any, create a new issue or use the [discord channel](https://discord.gg/FDETsht) for help.
