@@ -70,7 +70,7 @@ const instapyAction = {
 		},
 		{
 			name: 'want_check_browser',
-			defaultValue: false,
+			defaultValue: true,
 			optional: true,
 			type: 'bool'
 		},
