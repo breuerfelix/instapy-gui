@@ -6,7 +6,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import { h, render, Component } from 'preact';
-import { Router, Route, Redirect } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'unistore/preact';
 import ReactGA from 'react-ga';
@@ -40,9 +40,13 @@ handler.onError = (json) => {
 ReactGA.initialize(config.gaTrackingID);
 history.listen(({ pathname, search }) => ReactGA.pageview(pathname + search));
 
-@connect('showSidebar,token')
+@connect('showSidebar')
 class App extends Component {
-	render({ showSidebar, token }) {
+	state = {
+		showInfo: true,
+	}
+
+	render({ showSidebar }, { showInfo }) {
 		return (
 			<Router history={ history }>
 				<div className='container-fluid'>
@@ -60,6 +64,16 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
+								{ showInfo &&
+									<div className='alert alert-info' role='alert'>
+										<button onClick={ e => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
+											<span aria-hidden='true'>&times;</span>
+										</button>
+										10€+ donations can get a permanent link and mention on the front page.
+										<br/>
+										5€ / 95€ already donated to cover site costs in 2020.
+									</div>
+								}
 								<Route
 									exact
 									path='/'
