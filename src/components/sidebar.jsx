@@ -1,5 +1,5 @@
-import { h, render, Component } from 'preact';
-import { translate, AccountService } from 'services';
+import { h, Component } from 'preact';
+import { translate } from 'services';
 import { MenuItem } from 'components';
 import { connect } from 'core';
 
@@ -81,7 +81,7 @@ export default class SideBar extends Component {
 					<MenuItem
 						label='link_donate'
 						icon='fas fa-donate'
-						link='https://opencollective.com/instapy'
+						link='https://www.paypal.me/scriptworld'
 						level='top'
 						external={ true }
 					/>
