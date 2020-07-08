@@ -125,6 +125,7 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 ### video tutorials
 
+**[complete guide to bot creation](https://www.udemy.com/course/the-complete-guide-to-bot-creation/?referralCode=7418EBB47E11E34D86C9)**  
 **[full manual installation on windows 10](https://drive.google.com/open?id=1ZafLOa0ShSXva61eQwFAePSVBC0Suc9p) by [@LexLinux](https://github.com/lexlinux)**  
 **[1-click installation on windows 10](https://streamable.com/6h6d8) by [@HCWcoder](https://github.com/HCWcoder)**  
 **[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
