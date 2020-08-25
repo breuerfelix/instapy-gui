@@ -7,7 +7,7 @@ COPY . .
 RUN sed -i "s#deb http://deb.debian.org/debian buster main#deb http://deb.debian.org/debian buster main contrib non-free#g" /etc/apt/sources.list \
 	&& apt-get update && apt-get install -y --no-install-recommends \
 	wget gcc g++ \
-	firefox-esr firefoxdriver \
+	firefox-esr \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 	
