@@ -17,6 +17,7 @@ script:
   - npm run test
   - npm run build
   - echo instapy.io >> dist/CNAME
+  - touch dist/.nojekyll
   - docker-compose build
 deploy:
   - provider: script
