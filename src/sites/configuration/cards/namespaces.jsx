@@ -29,7 +29,7 @@ class NamespacesCard extends Component {
 	}
 
 	namespaceChanged = e => {
-		const { history, match } = this.props;
+		const { history } = this.props;
 		this.setState({ namespace: e.target.value });
 
 		const { namespace } = this.state;
