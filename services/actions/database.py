@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from os import getenv
 
 url = getenv('MONGO_URL') or 'mongodb://localhost:27017'

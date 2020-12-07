@@ -1,101 +1,69 @@
 #!/usr/bin/env python
 from dotenv import load_dotenv
-
 load_dotenv()
 
-from instapy import InstaPy
-from inspect import signature, getdoc
-import re
+def fix_jobs_namespaces():
+    from bson.json_util import dumps
+    from bson.objectid import ObjectId
+    import json
 
+    table = client.configuration.namespaces
+    namespaces = table.find({})
 
-def get_actions():
-    real_funcs = []
-    for func in dir(InstaPy):
-        if func.startswith('__') and func.endswith('__'):
-            # just a class function
-            continue
-
-        # only use mentioned functions
-        if not (
-            func.startswith('set')
-            or func.startswith('follow')
-            or func.startswith('interact')
-            or func.startswith('like')
-            or func.startswith('unfollow')
-            or func.startswith('join')
-            or func.startswith('clarifai')
-            or func.startswith('comment')
-            or func.startswith('accept')  # accept_follow_requests
-        ):
-            continue
-
-        real_funcs.append(func)
-
-    actions = []
-    for func in real_funcs:
-        action = dict()
-        function = getattr(InstaPy, func)
-
-        action['functionName'] = func
-        action['description'] = getdoc(function)
-
-        params = []
-        sig = signature(function)
-
-        for index, para in enumerate(sig.parameters):
-            # ignore 'self'
-            if index == 0:
+    counter = 0
+    wrong = 0
+    for entry in namespaces:
+        counter += 1
+        print(counter)
+        o_id = ObjectId(entry['_id'])
+        ident = entry['ident']
+        for job in entry['jobs']:
+            if job['namespace'] == ident:
                 continue
 
-            actual_param = sig.parameters[para]
-            param = dict()
+            j_id = ObjectId(job['_id'])
+            table.find_one_and_update(
+                {'_id': o_id, 'jobs._id': j_id},
+                {'$set': {'jobs.$.namespace': ident}},
+            )
+            wrong += 1
 
-            # substract 1 since 0 is the self parameter
-            param['name'] = str(para)
+    print('counter:', counter)
+    print('wrong:', wrong)
 
-            # TODO someone please fix these condition
-            if str(actual_param.default) == '<class \'inspect._empty\'>':
-                param['defaultValue'] = None
-                param['optional'] = False
-            else:
-                param['defaultValue'] = actual_param.default
-                param['optional'] = True
+    client.close()
 
-            # save type of the annotation
-            paramtype = None
 
-            if 'inspect._empty' in str(actual_param.annotation):
-                paramtype = None
-            elif 'typing.Tuple' in str(actual_param.annotation):
-                # converts 'typing.Tuple[int, str]' to 'tuple:int,str'
-                tuple_types = re.search(
-                    '(?<=\[).*?(?=\])', str(actual_param.annotation)
-                )
-                tuple_types = tuple_types.group().split(',')
-                tuple_types = ','.join(list(map(lambda x: x.strip(), tuple_types)))
-                paramtype = f'tuple:{tuple_types}'
-            else:
-                paramtype = actual_param.annotation.__name__
+def diff_actions():
+    for action in get_actions():
+        act = table.find_one({'functionName': action['functionName']})
+        for k, v in action.items():
+            if act[k] == v:
+                continue
 
-            param['type'] = paramtype
+            print('diff!:', k)
 
-            params.append(param)
+            if k == 'params':
+                for vv in action[k]:
+                    for a in act[k]:
+                        if a['name'] == vv['name']:
+                            if a != vv:
+                                print('new', a)
+                                print('old', vv)
 
-        action['params'] = params
-
-        actions.append(action)
-
-    return actions
-
+                            break
 
 from database import client
+from insta import get_actions
 
 if __name__ == '__main__':
     table = client.configuration.actions
+
     # table.create_index('functionName', unique = True, background = True)
 
-    for action in get_actions():
-        table.replace_one({'functionName': action['functionName']}, action, upsert=True)
+    # update actions
+    # for action in get_actions():
+        # table.replace_one({'functionName': action['functionName']}, action, upsert=True)
 
     client.close()
-    print('added actions to mongodb')
+    #print('added actions to mongodb')
