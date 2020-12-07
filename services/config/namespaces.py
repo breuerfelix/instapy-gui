@@ -68,16 +68,15 @@ def update_namespaces(payload):
             return to_json({'error': 'ident not found!'})
 
         old_namespace = json.loads(dumps(result))
-        for job in old_namespace['jobs']:
-            job['_id'] = ObjectId()
 
         new_ident = old_namespace['ident']
         new_name = old_namespace['name']
 
+        # generate new namespace name
         counter = 0
         max_counter = 20
         while counter < max_counter:
-            counter = counter + 1
+            counter += 1
             new_ident = new_ident + ' copy'
             new_name = new_name + ' copy'
             result = db.namespaces.find_one({'ident': new_ident, 'username': username})
@@ -86,6 +85,11 @@ def update_namespaces(payload):
 
         if counter == max_counter:
             return to_json({'error': 'Too many copies!'})
+
+        # adjust old jobs to new namespace
+        for job in old_namespace['jobs']:
+            job['_id'] = ObjectId()
+            job['namespace'] = new_ident
 
         new_namespace = {
             'ident': new_ident,
