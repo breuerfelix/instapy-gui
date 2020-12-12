@@ -71,7 +71,7 @@ class App extends Component {
 										</button>
 										10€+ donations can get a permanent link and mention on the front page.
 										<br/>
-										20€ / 95€ already donated to cover site costs in 2020.
+										30€ / 95€ already donated to cover site costs in 2020.
 									</div>
 								}
 								<Route
