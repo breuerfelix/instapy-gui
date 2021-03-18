@@ -1,4 +1,4 @@
-FROM python:3.7-slim-buster
+FROM python:3.8-slim-buster
 
 WORKDIR /usr/instapy
 
@@ -10,7 +10,7 @@ RUN sed -i "s#deb http://deb.debian.org/debian buster main#deb http://deb.debian
 	firefox-esr \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
-	
+
 RUN pip3 install -r requirements.txt;
 
 CMD ["python3", "-u", "start.py"]

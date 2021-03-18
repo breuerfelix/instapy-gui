@@ -5,11 +5,13 @@ WORKDIR /usr/instapy
 COPY . .
 
 RUN apk add --update --no-cache --virtual .build-dependencies \
-	gcc \
-	musl-dev \
-	libffi-dev \
+  gcc g++ \
+  musl-dev \
+  libffi-dev \
   openssl-dev \
-  && pip3 install -r requirements.txt \
+  python3-dev \
+  cargo \
+  && python -m pip install -r requirements.txt \
   && apk del .build-dependencies
 
 EXPOSE 80

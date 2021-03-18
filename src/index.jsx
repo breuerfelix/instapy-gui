@@ -69,7 +69,7 @@ class App extends Component {
 										<button onClick={ _ => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
 											<span aria-hidden='true'>&times;</span>
 										</button>
-										To cover site costs, i would appreciate a monthly donation via <a href='https://www.patreon.com/scriptworld' target='_blank' rel='noopener'>Patreon</a>.
+										To cover site costs, i would appreciate a monthly donation via <a href='https://www.patreon.com/scriptworld' target='_blank' rel='noopener noreferrer'>Patreon</a>.
 										<br/>
 										10€+ montly donations can get a permanent link and mention on the front page.
 									</div>
