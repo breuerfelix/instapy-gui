@@ -132,8 +132,8 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 ## screenshots
 
-![templates](docs/templates.png)  
-![start](docs/start.png)
+![templates](public/templates.png)  
+![start](public/start.png)
 
 ## roadmap
 

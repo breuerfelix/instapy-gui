@@ -81,7 +81,7 @@ export default class SideBar extends Component {
 					<MenuItem
 						label='link_donate'
 						icon='fas fa-donate'
-						link='https://www.paypal.me/scriptworld'
+						link='https://www.patreon.com/scriptworld'
 						level='top'
 						external={ true }
 					/>

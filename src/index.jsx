@@ -66,12 +66,12 @@ class App extends Component {
 							<div style={{ padding: '15px 15px 0 15px' }}>
 								{ showInfo &&
 									<div className='alert alert-info' role='alert'>
-										<button onClick={ e => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
+										<button onClick={ _ => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
 											<span aria-hidden='true'>&times;</span>
 										</button>
-										10€+ donations can get a permanent link and mention on the front page.
+										To cover site costs, i would appreciate a monthly donation via <a href='https://www.patreon.com/scriptworld' target='_blank' rel='noopener'>Patreon</a>.
 										<br/>
-										30€ / 95€ already donated to cover site costs in 2020.
+										10€+ montly donations can get a permanent link and mention on the front page.
 									</div>
 								}
 								<Route
