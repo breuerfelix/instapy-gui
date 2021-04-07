@@ -35,6 +35,7 @@ handler.onError = (json) => {
 	}
 };
 
+
 // track location change to google analytics
 // TODO disable in dev mode
 ReactGA.initialize(config.gaTrackingID);
@@ -64,7 +65,7 @@ class App extends Component {
 						<div className='col'>
 							<NavBar />
 							<div style={{ padding: '15px 15px 0 15px' }}>
-								{ showInfo &&
+								{ false &&
 									<div className='alert alert-info' role='alert'>
 										<button onClick={ _ => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
 											<span aria-hidden='true'>&times;</span>
@@ -72,6 +73,22 @@ class App extends Component {
 										To cover site costs, i would appreciate a monthly donation via <a href='https://www.patreon.com/scriptworld' target='_blank' rel='noopener noreferrer'>Patreon</a>.
 										<br/>
 										10€+ montly donations can get a permanent link and mention on the front page.
+									</div>
+								}
+								{ showInfo &&
+									<div className='alert alert-danger' role='alert'>
+										<button onClick={ _ => this.setState({ showInfo: false }) } type='button' className='close' data-dismiss='alert' aria-label='Close'>
+											<span aria-hidden='true'>&times;</span>
+										</button>
+										Date of this Notification: 07.04.2021
+										<br/>
+										We messed up the automatic HTTPS Certificate generation.
+										<br/>
+										The site is currently not useable and it will take UP TO 7 days until all certs are renewed.
+										<br/>
+										We are sorry for the inconvenience and try to fix this ASAP!
+										<br/>
+										Once this Notification is gone, all systems are operational again.
 									</div>
 								}
 								<Route
