@@ -18,7 +18,7 @@ services:
   auth:
     build: ./services/auth
     image: felixbreuer/instapy-auth:latest
-    command: sh -c "npm install && npm run dev"
+    command: ['npm', 'run', 'dev']
     restart: unless-stopped
     volumes:
       - ./services/auth:/usr/instapy
@@ -32,7 +32,7 @@ services:
   socket:
     build: ./services/socket
     image: felixbreuer/instapy-socket:latest
-    command: sh -c "npm install && npm run dev"
+    command: ['npm', 'run', 'dev']
     restart: unless-stopped
     ports:
       - 4005:80

@@ -22,8 +22,7 @@ AUTH_ENDPOINT=http://localhost:4001
 
 * create a folder named `./dev/mongo`
 * `docker-compose up mongo` - wait for it to start
-* If this is the first time running this mongo db, run `docker-compose up actions`
-* `docker-compose up auth config socket`
+* `docker-compose up actions auth config socket`
   * your local files will be mounted inside the docker images
   * file watch and auto restart on changes is enabled
 * `npm run start:local`
