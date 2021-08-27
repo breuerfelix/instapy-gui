@@ -46,7 +46,7 @@ services:
     image: mongo
     restart: unless-stopped
     volumes:
-      - /home/user/dev/mongo:/data/db
+      - ./dev/mongo:/data/db
     ports:
       - 27017:27017
   instapy:
