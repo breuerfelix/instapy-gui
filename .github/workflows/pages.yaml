@@ -13,7 +13,7 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          npm build
+          npm run build
           echo instapy.io >> dist/CNAME
           touch dist/.nojekyll
 
