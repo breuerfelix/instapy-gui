@@ -52,3 +52,12 @@ services:
   instapy:
     build: ./services/instapy
     image: felixbreuer/instapy-client:latest
+  
+  actions:
+    build: ./services/actions
+    volumes:
+      - ./services/actions:/usr/instapy
+    environment:
+      - MONGO_URL
+    depends_on:
+      - mongo

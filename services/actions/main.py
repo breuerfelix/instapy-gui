@@ -59,11 +59,11 @@ from insta import get_actions
 if __name__ == '__main__':
     table = client.configuration.actions
 
-    # table.create_index('functionName', unique = True, background = True)
+    table.create_index('functionName', unique = True, background = True)
 
     # update actions
-    # for action in get_actions():
-        # table.replace_one({'functionName': action['functionName']}, action, upsert=True)
+    for action in get_actions():
+        table.replace_one({'functionName': action['functionName']}, action, upsert=True)
 
     client.close()
-    #print('added actions to mongodb')
+    print('added actions to mongodb')
