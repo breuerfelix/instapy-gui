@@ -1,4 +1,4 @@
-import { h, render, Component } from 'preact';
+import { h, Component } from 'preact';
 import { SocketService, translate } from 'services';
 import $ from 'jquery';
 
@@ -6,7 +6,7 @@ export default class Console extends Component {
 	state = {
 		logList: [],
 		scrolled: false,
-		bot: null
+		bot: null,
 	}
 
 	receiveLogs = data => {
@@ -72,13 +72,13 @@ export default class Console extends Component {
 			SocketService.send({
 				handler: 'logs',
 				action: 'get',
-				bot: props.bot
+				bot: props.bot,
 			});
 		}
 
 		// TODO pretty print, highlight time / user/ whatever
-		const logs = logList.map(log =>
-			<li>{ log }</li>
+		const logs = logList.map((log, i) =>
+			<li key={ i }>{ log }</li>
 		);
 
 		return (
