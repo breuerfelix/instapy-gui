@@ -1,4 +1,5 @@
 from os import getenv
+import sys
 from flask import Blueprint, request
 from database import client
 from auth import to_json, jwt_req, encode, decode
@@ -16,7 +17,7 @@ def coding_wrapper(text, func):
     try:
         return func(text, CIPHER_SECRET)
     except Exception as e:
-        print('error in coding wrapper', e)
+        print('error in coding wrapper', e, file=sys.stderr)
         return None
 
 
@@ -94,7 +95,7 @@ def update_settings(payload):
                 continue
 
             param['value'] = coding_wrapper(param['value'], encode)
-
+            
         table.find_one_and_update(
             {'ident': setting['ident'], 'username': username},
             {'$set': {'params': setting['params']}},

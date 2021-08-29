@@ -1,4 +1,5 @@
 import jwt
+import sys
 import json
 from functools import wraps
 from flask import request, current_app
@@ -20,7 +21,7 @@ def jwt_req(f):
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization', None)
         if not token:
-            print('error: no token provided')
+            print('error: no token provided', file=sys.stderr)
             return to_json({'error': 'no token provided', 'type': 'auth'}, 400)
 
         payload = None
@@ -29,15 +30,15 @@ def jwt_req(f):
             token = token.split(' ')[1]
             payload = jwt.decode(token, SECRET, algorithms=['HS256'])
         except:
-            print('error: decoding token')
+            print('error: decoding token', file=sys.stderr)
             return to_json({'error': 'decoding token', 'type': 'auth'}, 400)
 
         if not payload:
-            print('error: no payload')
+            print('error: no payload', file=sys.stderr)
             return to_json({'error': 'no payload', 'type': 'auth'}, 400)
 
         if not payload['username']:
-            print('error: no username')
+            print('error: no username', file=sys.stderr)
             return to_json({'error': 'no username in payload', 'type': 'auth'}, 400)
 
         return f(*args, payload=payload, **kwargs)
