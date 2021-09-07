@@ -214,9 +214,9 @@ export class BooleanBox extends Box {
 }
 
 class RangeBoxSmall extends Component {
-	render({is_range, classes, param, onValueChange, onMaximumChange, onMinimumChange, value, maximum, minimum, type=null, step=null}) {
+	render({ is_range, classes, param, onValueChange, onMaximumChange, onMinimumChange, value, maximum, minimum, type=null, step=null }) {
 		if (is_range){
-			return(
+			return (
 				<div className='row'>
 					<input
 						step={ step }
@@ -228,7 +228,7 @@ class RangeBoxSmall extends Component {
 						style='width:auto'
 					/>
 					<h3
-					className='col-md-1'
+						className='col-md-1'
 					> - </h3>
 					<input
 						step={ step }
@@ -243,7 +243,7 @@ class RangeBoxSmall extends Component {
 			);
 		}
 
-		return(
+		return (
 			<input
 				step={ step }
 				type={ type }
@@ -274,18 +274,18 @@ export class RangeBox extends Box {
 
 		if (typeof input == 'number') {
 			this.setState({ is_range: false, single: input, min: null, max: null });
-			return
+			return;
 		}
 
-		this.setState({ ...this.state, ...input })
+		this.setState({ ...this.state, ...input });
 	}
 
 	is_not_defined = (input) => {
-		return input == '' || input == null || input == undefined
+		return input == '' || input == null || input == undefined;
 	}
 
 	no_value = (params, value) => {
-		if(value) {
+		if (value) {
 			const index = params.indexOf(value);
 			if (index > -1) {
 				params.splice(index, 1);
@@ -295,7 +295,7 @@ export class RangeBox extends Box {
 
 	validate = () => {
 		const { step, param, value, params } = this.props;
-		const {is_range, single, max, min} = this.state;
+		const { is_range, single, max, min } = this.state;
 		let parse_function = step == '1' ? parseInt : parseFloat;
 
 		if (is_range) {
@@ -303,16 +303,16 @@ export class RangeBox extends Box {
 				if (param.optional){
 					this.setState({ input: null });
 				} else {
-					this.setState({ error: true })
+					this.setState({ error: true });
 				}
 			} else if (parse_function(min)>=parse_function(max)) {
 				if (param.optional){
 					this.setState({ input: null });
 				} else {
-					this.setState({ error: true })
+					this.setState({ error: true });
 				}
 			} else {
-				this.setState({ error: false, input: {is_range:is_range, max:parse_function(max), min:parse_function(min)} })
+				this.setState({ error: false, input: { is_range:is_range, max:parse_function(max), min:parse_function(min) } });
 			}
 		} else {
 			if ((this.is_not_defined(single) || single == param.defaultValue) && param.optional) {
@@ -341,25 +341,25 @@ export class RangeBox extends Box {
 			<div className='row'>
 				<input
 					type="checkbox"
-					checked={is_range}
-					onChange={ linkState(this, 'is_range')}
+					checked={ is_range }
+					onChange={ linkState(this, 'is_range') }
 					id="is_range" name="is_range"
 				/> {/* TODO having a cont id is a bad idea - find another way */}
 
-				<label for="is_range" className='col-md-2'>Pick from range</label>
+				<label htmlFor="is_range" className='col-md-2'>Pick from range</label>
 				<RangeBoxSmall
-					is_range={is_range}
-					param={param}
-					classes={classes}
-					type={type}
-					step={step}
-					value={single}
-					maximum={max}
-					minimum={min}
-					onValueChange={linkState(this, 'single')}
-					onMaximumChange={linkState(this, 'max')}
-					onMinimumChange={linkState(this, 'min')}
-					/>
+					is_range={ is_range }
+					param={ param }
+					classes={ classes }
+					type={ type }
+					step={ step }
+					value={ single }
+					maximum={ max }
+					minimum={ min }
+					onValueChange={ linkState(this, 'single') }
+					onMaximumChange={ linkState(this, 'max') }
+					onMinimumChange={ linkState(this, 'min') }
+				/>
 			</div>
 		);
 	}
