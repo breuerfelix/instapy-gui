@@ -374,7 +374,7 @@ const inputComponents = {
 		props: { type: 'number', step: '1' }
 	},
 	float: {
-		element: InputBox, // TODO figure out how to change this
+		element: RangeBox,
 		props: { type: 'number', step: '0.01' }
 	},
 	bool: { element: BooleanBox, props: {} },

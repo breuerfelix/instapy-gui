@@ -7,6 +7,7 @@ import json
 import platform
 import signal
 from os import getenv
+from decimal import Decimal
 from websocket import create_connection
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
@@ -86,6 +87,17 @@ for job in res_jobs:
 # convert list to actual arrays / tuples
 actions = get('/actions')
 
+def get_number_of_digits_after_point(number):
+    return abs(Decimal(str(number)).as_tuple().exponent)
+
+def randomize_int(min_number, max_number):
+    return random.randint(min_number, max_number)
+
+def randomize_float(min_number, max_number):
+    N = max(get_number_of_digits_after_point(min_number), get_number_of_digits_after_point(max_number))
+    N = max(N, 2)
+    return round(random.uniform(min_number, max_number), N)
+
 for job in jobs:
     action = next(
         action for action in actions if action['functionName'] == job['functionName']
@@ -98,9 +110,10 @@ for job in jobs:
             if act_param['name'] == param['name']
         )
 
-        if act_param['type'] == 'int' and type(param['value']) is dict:
+        if (act_param['type'] == 'int' or act_param['type'] == 'float') and type(param['value']) is dict:
+            randomize_number = randomize_int if act_param['type'] == 'int' else randomize_float
             if param['value']['is_range']:
-                param['value'] = random.randint(param['value']['min'], param['value']['max'])
+                param['value'] = randomize_number(param['value']['min'], param['value']['max'])
             else:
                 param['value'] = param['value']['single']
             continue
