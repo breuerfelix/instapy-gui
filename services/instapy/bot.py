@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import random
 import requests
 import json
 import platform
@@ -97,6 +98,13 @@ for job in jobs:
             if act_param['name'] == param['name']
         )
 
+        if act_param['type'] == 'int' and type(param['value']) is dict:
+            if param['value']['is_range']:
+                param['value'] = random.randint(param['value']['min'], param['value']['max'])
+            else:
+                param['value'] = param['value']['single']
+            continue
+
         if not isinstance(param['value'], str):
             continue
 
@@ -112,7 +120,15 @@ setting = get(f'/settings/{setting_ident}')
 # user args
 instapy_args = dict()
 for param in setting['params']:
-    instapy_args[param['name']] = param['value']
+    if param['name'] == 'page_delay' or param['name'] == 'proxy_port':
+        if type(param['value']) == int: # backward compitability
+            instapy_args[param['name']] = param['value']
+        elif param['value']['is_range']:
+            instapy_args[param['name']] = random.randint(param['value']['min'], param['value']['max'])
+        else:
+            instapy_args[param['name']] = param['value']['single']
+    else:
+        instapy_args[param['name']] = param['value']
 
 # custom args
 instapy_args['log_handler'] = log_handler
