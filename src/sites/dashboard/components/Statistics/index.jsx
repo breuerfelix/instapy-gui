@@ -67,6 +67,7 @@ class UserDbData extends Component {
   }
 
   getAllActivities = async () => {
+    //TODO
     //const response = await api.get('get_all_activities')
     const response = {
       data:[ { rowid: 4,
