@@ -67,7 +67,7 @@ class UserDbData extends Component {
   }
 
   getAllActivities = async () => {
-    //TODO
+    //TODO should use new api
     //const response = await api.get('get_all_activities')
     const response = {
       data:[ { rowid: 4,
@@ -104,8 +104,7 @@ class UserDbData extends Component {
     })
   }
 
-  render() {
-    const { classes } = this.props
+  render({ match, classes }) {
     return (
       <div className={classes.wrapper}>
       <h1>Statistics</h1>
@@ -127,7 +126,7 @@ class UserDbData extends Component {
                 return (
                   <TableRow key={row.rowid}>
                     <TableCell component="th" scope="row">
-                      <Link to={`userStatistics/${row.profile_id}`}
+                      <Link to={`${match.url}/userStatistics/${row.profile_id}`}
                             className={classes.menuButton} >
                         {row.name}
                       </Link>

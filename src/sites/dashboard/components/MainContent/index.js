@@ -10,7 +10,7 @@ export default class MainContent extends Component {
     console.log(match)
     return (
         <Switch>
-          <Route path={`${match.url}/`} component={Statistics} />
+          <Route path={`${match.url}/`} exact component={Statistics} />
           <Route path={`${match.url}/logs`} component={Logger} />
           <Route path={`${match.url}/userStatistics/:id`} component={UserStatistics} />
         </Switch>

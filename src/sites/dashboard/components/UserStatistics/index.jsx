@@ -97,33 +97,23 @@ class AccountStatistics extends Component {
       }
     })*/
     const response = {
-      data:[ { rowid: 4,
-        profile_id: 1,
-        name: 'friends.clips.forever',
-        likes: 5,
-        comments: 0,
-        follows: 8,
-        unfollows: 0,
-        server_calls: 97,
-        day_filter: '2021-09-16' },
-      { rowid: 3,
-        profile_id: 1,
-        name: 'friends.clips.forever',
-        likes: 5,
-        comments: 0,
-        follows: 4,
-        unfollows: 0,
-        server_calls: 79,
-        day_filter: '2021-09-14' },
-      { rowid: 1,
-        profile_id: 1,
-        name: 'friends.clips.forever',
-        likes: 0,
-        comments: 0,
-        follows: 8,
-        unfollows: 0,
-        server_calls: 133,
-        day_filter: '2021-09-13' } ]
+      data:[
+        {
+          following: 5,
+          followers: 5,
+          day: 'dsfs1'
+        },
+        {
+          following: 6,
+          followers: 6,
+          day: 'dsfs2'
+        },
+        {
+          following: 7,
+          followers: 4,
+          day: 'dsfs3'
+        }
+      ]
     }
     this.setState({
       userStats: response.data
@@ -155,8 +145,8 @@ class AccountStatistics extends Component {
       <div className={classes.wrapper}>
         <h1>User Statistics</h1>
         <Paper>
-          <LineChart data={followersFollowingChartData} />
-          <LineChart data={newFollowersChartData} />
+          <LineChart curve={false} data={followersFollowingChartData} />
+          <LineChart curve={false} data={newFollowersChartData} />
         </Paper>
         <Paper className={classes.root}>
           <Table className={classes.table}>
