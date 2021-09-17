@@ -16,6 +16,7 @@ token = getenv('TOKEN')
 ident = getenv('IDENT')
 config_endpoint = getenv('CONFIG')
 socket_endpoint = getenv('SOCKET')
+ASSETS = getenv('ASSETS')
 
 if not namespace or not token:
     sys.exit(0)
@@ -118,7 +119,6 @@ for param in setting['params']:
 instapy_args['log_handler'] = log_handler
 
 # set assets folder as a workspace
-ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
 set_workspace(ASSETS)
 
 # get an InstaPy session!

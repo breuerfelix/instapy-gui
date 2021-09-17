@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const jwt = require('jsonwebtoken');
+const { createWebSocketStream } = require('ws');
 
 const { JWT_SECRET , PORT } = process.env;
 const wss = new WebSocket.Server({ port: PORT || 80 });
@@ -172,3 +173,26 @@ function logs(ws, user, socket, payload, data) {
 	}
 }
 HANDLERS['logs'] = logs;
+
+
+function getAllActivities(ws, user, socket, payload, data) {
+	if (socket.type == 'instapy') {
+		console.log("got instapy")
+		const app = user.sockets.find(x => (x.type && x.type == 'app') && (x.wait_activities && x.wait_activities == true));
+		app.ws.send(json({
+			handler: 'get-activities',
+			action: 'update',
+			data: data.data
+		}));
+	} else {
+		console.log("send request")
+		socket.wait_activities = true;
+		const s = user.sockets.filter(x => x.type == 'instapy');
+		s.forEach(bot => {
+			bot.ws.send(json({
+				handler:'get-activities',
+			}))
+		});
+	}
+}
+HANDLERS['get-activities'] = getAllActivities;

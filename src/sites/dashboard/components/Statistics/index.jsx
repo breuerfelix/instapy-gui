@@ -1,7 +1,7 @@
 import {h} from 'preact'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-//import api from '../../services/api'
+import { SocketService } from 'services'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -46,65 +46,40 @@ class UserDbData extends Component {
   state = {
     allActivities: [],
     loading: true,
-    timeId: null
   }
 
-  componentDidMount() {
-    this.getAllActivities()
-    // adds 5secs timer to reload database data
-    const timeId = setInterval(() => {
-      this.getAllActivities()
-    }, 5000)
-    // update Timer Id
-    this.setState({
-      timeId
+  updateActivities = data => {
+    // TODO this can be more efficient
+    // TODO for the updata - remove from allActivities - so the new one will remain
+    const { allActivities } = this.state;
+    data.data = data.data.filter(e => {
+      const json_value = JSON.stringify(e)
+      return !allActivities.filter(activity => activity.day_filter == e.day_filter).some(activity => json_value == JSON.stringify(activity));
     })
-  }
-
-  componentWillUnmount() {
-    // clean timer
-    clearInterval(this.state.timeId)
-  }
-
-  getAllActivities = async () => {
-    //TODO should use new api
-    //const response = await api.get('get_all_activities')
-    const response = {
-      data:[ { rowid: 4,
-        profile_id: 1,
-        name: 'friends.clips.forever',
-        likes: 5,
-        comments: 0,
-        follows: 8,
-        unfollows: 0,
-        server_calls: 97,
-        day_filter: '2021-09-16' },
-      { rowid: 3,
-        profile_id: 1,
-        name: 'friends.clips.forever',
-        likes: 5,
-        comments: 0,
-        follows: 4,
-        unfollows: 0,
-        server_calls: 79,
-        day_filter: '2021-09-14' },
-      { rowid: 1,
-        profile_id: 1,
-        name: 'friends.clips.forever',
-        likes: 0,
-        comments: 0,
-        follows: 8,
-        unfollows: 0,
-        server_calls: 133,
-        day_filter: '2021-09-13' } ]
-    }
+    const new_activities = data.data.concat(allActivities).sort(function(a, b){
+      if(a.day_filter < b.day_filter) { return 1; }
+      if(a.day_filter > b.day_filter) { return -1; }
+      return 0;
+    })
     this.setState({
-      allActivities: response.data,
+      allActivities: new_activities,
       loading: false
     })
   }
 
-  render({ match, classes }) {
+  componentDidMount() {
+    SocketService.register('get-activities', this.updateActivities);
+    SocketService.send({
+      handler: 'get-activities',
+      action: 'get'
+    });
+  }
+
+  componentWillUnmount(){
+    SocketService.unregister('get-activities', this.updateActivities);
+  }
+
+  render({ match, classes }, { loading, allActivities }) {
     return (
       <div className={classes.wrapper}>
       <h1>Statistics</h1>
@@ -122,7 +97,7 @@ class UserDbData extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.allActivities.map(row => {
+              {allActivities.map(row => {
                 return (
                   <TableRow key={row.rowid}>
                     <TableCell component="th" scope="row">
@@ -143,12 +118,19 @@ class UserDbData extends Component {
             </TableBody>
           </Table>
           <HashLoader
-          className={override}
-          sizeUnit={"px"}
-          size={50}
-          color={'#3f51b5'}
-          loading={this.state.loading}
-        />
+            className={override}
+            sizeUnit={"px"}
+            size={50}
+            color={'#3f51b5'}
+            loading={loading}
+          />
+          {
+            loading && <div style="text-align: center"
+            className={override}>
+            Getting data from connected bots.<br/>
+            You need to connect atleast one bot, and it should have data from atleast 1 run.
+            </div>
+          }
         </Paper>
       </div>
     )
