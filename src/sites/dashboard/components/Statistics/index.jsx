@@ -49,18 +49,29 @@ class UserDbData extends Component {
   }
 
   updateActivities = data => {
-    // TODO this can be more efficient
-    // TODO for the updata - remove from allActivities - so the new one will remain
     const { allActivities } = this.state;
-    data.data = data.data.filter(e => {
-      const json_value = JSON.stringify(e)
-      return !allActivities.filter(activity => activity.day_filter == e.day_filter).some(activity => json_value == JSON.stringify(activity));
+
+    const new_activities = allActivities.concat(data.data).map((value,index,self) => {
+      const i = self.findIndex(inner_value => value.day_filter == inner_value.day_filter && value.name == inner_value.name)
+      if (i==index){
+        return value;
+      } else {
+        value.likes += self[i].likes
+        value.comments += self[i].comments
+        value.follows += self[i].follows
+        value.unfollows += self[i].unfollows
+        value.server_calls += self[i].server_calls
+        self[i] = undefined
+        return value
+      }
     })
-    const new_activities = data.data.concat(allActivities).sort(function(a, b){
+    .filter(value => value != undefined)
+    .sort(function(a, b){
       if(a.day_filter < b.day_filter) { return 1; }
       if(a.day_filter > b.day_filter) { return -1; }
       return 0;
     })
+
     this.setState({
       allActivities: new_activities,
       loading: false
