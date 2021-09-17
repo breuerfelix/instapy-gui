@@ -15,6 +15,7 @@ import websocket
 import requests
 import sqlite3
 from decorator import decorator
+from filelock import FileLock, Timeout
 
 # constants
 AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'https://auth.instapy.io')
@@ -23,7 +24,9 @@ SOCKET_ENDPOINT = os.getenv('SOCKET_ENDPOINT', 'wss://socket.instapy.io')
 IDENT = os.getenv('IDENT')
 
 ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
-DB_PATH = os.path.join(ASSETS, 'InstaPy', 'db', 'instapy.db')
+DB_FOLDER = os.path.join(ASSETS, 'InstaPy', 'db')
+DB_PATH = os.path.join(DB_FOLDER, 'instapy.db')
+flock = FileLock(os.path.join(DB_FOLDER, 'instapy.lock'), timeout=0)
 
 db_con = None
 
@@ -57,6 +60,7 @@ def on_close(ws, close_status_code, close_msg):
     print('closed socket')
     print('status:', close_status_code)
     print('msg:', close_msg)
+    flock.release()
 
 
 def on_open(ws):
@@ -64,6 +68,10 @@ def on_open(ws):
     print('goto instapy.io and take off!')
     global IDENT
     ws.send(json.dumps({'handler': 'register', 'type': 'instapy', 'ident': IDENT}))
+    try:
+        flock.acquire()
+    except Timeout:
+        pass
 
 
 def get_token(username, password):
@@ -112,9 +120,13 @@ def ensure_db_connected(f, ws, *args, **kwargs):
     global db_con
     if not db_con:
         try:
+            flock.acquire()
             db_con = sqlite3.connect(DB_PATH)
         except sqlite3.OperationalError as e:
             print(f"Could not connect to database {DB_PATH}")
+            return
+        except Timeout:
+            print("Database is locked - this is not an error (unless you are not running any other bot then this one)")
             return
 
     f(ws, *args, **kwargs)

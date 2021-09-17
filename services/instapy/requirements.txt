@@ -3,3 +3,4 @@ websocket-client
 requests
 python-dotenv
 decorator
+filelock

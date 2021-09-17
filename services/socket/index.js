@@ -177,13 +177,13 @@ HANDLERS['logs'] = logs;
 
 function getAllActivities(ws, user, socket, payload, data) {
 	if (socket.type == 'instapy') {
-		console.log("got instapy")
-		const app = user.sockets.find(x => (x.type && x.type == 'app') && (x.wait_activities && x.wait_activities == true));
+		const app = user.sockets.find(x => x.type && x.type == 'app' && x.wait_activities && x.wait_activities == true);
 		app.ws.send(json({
 			handler: 'get-activities',
 			action: 'update',
 			data: data.data
 		}));
+		app.wait_activities = false
 	} else {
 		console.log("send request")
 		socket.wait_activities = true;
