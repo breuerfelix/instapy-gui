@@ -1,7 +1,6 @@
 const WebSocket = require('ws');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
-const { createWebSocketStream } = require('ws');
 
 const { JWT_SECRET , PORT } = process.env;
 const wss = new WebSocket.Server({ port: PORT || 80 });
@@ -198,7 +197,7 @@ function getData(user, socket, data, handler){
 			}
 		}
 	} else {
-		const s = user.sockets.filter(x => x.type == 'instapy');
+		const s = user.sockets.filter(x => x.type && x.type == 'instapy');
 		s.forEach(bot => {
 			bot.ws.send(json({
 				...data,

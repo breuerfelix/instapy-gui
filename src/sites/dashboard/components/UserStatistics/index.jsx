@@ -49,6 +49,10 @@ class AccountStatistics extends Component {
     loading: true
   }
 
+  compareRowsByDateDesc =(a, b) => {
+    return Moment(b.day).diff(Moment(a.day))
+  }
+
   updateUserStatistics = data => {
     const {userStats} = this.state;
 
@@ -66,6 +70,7 @@ class AccountStatistics extends Component {
         })
         // Should save the earlier created
         .filter(value => !value.remove)
+        .sort((a, b) => this.compareRowsByDateDesc(b,a))
     })
 
     this.calculateProgress()
@@ -116,16 +121,12 @@ class AccountStatistics extends Component {
     })
   }
 
-  render({}, {updatedUserStats, loading}) {
-    const { classes } = this.props
+  render({ classes }, {updatedUserStats, loading}) {
     let rows = []
     if (updatedUserStats.length !== 0) {
       rows = updatedUserStats
     }
 
-    const compareRowsByDateDesc =(a, b) => {
-      return Moment(b.day).diff(Moment(a.day))
-    }
 
     ReactChartkick.addAdapter(Chart)
     let followersFollowingChartData = [{name: 'Followers', data: {}}, {name: 'Following', data: {}}]
@@ -156,7 +157,7 @@ class AccountStatistics extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.sort(compareRowsByDateDesc).map(row => {
+              {rows.sort(this.compareRowsByDateDesc).map(row => {
                 return (
                   <TableRow key={row.id}>
                     <TableCell>{row.newFollowers}</TableCell>

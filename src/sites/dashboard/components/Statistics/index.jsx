@@ -2,6 +2,7 @@ import {h} from 'preact'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { SocketService } from 'services'
+import Moment from 'moment'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -48,6 +49,10 @@ class UserDbData extends Component {
     loading: true,
   }
 
+  compareRowsByDateDesc =(a, b) => {
+    return Moment(b.day).diff(Moment(a.day))
+  }
+
   updateActivities = data => {
     const { allActivities } = this.state;
 
@@ -66,11 +71,7 @@ class UserDbData extends Component {
       }
     })
     .filter(value => !value.remove)
-    .sort(function(a, b){
-      if(a.day_filter < b.day_filter) { return 1; }
-      if(a.day_filter > b.day_filter) { return -1; }
-      return 0;
-    })
+    .sort((a, b) => this.compareRowsByDateDesc(b,a))
 
     this.setState({
       allActivities: new_activities,
@@ -138,8 +139,8 @@ class UserDbData extends Component {
           {
             loading && <div style="text-align: center"
             className={override}>
-            Getting data from connected bots.<br/>
-            You need to connect atleast one bot, and it should have data from atleast 1 run.
+            Getting data from connected clients.<br/>
+            You need to connect atleast one client, and it should have data from atleast 1 run.
             </div>
           }
         </Paper>

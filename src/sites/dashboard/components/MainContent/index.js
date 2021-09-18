@@ -6,7 +6,6 @@ import UserStatistics from '../UserStatistics'
 
 export default class MainContent extends Component {
   render({ match }) {
-    console.log(match)
     return (
         <Switch>
           <Route path={`${match.url}/`} exact component={Statistics} />

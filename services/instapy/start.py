@@ -154,9 +154,6 @@ def ensure_db_connected(f):
             except sqlite3.OperationalError as e:
                 print(f"Could not connect to database {DB_PATH}")
                 return
-            except Timeout:
-                print("Database is locked - this is not an error (unless you are not running any other bot then this one)")
-                return
 
         return f(db_con, *args, **kwargs)
 
