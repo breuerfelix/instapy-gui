@@ -178,22 +178,22 @@ function logs(ws, user, socket, payload, data) {
 HANDLERS['logs'] = logs;
 
 
-function getAllActivities(ws, user, socket, payload, data) {
+function getData(user, socket, data, handler){
 	if (socket.type == 'instapy') {
 		if (data.uuid){
 			const app = user.sockets.find(x => x.type && x.type == 'app' && x.uuid == data.uuid);
 			app.ws.send(json({
-				handler: 'get-activities',
+				...data,
+				handler: handler,
 				action: 'update',
-				data: data.data
 			}));
 		} else {
 			const apps = user.sockets.filter(x => x.type && x.type == 'app');
 			for (const app of apps) {
 				app.ws.send(json({
-					handler: 'get-activities',
+					...data,
+					handler: handler,
 					action: 'update',
-					data: data.data
 				}));
 			}
 		}
@@ -201,10 +201,20 @@ function getAllActivities(ws, user, socket, payload, data) {
 		const s = user.sockets.filter(x => x.type == 'instapy');
 		s.forEach(bot => {
 			bot.ws.send(json({
-				handler:'get-activities',
+				...data,
+				handler:handler,
 				uuid: socket.uuid,
 			}))
 		});
 	}
 }
+
+function getAllActivities(ws, user, socket, payload, data) {
+	return getData(user,socket,data,'get-activities')
+}
 HANDLERS['get-activities'] = getAllActivities;
+
+function getUserStatistics(ws, user, socket, payload, data) {
+	return getData(user,socket,data,'get-user-statistics')
+}
+HANDLERS['get-user-statistics'] = getUserStatistics

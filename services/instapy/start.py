@@ -41,6 +41,29 @@ TOKEN = None
 HANDLERS = {}
 NAMESPACE = None
 SETTING = None
+QUERY_GET_ACTIVITIES = '''
+            SELECT recActivity.rowid,
+                prof.name,
+                sum(recActivity.likes) as likes,
+                sum(recActivity.comments) as comments,
+                sum(recActivity.follows) as follows,
+                sum(recActivity.unfollows) as unfollows,
+                sum(recActivity.server_calls) as server_calls,
+                strftime('%Y-%m-%d', recActivity.created) as day_filter
+            FROM recordActivity as recActivity
+            LEFT JOIN profiles as prof ON recActivity.profile_id = prof.id
+            GROUP BY day_filter, profile_id
+            ORDER BY recActivity.created desc'''
+QUERY_GET_USER_STATISTRICS = '''
+            SELECT accountsProgress.followers,
+              accountsProgress.following,
+              accountsProgress.total_posts,
+              max(accountsProgress.created),
+              strftime('%Y-%m-%d', accountsProgress.created) as day
+      FROM accountsProgress, profiles
+      WHERE profiles.name = ?
+      GROUP BY day
+      ORDER BY accountsProgress.created asc'''
 
 # socket stuff
 def on_message(ws, message):
@@ -74,7 +97,7 @@ def on_open(ws):
     except Timeout:
         pass
 
-    data = get_activities_from_db()
+    data = get_db_data(QUERY_GET_ACTIVITIES)
     if data:
         ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': data}))
 
@@ -148,24 +171,11 @@ def dict_factory(cursor, row):
     return d
 
 @ensure_db_connected
-def get_activities_from_db(db_con):
+def get_db_data(db_con, sql_query, *args):
     cur = db_con.cursor()
     cur.row_factory = dict_factory
     try:
-        cur.execute('''
-            SELECT recActivity.rowid,
-                prof.id as profile_id,
-                prof.name,
-                sum(recActivity.likes) as likes,
-                sum(recActivity.comments) as comments,
-                sum(recActivity.follows) as follows,
-                sum(recActivity.unfollows) as unfollows,
-                sum(recActivity.server_calls) as server_calls,
-                strftime('%Y-%m-%d', recActivity.created) as day_filter
-            FROM recordActivity as recActivity
-            LEFT JOIN profiles as prof ON recActivity.profile_id = prof.id
-            GROUP BY day_filter, profile_id
-            ORDER BY recActivity.created desc''')
+        cur.execute(sql_query, args)
     except sqlite3.OperationalError as e:
         return
     data = cur.fetchall()
@@ -243,11 +253,18 @@ def stop(ws, data):
 HANDLERS['stop'] = stop
 
 def get_activities(ws, data):
-    activities = get_activities_from_db()
+    activities = get_db_data(QUERY_GET_ACTIVITIES)
     if activities:
         ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': activities, 'uuid':data['uuid']}))
 
 HANDLERS['get-activities'] = get_activities
+
+def get_user_statistics(ws, data):
+    statistics = get_db_data(QUERY_GET_USER_STATISTRICS, data['username'])
+    if statistics:
+        ws.send(json.dumps({'handler': 'get-user-statistics', 'type': 'instapy', 'ident': IDENT, 'data': statistics, 'uuid':data['uuid']}))
+
+HANDLERS['get-user-statistics'] = get_user_statistics
 
 
 if __name__ == '__main__':

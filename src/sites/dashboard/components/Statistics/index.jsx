@@ -112,7 +112,7 @@ class UserDbData extends Component {
                 return (
                   <TableRow key={row.rowid}>
                     <TableCell component="th" scope="row">
-                      <Link to={`${match.url}/userStatistics/${row.profile_id}`}
+                      <Link to={`${match.url}/userStatistics/${Buffer.from(row.name).toString('base64')}`}
                             className={classes.menuButton} >
                         {row.name}
                       </Link>

@@ -1,6 +1,6 @@
 import {h} from 'preact'
 import React, { Component } from 'react'
-//import api from '../../services/api'
+import { SocketService } from 'services'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -49,18 +49,32 @@ class AccountStatistics extends Component {
     loading: true
   }
 
-  componentDidMount = async () => {
-    await this.getAllUserStatistics()
-    await this.calculateProgress()
+  updateUserStatistics = data => {
+    this.setState({
+      userStats: data.data
+    })
+
+    this.calculateProgress()
   }
 
-  calculateProgress = async () => {
+  componentDidMount = () => {
+    const { match } = this.props
+
+    SocketService.register('get-user-statistics', this.updateUserStatistics);
+    SocketService.send({
+      handler: 'get-user-statistics',
+      action: 'get',
+      username: Buffer.from(match.params.id, 'base64').toString('latin1')
+    });
+  }
+
+  calculateProgress = () => {
     this.setState(prevState => {
-      let tempFollowers = 0
+      let tempFollowers = undefined
       let newFollowers = 0
       return {
         updatedUserStats: prevState.userStats.map(stats => {
-          if (tempFollowers === 0) {
+          if (tempFollowers === undefined) {
             // if first record, there isnt data to compare
             tempFollowers = stats.followers
             return { ...stats, newFollowers: '...' }
@@ -88,43 +102,11 @@ class AccountStatistics extends Component {
     })
   }
 
-  getAllUserStatistics = async () => {
-    // params.id === profile id
-    const { params } = this.props.match
-    /*const response = await api.get('get_all_user_statistics', {
-      params: {
-        profileId: params.id
-      }
-    })*/
-    const response = {
-      data:[
-        {
-          following: 5,
-          followers: 5,
-          day: 'dsfs1'
-        },
-        {
-          following: 6,
-          followers: 6,
-          day: 'dsfs2'
-        },
-        {
-          following: 7,
-          followers: 4,
-          day: 'dsfs3'
-        }
-      ]
-    }
-    this.setState({
-      userStats: response.data
-    })
-  }
-
-  render() {
+  render({}, {updatedUserStats, loading}) {
     const { classes } = this.props
     let rows = []
-    if (this.state.updatedUserStats.length !== 0) {
-      rows = this.state.updatedUserStats
+    if (updatedUserStats.length !== 0) {
+      rows = updatedUserStats
     }
 
     const compareRowsByDateDesc =(a, b) => {
@@ -176,7 +158,7 @@ class AccountStatistics extends Component {
             sizeUnit={"px"}
             size={50}
             color={'#3f51b5'}
-            loading={this.state.loading}
+            loading={loading}
           />
 
         </Paper>
