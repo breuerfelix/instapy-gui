@@ -55,7 +55,17 @@ class AccountStatistics extends Component {
     this.setState({
       userStats: userStats
         .concat(data.data)
-        .filter((value, index,self) => (self.findIndex(inner_value => value.day == inner_value.day) == index))
+        .map((value,index,self) => {
+          const second_value = self.find(inner_value => value.day == inner_value.day)
+          if (value.created_at > second_value.created_at){
+            value.remove = true
+          } else if (value.created_at < second_value.created_at){
+            second_value.remove = true
+          }
+          return value
+        })
+        // Should save the earlier created
+        .filter(value => !value.remove)
     })
 
     this.calculateProgress()
@@ -141,6 +151,7 @@ class AccountStatistics extends Component {
                 <TableCell>New Followers</TableCell>
                 <TableCell>Followers</TableCell>
                 <TableCell>Following</TableCell>
+                <TableCell>Total Posts</TableCell>
                 <TableCell>Created</TableCell>
               </TableRow>
             </TableHead>
@@ -151,6 +162,7 @@ class AccountStatistics extends Component {
                     <TableCell>{row.newFollowers}</TableCell>
                     <TableCell>{row.followers}</TableCell>
                     <TableCell>{row.following}</TableCell>
+                    <TableCell>{row.total_posts}</TableCell>
                     <TableCell>{row.day}</TableCell>
                   </TableRow>
                 )

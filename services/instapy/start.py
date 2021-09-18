@@ -58,7 +58,7 @@ QUERY_GET_USER_STATISTRICS = '''
             SELECT accountsProgress.followers,
               accountsProgress.following,
               accountsProgress.total_posts,
-              max(accountsProgress.created),
+              max(accountsProgress.created) as created_at,
               strftime('%Y-%m-%d', accountsProgress.created) as day
       FROM accountsProgress, profiles
       WHERE profiles.name = ?
