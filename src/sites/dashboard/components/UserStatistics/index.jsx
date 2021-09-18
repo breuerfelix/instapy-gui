@@ -50,8 +50,12 @@ class AccountStatistics extends Component {
   }
 
   updateUserStatistics = data => {
+    const {userStats} = this.state;
+
     this.setState({
-      userStats: data.data
+      userStats: userStats
+        .concat(data.data)
+        .filter((value, index,self) => (self.findIndex(inner_value => value.day == inner_value.day) == index))
     })
 
     this.calculateProgress()
