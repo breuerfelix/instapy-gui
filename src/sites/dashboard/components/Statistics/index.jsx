@@ -61,11 +61,11 @@ class UserDbData extends Component {
         value.follows += self[i].follows
         value.unfollows += self[i].unfollows
         value.server_calls += self[i].server_calls
-        self[i] = undefined
+        self[i].remove = true
         return value
       }
     })
-    .filter(value => value != undefined)
+    .filter(value => !value.remove)
     .sort(function(a, b){
       if(a.day_filter < b.day_filter) { return 1; }
       if(a.day_filter > b.day_filter) { return -1; }
