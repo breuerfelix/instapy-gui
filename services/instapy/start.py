@@ -14,7 +14,8 @@ import time
 import websocket
 import requests
 import sqlite3
-from decorator import decorator
+import functools
+import inspect
 from filelock import FileLock, Timeout
 
 # constants
@@ -73,6 +74,10 @@ def on_open(ws):
     except Timeout:
         pass
 
+    data = get_activities_from_db()
+    if data:
+        ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': data}))
+
 
 def get_token(username, password):
     payload = {'username': username, 'password': password}
@@ -115,27 +120,57 @@ def check_process():
     if PROCESS.poll() is not None:
         kill()
 
-@decorator
-def ensure_db_connected(f, ws, *args, **kwargs):
-    global db_con
-    if not db_con:
-        try:
-            flock.acquire()
-            db_con = sqlite3.connect(DB_PATH)
-        except sqlite3.OperationalError as e:
-            print(f"Could not connect to database {DB_PATH}")
-            return
-        except Timeout:
-            print("Database is locked - this is not an error (unless you are not running any other bot then this one)")
-            return
 
-    f(ws, *args, **kwargs)
+def ensure_db_connected(f):
+    @functools.wraps(f)
+    def wrapped_function(*args, **kwargs):
+        global db_con
+        if not db_con:
+            try:
+                flock.acquire()
+                db_con = sqlite3.connect(DB_PATH)
+            except sqlite3.OperationalError as e:
+                print(f"Could not connect to database {DB_PATH}")
+                return
+            except Timeout:
+                print("Database is locked - this is not an error (unless you are not running any other bot then this one)")
+                return
+
+        return f(db_con, *args, **kwargs)
+
+    wrapped_function.__signature__ = inspect.signature(f)
+    return wrapped_function
 
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
+
+@ensure_db_connected
+def get_activities_from_db(db_con):
+    cur = db_con.cursor()
+    cur.row_factory = dict_factory
+    try:
+        cur.execute('''
+            SELECT recActivity.rowid,
+                prof.id as profile_id,
+                prof.name,
+                sum(recActivity.likes) as likes,
+                sum(recActivity.comments) as comments,
+                sum(recActivity.follows) as follows,
+                sum(recActivity.unfollows) as unfollows,
+                sum(recActivity.server_calls) as server_calls,
+                strftime('%Y-%m-%d', recActivity.created) as day_filter
+            FROM recordActivity as recActivity
+            LEFT JOIN profiles as prof ON recActivity.profile_id = prof.id
+            GROUP BY day_filter, profile_id
+            ORDER BY recActivity.created desc''')
+    except sqlite3.OperationalError as e:
+        return
+    data = cur.fetchall()
+    cur.close()
+    return data
 
 # handlers
 def get_status(ws, data):
@@ -207,33 +242,13 @@ def stop(ws, data):
 
 HANDLERS['stop'] = stop
 
-@ensure_db_connected
-def get_all_activities(ws, data):
-    cur = db_con.cursor()
-    cur.row_factory = dict_factory
-    try:
-        cur.execute('''
-            SELECT recActivity.rowid,
-                prof.id as profile_id,
-                prof.name,
-                sum(recActivity.likes) as likes,
-                sum(recActivity.comments) as comments,
-                sum(recActivity.follows) as follows,
-                sum(recActivity.unfollows) as unfollows,
-                sum(recActivity.server_calls) as server_calls,
-                strftime('%Y-%m-%d', recActivity.created) as day_filter
-            FROM recordActivity as recActivity
-            LEFT JOIN profiles as prof ON recActivity.profile_id = prof.id
-            GROUP BY day_filter, profile_id
-            ORDER BY recActivity.created desc''')
-        # TODO probably don't order by activity
-    except sqlite3.OperationalError as e:
-        return
-    data = cur.fetchall()
-    ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': data}))
-    cur.close()
+def get_activities(ws, data):
+    activities = get_activities_from_db()
+    if activities:
+        ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': activities, 'uuid':data['uuid']}))
 
-HANDLERS['get-activities'] = get_all_activities
+HANDLERS['get-activities'] = get_activities
+
 
 if __name__ == '__main__':
     username = os.getenv('INSTAPY_USER')
@@ -257,6 +272,7 @@ if __name__ == '__main__':
             time.sleep(3)
 
         except KeyboardInterrupt:
+            flock.release()
             if db_con:
                 db_con.close()
             break

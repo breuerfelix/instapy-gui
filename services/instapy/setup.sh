@@ -3,6 +3,7 @@ set -e
 python3 -m pip install --user --upgrade pip
 python3 -m pip install --user virtualenv
 python3 -m venv env
+./env/bin/pip3 install wheel
 ./env/bin/pip3 install -r requirements.txt
 clear
 read -p "Enter your instapy.io username: "  username

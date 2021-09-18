@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const jwt = require('jsonwebtoken');
+const uuid = require('uuid');
 const { createWebSocketStream } = require('ws');
 
 const { JWT_SECRET , PORT } = process.env;
@@ -81,6 +82,8 @@ function register(ws, user, socket, payload, data) {
 		const { ident } = data;
 		socket.logs = [];
 		socket.ident = ident;
+	} else if (type == 'app') {
+		socket.uuid = uuid.v4()
 	}
 }
 HANDLERS['register'] = register;
@@ -177,20 +180,29 @@ HANDLERS['logs'] = logs;
 
 function getAllActivities(ws, user, socket, payload, data) {
 	if (socket.type == 'instapy') {
-		const app = user.sockets.find(x => x.type && x.type == 'app' && x.wait_activities && x.wait_activities == true);
-		app.ws.send(json({
-			handler: 'get-activities',
-			action: 'update',
-			data: data.data
-		}));
-		app.wait_activities = false
+		if (data.uuid){
+			const app = user.sockets.find(x => x.type && x.type == 'app' && x.uuid == data.uuid);
+			app.ws.send(json({
+				handler: 'get-activities',
+				action: 'update',
+				data: data.data
+			}));
+		} else {
+			const apps = user.sockets.filter(x => x.type && x.type == 'app');
+			for (const app of apps) {
+				app.ws.send(json({
+					handler: 'get-activities',
+					action: 'update',
+					data: data.data
+				}));
+			}
+		}
 	} else {
-		console.log("send request")
-		socket.wait_activities = true;
 		const s = user.sockets.filter(x => x.type == 'instapy');
 		s.forEach(bot => {
 			bot.ws.send(json({
 				handler:'get-activities',
+				uuid: socket.uuid,
 			}))
 		});
 	}
