@@ -1,3 +1,6 @@
+/*
+This is a modified version of the file https://github.com/converge/instapy-dashboard/blob/master/src/components/UserStatistics/index.jsx
+*/
 import {h} from 'preact'
 import React, { Component } from 'react'
 import { SocketService } from 'services'

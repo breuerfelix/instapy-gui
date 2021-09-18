@@ -1,3 +1,6 @@
+/*
+This is a modified version of the file https://github.com/converge/instapy-dashboard/blob/master/src/components/MainContent/index.js
+*/
 import {h} from 'preact'
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
