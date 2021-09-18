@@ -97,7 +97,7 @@ def on_open(ws):
     global IDENT
     ws.send(json.dumps({'handler': 'register', 'type': 'instapy', 'ident': IDENT}))
 
-    data = get_db_data(QUERY_GET_ACTIVITIES)
+    data = get_db_data(QUERY_GET_ACTIVITIES, row_factory=dict_factory)
     if data:
         ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': data}))
 
@@ -167,9 +167,10 @@ def dict_factory(cursor, row):
     return d
 
 @ensure_db_connected
-def get_db_data(db_con, sql_query, *args):
+def get_db_data(db_con, sql_query, *args, row_factory=None):
     cur = db_con.cursor()
-    cur.row_factory = dict_factory
+    if row_factory:
+        cur.row_factory = row_factory
     try:
         cur.execute(sql_query, args)
     except sqlite3.OperationalError as e:
@@ -249,14 +250,14 @@ def stop(ws, data):
 HANDLERS['stop'] = stop
 
 def get_activities(ws, data):
-    activities = get_db_data(QUERY_GET_ACTIVITIES)
+    activities = get_db_data(QUERY_GET_ACTIVITIES, row_factory=dict_factory)
     if activities:
         ws.send(json.dumps({'handler': 'get-activities', 'type': 'instapy', 'ident': IDENT, 'data': activities, 'uuid':data['uuid']}))
 
 HANDLERS['get-activities'] = get_activities
 
 def get_user_statistics(ws, data):
-    statistics = get_db_data(QUERY_GET_USER_STATISTRICS, data['username'])
+    statistics = get_db_data(QUERY_GET_USER_STATISTRICS, data['username'], row_factory=dict_factory)
     if statistics:
         ws.send(json.dumps({'handler': 'get-user-statistics', 'type': 'instapy', 'ident': IDENT, 'data': statistics, 'uuid':data['uuid']}))
 
