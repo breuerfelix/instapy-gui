@@ -15,7 +15,6 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { HashLoader } from 'react-spinners'
 import { css } from 'react-emotion'
-import Moment from 'moment'
 
 // chart
 import ReactChartkick, { LineChart } from 'react-chartkick'
@@ -53,7 +52,7 @@ class AccountStatistics extends Component {
   }
 
   compareRowsByDateDesc =(a, b) => {
-    return Moment(b.day).diff(Moment(a.day))
+    return new Date(b) - new Date(a);
   }
 
   updateUserStatistics = data => {
@@ -73,7 +72,7 @@ class AccountStatistics extends Component {
         })
         // Should save the earlier created
         .filter(value => !value.remove)
-        .sort((a, b) => this.compareRowsByDateDesc(b,a))
+        .sort((a, b) => this.compareRowsByDateDesc(a.day,b.day))
     })
 
     this.calculateProgress()
@@ -92,24 +91,22 @@ class AccountStatistics extends Component {
 
   calculateProgress = () => {
     this.setState(prevState => {
-      let tempFollowers = undefined
       let newFollowers = 0
+      const last_index = prevState.userStats.length - 1
       return {
-        updatedUserStats: prevState.userStats.map(stats => {
-          if (tempFollowers === undefined) {
+        updatedUserStats: prevState.userStats.map((stats, index, self) => {
+          if (index === last_index) {
             // if first record, there isnt data to compare
-            tempFollowers = stats.followers
             return { ...stats, newFollowers: '...' }
           } else {
             // newFollowers = current day followers - previous day followers
             // ex. yesterday: 100 followers, today 200, result: +100
-            newFollowers = stats.followers - tempFollowers
+            newFollowers = stats.followers - self[index+1].followers
             if (newFollowers > 0) {
               newFollowers = `+${newFollowers}`
             } else if (newFollowers < 0) {
               newFollowers = `${newFollowers}`
             }
-            tempFollowers = stats.followers
             return {
               ...stats,
               newFollowers: newFollowers,

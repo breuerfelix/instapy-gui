@@ -5,7 +5,6 @@ import {h} from 'preact'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { SocketService } from 'services'
-import Moment from 'moment'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -53,7 +52,7 @@ class UserDbData extends Component {
   }
 
   compareRowsByDateDesc =(a, b) => {
-    return Moment(b.day).diff(Moment(a.day))
+    return new Date(b) - new Date(a);
   }
 
   updateActivities = data => {
@@ -74,7 +73,7 @@ class UserDbData extends Component {
       }
     })
     .filter(value => !value.remove)
-    .sort((a, b) => this.compareRowsByDateDesc(b,a))
+    .sort((a, b) => this.compareRowsByDateDesc(a.day_filter,b.day_filter))
 
     this.setState({
       allActivities: new_activities,
