@@ -63,6 +63,7 @@ set "password=password"
 set /P password="Enter your instapy.io password: "
 set "ident=anyName"
 set /P ident="Identifier for this client: "
+SET /P workdir="Workdir for this client:" || SET "workdir=%~dp0assets"
 goto checkPython
 
 :createEnv
@@ -71,6 +72,7 @@ cls
 echo INSTAPY_USER=%username% >> instapy.env
 echo INSTAPY_PASSWORD=%password% >> instapy.env
 echo IDENT=%ident% >> instapy.env
+echo WORKDIR=%workdir% >> instapy.env
 GOTO theEnd
 
 

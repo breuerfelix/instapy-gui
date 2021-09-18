@@ -22,17 +22,22 @@ from filelock import FileLock, Timeout
 AUTH_ENDPOINT = os.getenv('AUTH_ENDPOINT', 'https://auth.instapy.io')
 CONFIG_ENDPOINT = os.getenv('CONFIG_ENDPOINT', 'https://config.instapy.io')
 SOCKET_ENDPOINT = os.getenv('SOCKET_ENDPOINT', 'wss://socket.instapy.io')
+ASSETS = os.getenv('WORKDIR', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets'))
 IDENT = os.getenv('IDENT')
 
-ASSETS = os.path.dirname(os.path.abspath(__file__)) + '/assets'
-DB_FOLDER = os.path.join(ASSETS, 'InstaPy', 'db')
-DB_PATH = os.path.join(DB_FOLDER, 'instapy.db')
-flock = FileLock(os.path.join(DB_FOLDER, 'instapy.lock'), timeout=0)
+DB_PATH = os.path.join(ASSETS, 'InstaPy', 'db', 'instapy.db')
+flock = FileLock(os.path.join(ASSETS, 'InstaPy', 'usage.lock'), timeout=0)
 
 db_con = None
 
 if not IDENT:
     print('IDENT not provided')
+    sys.exit(1)
+
+try:
+    flock.acquire()
+except Timeout:
+    print("You should not run 2 bots on the same workdir.")
     sys.exit(1)
 
 # globals
@@ -84,7 +89,6 @@ def on_close(ws, close_status_code, close_msg):
     print('closed socket')
     print('status:', close_status_code)
     print('msg:', close_msg)
-    flock.release()
 
 
 def on_open(ws):
@@ -92,10 +96,6 @@ def on_open(ws):
     print('goto instapy.io and take off!')
     global IDENT
     ws.send(json.dumps({'handler': 'register', 'type': 'instapy', 'ident': IDENT}))
-    try:
-        flock.acquire()
-    except Timeout:
-        pass
 
     data = get_db_data(QUERY_GET_ACTIVITIES)
     if data:
@@ -150,7 +150,6 @@ def ensure_db_connected(f):
         global db_con
         if not db_con:
             try:
-                flock.acquire()
                 db_con = sqlite3.connect(DB_PATH)
             except sqlite3.OperationalError as e:
                 print(f"Could not connect to database {DB_PATH}")
@@ -289,7 +288,6 @@ if __name__ == '__main__':
             time.sleep(3)
 
         except KeyboardInterrupt:
-            flock.release()
             if db_con:
                 db_con.close()
             break
