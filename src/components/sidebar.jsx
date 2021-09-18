@@ -42,12 +42,12 @@ export default class SideBar extends Component {
 							</div>
 
 							{
-							<MenuItem
-								label='sidebar_dashboard'
-								icon='fas fa-chart-line'
-								link='/dashboard'
-								level='top'
-							/>
+								<MenuItem
+									label='sidebar_dashboard'
+									icon='fas fa-chart-line'
+									link='/dashboard'
+									level='top'
+								/>
 							}
 
 							<MenuItem

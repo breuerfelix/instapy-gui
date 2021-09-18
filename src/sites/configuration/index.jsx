@@ -15,7 +15,6 @@ export default class Configuration extends Component {
 	}
 
 	render({ match }) {
-		console.log(match)
 		return (
 			<div>
 				<Route
