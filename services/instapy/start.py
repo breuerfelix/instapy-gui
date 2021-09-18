@@ -69,6 +69,7 @@ QUERY_GET_USER_STATISTRICS = '''
       WHERE profiles.name = ?
       GROUP BY day
       ORDER BY accountsProgress.created asc'''
+QUERY_USER_NAMES = 'SELECT name FROM profiles'
 
 # socket stuff
 def on_message(ws, message):
@@ -263,6 +264,12 @@ def get_user_statistics(ws, data):
 
 HANDLERS['get-user-statistics'] = get_user_statistics
 
+def get_usernames(ws, data):
+    usernames = get_db_data(QUERY_USER_NAMES)
+    if usernames:
+        ws.send(json.dumps({'handler': 'get-usernames', 'type': 'instapy', 'ident': IDENT, 'data': usernames, 'uuid':data['uuid']}))
+
+HANDLERS['get-usernames'] = get_usernames
 
 if __name__ == '__main__':
     username = os.getenv('INSTAPY_USER')

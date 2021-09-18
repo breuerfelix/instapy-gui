@@ -217,3 +217,8 @@ function getUserStatistics(ws, user, socket, payload, data) {
 	return getData(user,socket,data,'get-user-statistics')
 }
 HANDLERS['get-user-statistics'] = getUserStatistics
+
+function getUsernames(ws, user, socket, payload, data) {
+	return getData(user,socket,data,'get-usernames')
+}
+HANDLERS['get-usernames'] = getUsernames

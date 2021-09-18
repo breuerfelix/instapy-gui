@@ -49,6 +49,8 @@ class UserDbData extends Component {
   state = {
     allActivities: [],
     loading: true,
+    view_name: undefined,
+    all_usernames: []
   }
 
   compareRowsByDateDesc =(a, b) => {
@@ -81,23 +83,42 @@ class UserDbData extends Component {
     })
   }
 
+  updateUsernames = data => {
+    this.setState(prevState => {
+      prevState.all_usernames = prevState.all_usernames.concat(data.data).filter((value, index, self) => self.indexOf(value) === index).sort()
+      return prevState
+    })
+  }
+
   componentDidMount() {
     SocketService.register('get-activities', this.updateActivities);
+    SocketService.register('get-usernames', this.updateUsernames);
     SocketService.send({
       handler: 'get-activities',
+      action: 'get'
+    });
+    SocketService.send({
+      handler: 'get-usernames',
       action: 'get'
     });
   }
 
   componentWillUnmount(){
     SocketService.unregister('get-activities', this.updateActivities);
+    SocketService.register('get-usernames', this.updateUsernames);
   }
 
-  render({ match, classes }, { loading, allActivities }) {
+  render({ match, classes }, { loading, allActivities, all_usernames, view_name }) {
+    const options = all_usernames.map((data) => <option style="text-align:center" key={data} value={data}>{data}</option>)
+    options.unshift(<option style="text-align:center" key={undefined} value={undefined}>All</option>)
+
     return (
       <div className={classes.wrapper}>
       <h1>Statistics</h1>
         <Paper className={classes.root}>
+          <select style="width: 100%" onChange={e => {this.setState({view_name: e.target.value})}}>
+            {options}
+          </select>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -111,7 +132,7 @@ class UserDbData extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allActivities.map(row => {
+              {allActivities.filter(row => view_name !== 'All' || row.name !== view_name).map(row => {
                 return (
                   <TableRow key={row.rowid}>
                     <TableCell component="th" scope="row">
