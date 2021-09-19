@@ -29,7 +29,6 @@
 		"preact": "^8.4.2",
 		"preact-chartjs-2": "^1.0.3",
 		"preact-compat": "^3.18.5",
-		"preact-loading-skeleton": "^1.2.2",
 		"preact-markup": "^1.6.0",
 		"react-ga": "^2.5.7",
 		"react-tagsinput": "^3.19.0",
