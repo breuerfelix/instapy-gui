@@ -5,46 +5,10 @@ import { h } from 'preact';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { SocketService } from 'services';
+import { Stretch } from 'styled-loaders';
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { HashLoader } from 'react-spinners';
-import { css } from 'react-emotion';
 
-// emotion lib
-const override = css`
-	display: block;
-	margin: 15px auto;`;
-
-const styles = theme => ({
-	wrapper: {
-		display: 'grid',
-		justifyContent: 'center',
-	},
-	root: {
-		width: '100%',
-		marginTop: theme.spacing.unit * 3,
-		overflowX: 'auto',
-	},
-	table: {
-		minWidth: 700,
-	},
-	menuButton: {
-		marginLeft: 18,
-		textDecoration: 'None',
-	},
-	active: {
-		backgroundColor: 'yellow',
-	}
-});
-
-class UserDbData extends Component {
+export default class UserDbData extends Component {
 	state = {
 		allActivities: [],
 		loading: true,
@@ -107,72 +71,62 @@ class UserDbData extends Component {
 		SocketService.register('get-usernames', this.updateUsernames);
 	}
 
-	render({ match, classes }, { loading, allActivities, all_usernames, view_name }) {
+	render({ match }, { loading, allActivities, all_usernames, view_name }) {
 		const options = all_usernames.map((data) => <option style="text-align:center" key={ data } value={ data }>{data}</option>);
 		options.unshift(<option style="text-align:center" key={ undefined } value={ undefined }>All</option>);
 
 		return (
-			<div className={ classes.wrapper }>
-				<h1>Statistics</h1>
-				<Paper className={ classes.root }>
-					<select style="width: 100%" onChange={ e => {this.setState({ view_name: e.target.value });} }>
-						{options}
-					</select>
-					<Table className={ classes.table }>
-						<TableHead>
-							<TableRow>
-								<TableCell>profile</TableCell>
-								<TableCell>likes</TableCell>
-								<TableCell>comments</TableCell>
-								<TableCell>follows</TableCell>
-								<TableCell>unfollows</TableCell>
-								<TableCell>server calls</TableCell>
-								<TableCell>created</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{allActivities.filter(row => view_name !== 'All' || row.name !== view_name).map(row => {
-								return (
-									<TableRow key={ row.rowid }>
-										<TableCell component="th" scope="row">
-											<Link to={ `${match.url}/userStatistics/${Buffer.from(row.name).toString('base64')}` }
-												className={ classes.menuButton } >
-												{row.name}
-											</Link>
-										</TableCell>
-										<TableCell>{row.likes}</TableCell>
-										<TableCell>{row.comments}</TableCell>
-										<TableCell>{row.follows}</TableCell>
-										<TableCell>{row.unfollows}</TableCell>
-										<TableCell>{row.server_calls}</TableCell>
-										<TableCell>{row.day_filter}</TableCell>
-									</TableRow>
-								);
-							})}
-						</TableBody>
-					</Table>
-					<HashLoader
-						className={ override }
-						sizeUnit={ 'px' }
-						size={ 50 }
-						color={ '#3f51b5' }
-						loading={ loading }
-					/>
+			<div className='card' style="display: 'grid';justifyContent: 'center'">
+				<h1 style="text-align: center">Statistics</h1>
+				<div style="width: '100%';marginTop: theme.spacing.unit * 3;overflowX: 'auto'">
 					{
-						loading && <div style="text-align: center"
-							className={ override }>
-								Getting data from connected clients.<br/>
-								You need to connect atleast one client, and it should have data from atleast 1 run.
-						</div>
+						loading?
+							<div>
+								<Stretch/>
+								<div
+									style="display: block;margin: 15px auto;text-align: center">
+							Getting data from connected clients.<br/>
+							You need to connect atleast one client, and it should have data from atleast 1 run.
+								</div>
+							</div>
+							:
+							<div>
+								<select style="width: 100%;margin-top:20px" onChange={ e => {this.setState({ view_name: e.target.value });} }>
+									{options}
+								</select>
+								<table style="width:100%;margin-top:20px">
+									<tr style="width: 100%;margin-top:20px">
+										<th style="text-align:center">profile</th>
+										<th style="text-align:center">likes</th>
+										<th style="text-align:center">comments</th>
+										<th style="text-align:center">follows</th>
+										<th style="text-align:center">unfollows</th>
+										<th style="text-align:center">server calls</th>
+										<th style="text-align:center">created</th>
+									</tr>
+									{allActivities.filter(row => view_name !== 'All' || row.name !== view_name).map(row => {
+										return (
+											<tr key={ row.rowid }>
+												<th style="text-align:center" component="th" scope="row">
+													<Link to={ `${match.url}/userStatistics/${Buffer.from(row.name).toString('base64')}` }
+														style="marginLeft: 18;textDecoration: 'None'">
+														{row.name}
+													</Link>
+												</th>
+												<th style="text-align:center">{row.likes}</th>
+												<th style="text-align:center">{row.comments}</th>
+												<th style="text-align:center">{row.follows}</th>
+												<th style="text-align:center">{row.unfollows}</th>
+												<th style="text-align:center">{row.server_calls}</th>
+												<th style="text-align:center">{row.day_filter}</th>
+											</tr>
+										);
+									})}
+								</table>
+							</div>
 					}
-				</Paper>
+				</div>
 			</div>
 		);
 	}
 }
-
-UserDbData.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(UserDbData);

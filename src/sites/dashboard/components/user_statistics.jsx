@@ -4,47 +4,14 @@ This is a modified version of the file https://github.com/converge/instapy-dashb
 import { h } from 'preact';
 import React, { Component } from 'react';
 import { SocketService } from 'services';
+import { Stretch } from 'styled-loaders';
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { HashLoader } from 'react-spinners';
-import { css } from 'react-emotion';
 
 // chart
 import ReactChartkick, { LineChart } from 'react-chartkick';
-import Chart from 'chart.js';
+import { Chart } from 'preact-chartjs-2';
 
-// emotion lib
-const override = css`
-	display: block;
-	margin: 15px auto;`;
-
-const styles = theme => ({
-	wrapper: {
-		display: 'grid',
-		justifyContent: 'center',
-	},
-	root: {
-		width: '100%',
-		marginTop: theme.spacing.unit * 3,
-		overflowX: 'auto',
-	},
-	table: {
-		minWidth: 700,
-	},
-	menuButton: {
-		marginLeft: 18,
-		textDecoration: 'None',
-	},
-});
-
-class AccountStatistics extends Component {
+export default class AccountStatistics extends Component {
 	state = {
 		userStats: [],
 		updatedUserStats: [],
@@ -137,52 +104,38 @@ class AccountStatistics extends Component {
 		);
 
 		return (
-			<div className={ classes.wrapper }>
-				<h1>User Statistics</h1>
-				<Paper>
-					<LineChart curve={ false } data={ followersFollowingChartData } />
-					<LineChart curve={ false } data={ newFollowersChartData } />
-				</Paper>
-				<Paper className={ classes.root }>
-					<Table className={ classes.table }>
-						<TableHead>
-							<TableRow>
-								<TableCell>New Followers</TableCell>
-								<TableCell>Followers</TableCell>
-								<TableCell>Following</TableCell>
-								<TableCell>Total Posts</TableCell>
-								<TableCell>Created</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.sort(this.compareRowsByDateDesc).map(row => {
-								return (
-									<TableRow key={ row.id }>
-										<TableCell>{row.newFollowers}</TableCell>
-										<TableCell>{row.followers}</TableCell>
-										<TableCell>{row.following}</TableCell>
-										<TableCell>{row.total_posts}</TableCell>
-										<TableCell>{row.day}</TableCell>
-									</TableRow>
-								);
-							})}
-						</TableBody>
-					</Table>
-					<HashLoader
-						className={ override }
-						sizeUnit={ 'px' }
-						size={ 50 }
-						color={ '#3f51b5' }
-						loading={ loading }
-					/>
-				</Paper>
+			<div className='card' style="background-color:white;display: 'grid';justifyContent: 'center';margin-right:10%;margin-left:10%;padding-top: 25px;padding-bottom: 25px">
+				<h1 style="width:100%;text-align: center">User Statistics</h1>
+				<div >
+					<LineChart curve={ false } data={ followersFollowingChartData } style="padding-top: 10px" />
+					<LineChart curve={ false } data={ newFollowersChartData }  style="padding-top: 10px"/>
+				</div>
+				<div style="width: '100%';marginTop: theme.spacing.unit * 3;overflowX: 'auto'">
+					<table style="width:100%;padding-top: 20px">
+						<tr>
+							<th style="text-align:center">New Followers</th>
+							<th style="text-align:center">Followers</th>
+							<th style="text-align:center">Following</th>
+							<th style="text-align:center">Total Posts</th>
+							<th style="text-align:center">Created</th>
+						</tr>
+						{rows.sort(this.compareRowsByDateDesc).map(row => {
+							return (
+								<tr key={ row.id }>
+									<th style="text-align:center">{row.newFollowers}</th>
+									<th style="text-align:center">{row.followers}</th>
+									<th style="text-align:center">{row.following}</th>
+									<th style="text-align:center">{row.total_posts}</th>
+									<th style="text-align:center">{row.day}</th>
+								</tr>
+							);
+						})}
+					</table>
+					{ loading &&
+						<Stretch/>
+					}
+				</div>
 			</div>
 		);
 	}
 }
-
-AccountStatistics.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(AccountStatistics);
