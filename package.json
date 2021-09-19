@@ -58,7 +58,6 @@
 		"node-sass": "^4.12.0",
 		"postcss-loader": "^3.0.0",
 		"purgecss-webpack-plugin": "^1.5.0",
-		"react": "^16.8.6",
 		"react-chartkick": "^0.3.0",
 		"react-router-dom": "^4.3.1",
 		"react-spinners": "^0.4.8",
