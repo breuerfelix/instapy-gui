@@ -22,8 +22,8 @@
 ### requirements
 
 * install [python 3](https://www.python.org/downloads/)
-* sign up on [instapy.io](https://instapy.io)
 * install [firefox](https://www.mozilla.org)
+* host your own instance of this repo
 
 ### register a bot
 
@@ -120,25 +120,6 @@ if you are on a different machine just follow the steps [register a bot](#regist
 
 **[how to start contributing](docs/contributing.md)**
 
-### video tutorials
-
-**[complete guide to bot creation](https://www.udemy.com/course/the-complete-guide-to-bot-creation/?referralCode=7418EBB47E11E34D86C9)**  
-**[full manual installation on windows 10](https://drive.google.com/open?id=1ZafLOa0ShSXva61eQwFAePSVBC0Suc9p) by [@LexLinux](https://github.com/lexlinux)**  
-**[1-click installation on windows 10](https://streamable.com/6h6d8) by [@HCWcoder](https://github.com/HCWcoder)**  
-**[official instapy guide on udemy](https://www.udemy.com/instapy-guide/?couponCode=INSTAPY_OFFICIAL)**
-
-## screenshots
-
-![templates](public/templates.png)  
-![start](public/start.png)
-
-## roadmap
-
-* scheduler
-* change account info
-* forgot password
-* analytics
-
 ## support
 
 ### troubleshoot
@@ -175,20 +156,6 @@ NameError: global name 'f' is not defined
 ```
 
 you need to use python version `3.6` or higher. the f-string format got implemented in that version.
-
-### do you need help ?
-
-if you should encounter any issue, please first [search for similar issues](https://github.com/breuerfelix/instapy-gui/issues) and only if you can't find any, create a new issue or use the [discord channel](https://discord.gg/FDETsht) for help.
-
-<a href='https://discord.gg/FDETsht'>
-  <img hspace='3' alt='discord' src='https://camo.githubusercontent.com/e4a739df27356a78e9cae2e2dda642d118567e7c/68747470733a2f2f737465616d63646e2d612e616b616d616968642e6e65742f737465616d636f6d6d756e6974792f7075626c69632f696d616765732f636c616e732f32373039303534312f386464356339303766326130656563623733646336613437373666633961323538373865626364642e706e67' width=214/>
-</a>
-
-### do you want to support us ?
-
-<a href="https://opencollective.com/instapy/donate" target="_blank">
-  <img hspace="10" src="https://opencollective.com/instapy/contribute/button@2x.png?color=blue" width=300 />
-</a>
 
 ---
 
