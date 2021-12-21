@@ -46,6 +46,7 @@ ECHO } >> easyDownloader.ps1
 ECHO if(!(Test-Path $outputBot) -and !(Test-Path $outputStart) -and !(Test-Path $outputRequ) -and !(Test-Path $outputSetup)) >> easyDownloader.ps1
 ECHO { >> easyDownloader.ps1
 ECHO     Write-Host "Updating new files." >> easyDownloader.ps1
+ECHO     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 >> easyDownloader.ps1
 ECHO     Invoke-WebRequest -Uri $urlBot -OutFile $outputBot >> easyDownloader.ps1
 ECHO     Invoke-WebRequest -Uri $urlStart -OutFile $outputStart >> easyDownloader.ps1
 ECHO     Invoke-WebRequest -Uri $urlRequ -OutFile $outputRequ >> easyDownloader.ps1
