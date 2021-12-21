@@ -1,11 +1,13 @@
 import os
 import sys
 import logging
+import random
 import requests
 import json
 import platform
 import signal
 from os import getenv
+from decimal import Decimal
 from websocket import create_connection
 from instapy import InstaPy, set_workspace
 from instapy.util import smart_run
@@ -85,6 +87,17 @@ for job in res_jobs:
 # convert list to actual arrays / tuples
 actions = get('/actions')
 
+def get_number_of_digits_after_point(number):
+    return abs(Decimal(str(number)).as_tuple().exponent)
+
+def randomize_int(min_number, max_number):
+    return random.randint(min_number, max_number)
+
+def randomize_float(min_number, max_number):
+    N = max(get_number_of_digits_after_point(min_number), get_number_of_digits_after_point(max_number))
+    N = max(N, 2)
+    return round(random.uniform(min_number, max_number), N)
+
 for job in jobs:
     action = next(
         action for action in actions if action['functionName'] == job['functionName']
@@ -96,6 +109,14 @@ for job in jobs:
             for act_param in action['params']
             if act_param['name'] == param['name']
         )
+
+        if (act_param['type'] == 'int' or act_param['type'] == 'float') and type(param['value']) is dict:
+            randomize_number = randomize_int if act_param['type'] == 'int' else randomize_float
+            if param['value']['is_range']:
+                param['value'] = randomize_number(param['value']['min'], param['value']['max'])
+            else:
+                param['value'] = param['value']['single']
+            continue
 
         if not isinstance(param['value'], str):
             continue
@@ -112,7 +133,15 @@ setting = get(f'/settings/{setting_ident}')
 # user args
 instapy_args = dict()
 for param in setting['params']:
-    instapy_args[param['name']] = param['value']
+    if param['name'] == 'page_delay' or param['name'] == 'proxy_port':
+        if type(param['value']) == int: # backward compitability
+            instapy_args[param['name']] = param['value']
+        elif param['value']['is_range']:
+            instapy_args[param['name']] = random.randint(param['value']['min'], param['value']['max'])
+        else:
+            instapy_args[param['name']] = param['value']['single']
+    else:
+        instapy_args[param['name']] = param['value']
 
 # custom args
 instapy_args['log_handler'] = log_handler

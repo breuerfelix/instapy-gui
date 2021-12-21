@@ -213,16 +213,168 @@ export class BooleanBox extends Box {
 	}
 }
 
+class RangeBoxSmall extends Component {
+	render({ is_range, classes, param, onValueChange, onMaximumChange, onMinimumChange, value, maximum, minimum, type=null, step=null }) {
+		if (is_range){
+			return (
+				<div className='row'>
+					<input
+						step={ step }
+						type={ type }
+						className={ classes }
+						placeholder={ param.placeholder }
+						value={ minimum }
+						onChange={ onMinimumChange }
+						style='width:auto'
+					/>
+					<h3
+						className='col-md-1'
+					> - </h3>
+					<input
+						step={ step }
+						type={ type }
+						className={ classes }
+						placeholder={ param.placeholder }
+						value={ maximum }
+						onChange={ onMaximumChange }
+						style='width:auto'
+					/>
+				</div>
+			);
+		}
+
+		return (
+			<input
+				step={ step }
+				type={ type }
+				className={ classes }
+				placeholder={ param.placeholder }
+				value={ value }
+				onChange={ onValueChange }
+				style='width:auto'
+			/>
+		);
+
+
+	}
+}
+
+
+export class RangeBox extends Box {
+	state = {
+		'is_range': false,
+		'single': null,
+		'min': null,
+		'max': null
+	}
+
+	componentWillMount() {
+		super.componentWillMount();
+		const { input } = this.state;
+
+		if (typeof input == 'number') {
+			this.setState({ is_range: false, single: input, min: null, max: null });
+			return;
+		}
+
+		this.setState({ ...this.state, ...input });
+	}
+
+	is_not_defined = (input) => {
+		return input == '' || input == null || input == undefined;
+	}
+
+	no_value = (params, value) => {
+		if (value) {
+			const index = params.indexOf(value);
+			if (index > -1) {
+				params.splice(index, 1);
+			}
+		}
+	}
+
+	validate = () => {
+		const { step, param, value, params } = this.props;
+		const { is_range, single, max, min } = this.state;
+		let parse_function = step == '1' ? parseInt : parseFloat;
+
+		if (is_range) {
+			if (this.is_not_defined(max) || this.is_not_defined(min)) {
+				if (param.optional){
+					this.setState({ input: null });
+				} else {
+					this.setState({ error: true });
+				}
+			} else if (parse_function(min)>=parse_function(max)) {
+				if (param.optional){
+					this.setState({ input: null });
+				} else {
+					this.setState({ error: true });
+				}
+			} else {
+				this.setState({ error: false, input: { is_range:is_range, max:parse_function(max), min:parse_function(min) } });
+			}
+		} else {
+			if ((this.is_not_defined(single) || single == param.defaultValue) && param.optional) {
+
+			} else {
+				this.setState({ error: false, input: { is_range:is_range, single:parse_function(single) } });
+			}
+		}
+
+		const value2 = this.setValue();
+		if (!value2) return true;
+
+		const { error } = this.state;
+		return !error;
+	}
+
+
+	render({ param, type=null, step = null }, { input, error, is_range, min, max, single }) {
+
+		const classes = classNames({
+			'form-control': true,
+			'is-invalid': error
+		});
+
+		return (
+			<div className='row'>
+				<input
+					type="checkbox"
+					checked={ is_range }
+					onChange={ linkState(this, 'is_range') }
+					id="is_range" name="is_range"
+				/> {/* TODO having a cont id is a bad idea - find another way */}
+
+				<label htmlFor="is_range" className='col-md-2'>Pick from range</label>
+				<RangeBoxSmall
+					is_range={ is_range }
+					param={ param }
+					classes={ classes }
+					type={ type }
+					step={ step }
+					value={ single }
+					maximum={ max }
+					minimum={ min }
+					onValueChange={ linkState(this, 'single') }
+					onMaximumChange={ linkState(this, 'max') }
+					onMinimumChange={ linkState(this, 'min') }
+				/>
+			</div>
+		);
+	}
+}
+
 const inputComponents = {
 	default: { element: InputBox, props: {} },
 	str: { element: InputBox, props: {} },
 	secret: { element: InputBox, props: { type: 'password' } },
 	int: {
-		element: InputBox,
+		element: RangeBox,
 		props: { type: 'number', step: '1' }
 	},
 	float: {
-		element: InputBox,
+		element: RangeBox,
 		props: { type: 'number', step: '0.01' }
 	},
 	bool: { element: BooleanBox, props: {} },
