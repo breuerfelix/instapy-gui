@@ -13,6 +13,7 @@
   "dependencies": {
     "dockerode": "^2.5.8",
     "jsonwebtoken": "^8.5.1",
+    "uuid": "^8.3.2",
     "ws": "^6.1.4"
   },
   "devDependencies": {

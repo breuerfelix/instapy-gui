@@ -2,3 +2,4 @@ instapy
 websocket-client
 requests
 python-dotenv
+filelock
